@@ -1,4 +1,6 @@
-# Visual Builder
+# Edit Labs
+
+*Seu laboratório de edição.*
 
 Editor de Reels no navegador: corte pelo texto, looks, legendas, sons, efeitos e exportação em MP4 — com transcrição automática (Whisper) e edição pelo Claude.
 

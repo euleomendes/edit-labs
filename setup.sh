@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")"
 export PATH="$HOME/.edite-reels/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 
-echo "== Visual Builder setup =="
+echo "== Instalação do Edit Labs =="
 
 if ! command -v python3 >/dev/null 2>&1; then
   echo "Python 3 is missing. Install it from https://www.python.org/downloads/ and run this again."; exit 1
