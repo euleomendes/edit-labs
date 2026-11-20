@@ -1,0 +1,12 @@
+# Third-party code is downloaded by setup.sh, not stored here
+libraries/
+# Videos you upload and renders the local server makes
+work/
+# Sample clip used only to render the effect previews
+effects-previews/_sample.mp4
+# Local tool settings
+.claude/
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
