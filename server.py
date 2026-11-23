@@ -97,6 +97,9 @@ def preview_status(key):
 def start_previews(key, src, t, names):
     with PREVIEW_LOCK:
         PREVIEWS[key] = {'done': [], 'failed': [], 'total': len(names), 'running': True}
+    os.makedirs(os.path.join(WORK, 'previews'), exist_ok=True)
+    with open(os.path.join(WORK, 'previews', 'latest.txt'), 'w') as f:
+        f.write(key)
     threading.Thread(target=build_previews, args=(key, src, t, names), daemon=True).start()
 
 
@@ -115,26 +118,31 @@ def build_previews(key, src, t, names):
                '-map', '0:v:0', '-map', '1:a', '-t', '3', '-vf', 'scale=540:960:force_original_aspect_ratio=increase,crop=540:960,format=yuv420p',
                '-r', '30', '-c:v', 'libx264', '-preset', 'veryfast', '-c:a', 'aac', '-shortest', sample]
     ok = subprocess.run(cmd, capture_output=True, text=True, timeout=300).returncode == 0
-    for n in names:
-        if not ok:
-            break
-        raw, mp4, jpg = os.path.join(d, '_raw.mp4'), os.path.join(d, n + '.mp4'), os.path.join(d, n + '.jpg')
-        cmd = [FX_PY, FX_SCRIPT, n, sample, raw, '--start', '0.2', '--end', '3', '--width', '540']
+    def one(n):
+        raw, mp4, jpg = os.path.join(d, '_raw_' + n + '.mp4'), os.path.join(d, n + '.mp4'), os.path.join(d, n + '.jpg')
+        cmd = [FX_PY, FX_SCRIPT, n, sample, raw, '--start', '0.2', '--end', '3', '--width', '360']
         if n in PREVIEW_TEXT:
             cmd += ['--text', PREVIEW_TEXT[n]]
+        good = False
         try:
             r = subprocess.run(cmd, cwd=FX_DIR, capture_output=True, text=True, timeout=300)
-            good = r.returncode == 0 and os.path.exists(raw)
-            if good:
+            if r.returncode == 0 and os.path.exists(raw):
                 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', raw, '-an', '-vf', 'scale=270:480', '-c:v', 'libx264', '-crf', '30',
                                 '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4], capture_output=True, timeout=120)
                 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', '1.6', '-i', raw, '-frames:v', '1', '-vf', 'scale=270:480', '-q:v', '5', jpg],
                                capture_output=True, timeout=60)
-                os.remove(raw)
+                good = os.path.exists(mp4)
         except subprocess.TimeoutExpired:
-            good = False
+            pass
+        if os.path.exists(raw):
+            os.remove(raw)
         with PREVIEW_LOCK:
-            PREVIEWS[key]['done' if good and os.path.exists(mp4) else 'failed'].append(n)
+            PREVIEWS[key]['done' if good else 'failed'].append(n)
+
+    if ok:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            list(pool.map(one, names))
     with PREVIEW_LOCK:
         PREVIEWS[key]['running'] = False
         if not ok:
@@ -203,6 +211,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self.send_json(200, {'effects': effects_ready(), 'ffmpeg': bool(shutil.which('ffmpeg'))})
         if self.path.startswith('/api/fx/previews/'):
             key = self.path.rsplit('/', 1)[-1]
+            if key == 'latest':  # the last set of previews made on this computer, kept across restarts
+                try:
+                    key = open(os.path.join(WORK, 'previews', 'latest.txt')).read().strip()
+                except OSError:
+                    return self.send_json(200, {'key': None, 'done': [], 'failed': [], 'total': 0, 'running': False})
             if not PKEY.match(key):
                 return self.send_json(400, {'error': 'bad key'})
             return self.send_json(200, preview_status(key))

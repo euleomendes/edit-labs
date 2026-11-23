@@ -527,8 +527,8 @@ const clone = o => JSON.parse(JSON.stringify(o));
 // Typewriter key sounds (earshot, MIT) — one plays on every letter that appears.
 const TYPE_SOUNDS = {clicky:['Mecânica','sounds/earshot/typing_key__clicky.wav'], thock:['Thock','sounds/earshot/typing_key__thock.wav'], crisp:['Seca','sounds/earshot/typing_key__crisp.wav'], light:['Leve','sounds/earshot/typing_key__light.wav'], laptop:['Notebook','sounds/earshot/typing_key__laptop.wav'], deep:['Grave','sounds/earshot/typing_key__deep.wav'], synth:['Sintetizada',null]};
 const HOOK_ANIMS = {none:'Nenhuma', typewriter:'Máquina de escrever', fade:'Aparecer', pop:'Pop', slide:'Subir'};
-const FILTERS = {none:'Nenhum',warm:'Quente',cool:'Frio',film:'Filme',bw:'Preto e branco',vivid:'Vivo',fade:'Desbotado'};
-const FILTER_CSS = {none:'none',warm:'sepia(.18) saturate(1.15) brightness(1.03)',cool:'hue-rotate(-10deg) saturate(.9) brightness(1.02)',film:'contrast(1.1) saturate(.85) sepia(.12)',bw:'grayscale(1) contrast(1.1)',vivid:'saturate(1.45) contrast(1.05)',fade:'contrast(.85) brightness(1.08) saturate(.8)'};
+const FILTERS = {none:'Nenhum',warm:'Quente',cool:'Frio',film:'Filme',bw:'Preto e branco',vivid:'Vivo',fade:'Desbotado',cinema:'Cinema',vintage:'Vintage',noir:'Noir',sunset:'Pôr do sol',pastel:'Pastel'};
+const FILTER_CSS = {none:'none',warm:'sepia(.18) saturate(1.15) brightness(1.03)',cool:'hue-rotate(-10deg) saturate(.9) brightness(1.02)',film:'contrast(1.1) saturate(.85) sepia(.12)',bw:'grayscale(1) contrast(1.1)',vivid:'saturate(1.45) contrast(1.05)',fade:'contrast(.85) brightness(1.08) saturate(.8)',cinema:'contrast(1.15) saturate(1.1) sepia(.12) hue-rotate(-12deg) brightness(.97)',vintage:'sepia(.38) contrast(.92) brightness(1.06) saturate(.85)',noir:'grayscale(1) contrast(1.45) brightness(.88)',sunset:'sepia(.3) saturate(1.45) hue-rotate(-18deg) brightness(1.05) contrast(1.05)',pastel:'saturate(.7) brightness(1.12) contrast(.88)'};
 const SFX_LIB = [
   {id:'whoosh',n:'Whoosh grave',tag:'Swoosh'},{id:'swoosh',n:'Swoosh subindo, leve',tag:'Swoosh'},{id:'pop',n:'Pop, bolha suave',tag:'Pop'},
   {id:'ding',n:'Ding, sino brilhante',tag:'Ding'},{id:'cash',n:'Caixa registradora, ka-ching',tag:'Dinheiro'},{id:'riser',n:'Riser, subida curta',tag:'Riser'},
@@ -652,7 +652,7 @@ function loadVideo(file, restore){
   strip = {url:'', step:1, n:0, tw:40}; lastFrameOk = false;
   vid.src = url; vid.load();
   vid.onloadedmetadata = () => {
-    hasVideo = true; if (!restore){ S.k = vid.duration / rawDur; } applyScale(); buildSegments();
+    hasVideo = true; UI.tplThumbs = null; if (!restore){ S.k = vid.duration / rawDur; } applyScale(); buildSegments();
     document.getElementById('drop').classList.remove('empty');
     seekSrc(restore ? srcT : (segs[0]?segs[0].s:0)); render(); buildStrip();
     connectVideoAudio();
@@ -861,11 +861,12 @@ function renderFrame(ctx, W, H, t, opts={}){
   if (has('shake') && lt<0.6){ ox = (Math.random()-.5)*W*0.03; oy=(Math.random()-.5)*W*0.03; }
   ctx.save(); ctx.translate(W/2+ox, H/2+oy); ctx.scale(sc,sc); ctx.translate(-W/2,-H/2);
   ctx.filter = FILTER_CSS[S.filter]||'none';
-  const br = has('broll'); const brW = br && br.win; const brm = br && !brW && mediaById(br.media);
+  const et0 = src2edit(t); const timed = timedMediaAt(et0);
+  const brT = timed.find(x=>x.k.type==='broll' && !x.k.win); const br = brT && brT.k; const brW = false; const brm = br && mediaById(br.media);
   const fxClip = !brm && vfxClipAt(t);
   if (fxClip) drawCover(ctx, fxClip, 0, 0, W, H);
   else if (brm && brm.el){
-    if (brm.kind==='video'){ const want = (br.from||0) + lt; if (Math.abs(brm.el.currentTime-want)>0.35) brm.el.currentTime = want; if (playing && brm.el.paused) brm.el.play().catch(()=>{}); }
+    if (brm.kind==='video'){ const want = (br.from||0) + brT.lt; if (Math.abs(brm.el.currentTime-want)>0.35) brm.el.currentTime = want; if (playing && brm.el.paused) brm.el.play().catch(()=>{}); }
     drawCover(ctx, brm.el, 0, 0, W, H);
   } else if (br && !brW && !brm?.el){ ctx.fillStyle='#2b2722'; ctx.fillRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.font=`600 ${W*0.04}px Inter`; ctx.textAlign='center'; ctx.fillText('B-roll: '+(brm?.emoji||'vídeo'),W/2,H/2); }
   else if (hasVideo) drawVideoFrame(ctx, W, H);
@@ -901,13 +902,14 @@ function renderFrame(ctx, W, H, t, opts={}){
       if (k.type==='takeover'){ drawTakeover(ctx,W,H,L,t); capsOff = true; }
       if (k.type==='breakaway'){ ctx.fillStyle='rgba(0,0,0,.35)'; ctx.fillRect(0,0,W,H); ctx.save(); ctx.globalAlpha=p; const cw=W*0.78; ctx.font=`800 ${W*0.07}px Inter`; const ls=wrap(ctx,keptText(L),cw-W*0.12); const ch=ls.length*W*0.085+W*0.14; ctx.fillStyle='#fbf6ec'; rr(ctx,(W-cw)/2,H*0.45-ch/2+(1-p)*40,cw,ch,W*0.04); ctx.fill(); ctx.fillStyle='#1d1a17'; ctx.textAlign='center'; ls.forEach((l,i)=>ctx.fillText(l,W/2,H*0.45-ch/2+W*0.13+i*W*0.085+(1-p)*40)); ctx.restore(); capsOff=true; }
       if (['hook','eyebrow','headline','text'].includes(k.type)){ const b = drawTextLook(ctx,W,H,k,L,p); if (b && opts.hits) opts.hits.push({kind:'look', id:k.id, box:b}); }
-      if (k.type==='countup') drawCountup(ctx,W,H,k,lt,ld);
-      if (k.type==='media' || (k.type==='broll' && k.win)){ const b = drawMediaLook(ctx,W,H,k,lt,ld); if (b && opts.hits) opts.hits.push({kind:'media', id:k.id, box:b}); }
+      if (k.type==='countup'){ drawCountup(ctx,W,H,k,lt,ld); capsOff = true; }
       if (k.type==='flash' && lt<0.35){ ctx.fillStyle=`rgba(255,255,255,${0.85*(1-lt/0.35)})`; ctx.fillRect(0,0,W,H); }
       if (k.type==='vfx' && opts.ui && !(k.clip && t>=k.clip.from && t<=k.clip.to)){ ctx.save(); ctx.font=`600 ${W*0.026}px Inter`; const lab = '✦ '+k.fx+' · toque em ✎ Editar para ver no preview'; const tw = ctx.measureText(lab).width; ctx.fillStyle='rgba(210,58,44,.92)'; rr(ctx, W*0.04, H*0.035, tw+W*0.05, W*0.055, W*0.027); ctx.fill(); ctx.fillStyle='#fff'; ctx.textAlign='left'; ctx.fillText(lab, W*0.065, H*0.035+W*0.037); ctx.restore(); }
     }
     if (!capsOff && !opts.noCaps){ const b = drawCaptions(ctx,W,H,L,t); if (b && opts.hits) opts.hits.push({kind:'cap', box:b}); }
   }
+  // GIFs, images and windowed b-roll, each on its own word for its own time
+  for (const x of timed){ if (x.k.type==='broll' && !x.k.win) continue; const b = drawMediaLook(ctx,W,H,x.k,x.lt,x.ld); if (b && opts.hits) opts.hits.push({kind:'media', id:x.k.id, box:b}); }
   // hooks and texts from the Hook tab, on top of everything
   for (const h of S.hooks||[]){ if (hooksDrawn.has(h.id) || !hookOn(h, et)) continue; const b = drawHook(ctx,W,H,h,et); if (b && opts.hits) opts.hits.push({kind:'hook', id:h.id, box:b}); }
   ctx.restore();
@@ -922,7 +924,53 @@ function drawTakeover(ctx,W,H,L,t){
   if (cur.length) lines.push(cur);
   for (const ln of lines){ let x=x0; for (const w of ln){ const hl = L.hl.includes(w.i); ctx.font = hl? `italic ${W*0.15}px "Instrument Serif"` : `800 ${W*0.13}px Inter`; ctx.fillStyle = hl? '#d23a2c':'#1d1a17'; ctx.fillText(w.w, x, y); x += ctx.measureText(w.w+' ').width; } y += W*0.15; }
 }
+// Counter as a sign: a flip board (each tile flips through characters until it lands) or an LED board of glowing dots.
+const ledCanvas = document.createElement('canvas');
+function drawSignCounter(ctx,W,H,k,lt,ld){
+  const d = k.data||{}; const target = d.target||800; const sty = d.style;
+  const full = (d.prefix||'') + Math.round(target).toLocaleString('pt-BR') + (d.suffix||'');
+  const y0 = H*(d.y ?? .6) + (1-ease(lt/0.3))*40;
+  ctx.save(); ctx.globalAlpha = ease(lt/0.2);
+  if (sty===4){
+    const n = full.length; const tw = Math.min(W*0.13, W*0.86/n - W*0.012), th = tw*1.5, gap = tw*0.1; const tot = n*tw + (n-1)*gap; let x = (W-tot)/2;
+    const glyphs = '0123456789$%+#';
+    for (let i=0;i<n;i++){
+      const settle = 0.25 + i*0.11 + (ld>2? 0.3 : 0); const done = lt >= settle; const flip = Math.floor(lt/0.07);
+      const ch = done ? full[i] : (full[i]===' ' ? ' ' : glyphs[(flip*7 + i*13) % 10]);
+      const ph = done ? Math.min(1, (lt-settle)/0.08) : (lt/0.07)%1; // flap position for the little flip
+      ctx.shadowColor='rgba(0,0,0,.45)'; ctx.shadowBlur=W*0.02; ctx.fillStyle='#141414'; rr(ctx, x, y0, tw, th, tw*0.12); ctx.fill(); ctx.shadowBlur=0;
+      ctx.fillStyle='#1f1f1f'; rr(ctx, x, y0, tw, th/2, tw*0.12); ctx.fill();
+      ctx.save(); rr(ctx, x, y0, tw, th, tw*0.12); ctx.clip();
+      ctx.font = `400 ${th*0.82}px "Bebas Neue", Oswald, Inter`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle = d.color || '#f5f1e6';
+      if (!done && ph < 0.5){ ctx.translate(x+tw/2, y0+th/2); ctx.scale(1, 1-ph*1.4); ctx.fillText(ch, 0, th*0.04); }
+      else ctx.fillText(ch, x+tw/2, y0+th/2+th*0.04);
+      ctx.restore();
+      ctx.fillStyle='rgba(0,0,0,.85)'; ctx.fillRect(x, y0+th/2-Math.max(1,th*0.012), tw, Math.max(2,th*0.024));
+      ctx.fillStyle='#3a3a3a'; ctx.fillRect(x-tw*0.03, y0+th*0.45, tw*0.06, th*0.1); ctx.fillRect(x+tw*0.97, y0+th*0.45, tw*0.06, th*0.1);
+      x += tw + gap;
+    }
+    if (d.label){ ctx.font=`600 ${W*0.04}px Inter`; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#fff'; ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=W*0.02; ctx.fillText(d.label, W/2, y0+th+W*0.075); }
+  } else {
+    const p = ease(lt/(ld*0.75)); const txt = (d.prefix||'') + Math.round(target*p).toLocaleString('pt-BR') + (p>=1? (d.suffix||'') : '');
+    const cols = Math.max(full.length*7, 24), rows = 11; ledCanvas.width = cols; ledCanvas.height = rows;
+    const lx = ledCanvas.getContext('2d', {willReadFrequently:true}); lx.clearRect(0,0,cols,rows); lx.fillStyle='#fff'; lx.font = `700 ${rows*0.95}px "Courier Prime", monospace`; lx.textAlign='center'; lx.textBaseline='middle'; lx.fillText(txt, cols/2, rows/2+0.5);
+    const px = lx.getImageData(0,0,cols,rows).data;
+    const pw = Math.min(W*0.88, cols*W*0.02); const cell = pw/cols, ph = rows*cell + cell*2; const x0 = (W-pw)/2;
+    ctx.fillStyle='#0b0b0b'; ctx.shadowColor='rgba(0,0,0,.5)'; ctx.shadowBlur=W*0.02; rr(ctx, x0-cell, y0, pw+cell*2, ph, cell*1.5); ctx.fill(); ctx.shadowBlur=0;
+    const on = d.color || '#ffb000';
+    for (let r=0;r<rows;r++) for (let c=0;c<cols;c++){
+      const lit = px[(r*cols+c)*4+3] > 110; const cx_ = x0 + c*cell + cell/2, cy_ = y0 + cell + r*cell + cell/2;
+      ctx.beginPath(); ctx.arc(cx_, cy_, cell*0.38, 0, 7);
+      if (lit){ ctx.fillStyle = on; ctx.shadowColor = on; ctx.shadowBlur = cell*1.2; } else { ctx.fillStyle = 'rgba(255,255,255,.05)'; ctx.shadowBlur = 0; }
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    if (d.label){ ctx.font=`600 ${W*0.04}px Inter`; ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle='#fff'; ctx.shadowColor='rgba(0,0,0,.6)'; ctx.shadowBlur=W*0.02; ctx.fillText(d.label, W/2, y0+ph+W*0.07); }
+  }
+  ctx.restore();
+}
 function drawCountup(ctx,W,H,k,lt,ld){
+  if (k.data && (k.data.style===4 || k.data.style===5)) return drawSignCounter(ctx,W,H,k,lt,ld);
   const d = k.data||{}; const target = d.target||800; const p = ease(lt/(ld*0.75));
   const val = Math.round(target*p); const txt = (d.prefix||'') + val.toLocaleString() + (p>=1? (d.suffix||''):'');
   const sty = d.style||1; const cw=W*0.62, chh=W*0.36, x=(W-cw)/2, y=H*0.62 + (1-ease(lt/0.3))*60;
@@ -1022,23 +1070,44 @@ function newHook(kind){
     start: kind==='hook'? 0 : +et.toFixed(1), dur: kind==='hook'? 3.5 : 3, anim: kind==='hook'? 'typewriter' : 'fade', speed:16, cursor:true,
     sound: kind==='hook', soundId:'clicky', vol:.6,
     outline:{on:false, color:'#000000', w:.12}, shadow:{on:true, color:'#000000', blur:.6, dist:.3},
-    bg:{on:false, color:'#000000', op:.75, r:.3}, border:{on:false, color:'#ffffff', w:.05}, behind:false};
+    bg:{on:false, color:'#000000', op:.75, r:.3}, border:{on:false, color:'#ffffff', w:.05}, behind:false, acc:{}};
   return base;
 }
 function hookOn(h, et){ return et >= h.start && et <= h.start + h.dur; }
-function hookLines(ctx, h, fs, W){
-  const raw = h.upper ? String(h.text).toUpperCase() : String(h.text); const out = [];
-  raw.split('\n').forEach(p=>{ const w = wrap(ctx, p, (h.maxW||.86)*W); out.push(...(w.length? w : [''])); });
-  return out;
+// Words between *asterisks* are highlighted: their own color, optionally their own font, or a marker behind them.
+function hookTokens(h){
+  const raw = h.upper ? String(h.text).toUpperCase() : String(h.text); let on = false; const paras = [];
+  for (const para of raw.split('\n')){
+    const toks = []; let cur = null, glue = false;
+    for (const ch of para){
+      if (ch==='*'){ on = !on; if (cur){ toks.push(cur); cur = null; glue = true; } continue; }
+      if (ch===' '){ if (cur){ toks.push(cur); cur = null; } glue = false; continue; }
+      if (!cur){ cur = {t:'', hl:on, glue}; glue = false; }
+      cur.t += ch;
+    }
+    if (cur) toks.push(cur);
+    paras.push(toks);
+  }
+  return paras;
 }
 function drawHook(ctx, W, H, h, et){
   const lt = et - h.start; if (lt < 0 || lt > h.dur) return null;
-  const fs = W*0.07*(h.size||1);
-  ctx.save(); ctx.font = fontStr(h.font, fs); ctx.textBaseline='alphabetic'; ctx.lineJoin='round'; ctx.textAlign='left';
+  const fs = W*0.07*(h.size||1); const A_ = h.acc || {};
+  const fN = fontStr(h.font, fs), fA = A_.font ? fontStr(A_.font, fs*(A_.scale||1)) : fN;
+  ctx.save(); ctx.textBaseline='alphabetic'; ctx.lineJoin='round'; ctx.textAlign='left';
   try{ ctx.letterSpacing = ((h.ls||0)*fs)+'px'; }catch(e){}
-  const lines = hookLines(ctx, h, fs, W);
-  const widths = lines.map(l=>ctx.measureText(l).width); const bw = Math.max(1, ...widths);
-  const lh = fs*(h.lh||1.15), totalH = lines.length*lh;
+  ctx.font = fN; const sp = ctx.measureText(' ').width; const maxW = (h.maxW||.86)*W;
+  // lay the words out in lines
+  const lines = [];
+  for (const words of hookTokens(h)){
+    let line = []; let lw = 0;
+    for (const w of words){ ctx.font = w.hl ? fA : fN; w.ww = ctx.measureText(w.t).width; const gap = line.length && !w.glue ? sp : 0;
+      if (line.length && lw + gap + w.ww > maxW && !w.glue){ lines.push(line); line = []; lw = 0; }
+      w.gap = line.length && !w.glue ? sp : 0; line.push(w); lw += w.gap + w.ww; }
+    lines.push(line);
+  }
+  lines.forEach(l=>{ l.w = l.reduce((a,w)=>a+w.gap+w.ww, 0); });
+  const bw = Math.max(1, ...lines.map(l=>l.w)); const lh = fs*(h.lh||1.15), totalH = lines.length*lh;
   // animation in, and a short fade out at the end
   const pin = ease(lt/0.3); let alpha = 1, dy = 0, sc = 1;
   if (h.anim==='fade') alpha = pin;
@@ -1046,33 +1115,41 @@ function drawHook(ctx, W, H, h, et){
   if (h.anim==='pop') sc = lt < 0.28 ? 0.5 + 0.5*ease(lt/0.28) + Math.sin(Math.min(1,lt/0.28)*Math.PI)*0.08 : 1;
   alpha *= Math.max(0, Math.min(1, (h.dur - lt)/0.2));
   const cx = h.x*W, top = h.y*H + dy;
-  // typewriter: how many characters are showing
-  const total = lines.reduce((a,l)=>a+l.length+1, 0) - 1;
-  const vis = h.anim==='typewriter' ? Math.floor(lt*(h.speed||16)) : Infinity;
-  let left = vis; const shown = lines.map(l=>{ if (left<=0) return ''; const s = l.slice(0, left); left -= l.length+1; return s; });
-  const xOf = (w)=> h.align==='left' ? cx - bw/2 : h.align==='right' ? cx + bw/2 - w : cx - w/2;
+  // typewriter: how many characters show (spaces and line breaks count as one)
+  const total = lines.reduce((a,l)=>a + l.reduce((b,w)=>b + (w.gap?1:0) + w.t.length, 0) + 1, 0) - 1;
+  let left = h.anim==='typewriter' ? Math.floor(lt*(h.speed||16)) : Infinity;
+  const shown = lines.map(l=>{ const out = []; let w0 = 0; for (const w of l){ if (left<=0) break; if (w.gap) left--; if (left<=0) break; const t = w.t.slice(0, left); left -= w.t.length; out.push({...w, t}); } left--; return out; });
+  const xOf = (lw)=> h.align==='left' ? cx - bw/2 : h.align==='right' ? cx + bw/2 - lw : cx - lw/2;
   ctx.globalAlpha = alpha;
   if (sc!==1){ const cy = top + totalH/2; ctx.translate(cx, cy); ctx.scale(sc, sc); ctx.translate(-cx, -cy); }
   const pad = fs*0.32;
+  const widthOf = sw => sw.reduce((a,w)=>{ ctx.font = w.hl ? fA : fN; return a + w.gap + ctx.measureText(w.t).width; }, 0);
   // box behind each line (like the Instagram text background), and/or a border around it
   if ((h.bg && h.bg.on) || (h.border && h.border.on)){
-    shown.forEach((s,i)=>{ if (!s) return; const w = ctx.measureText(s).width, x = xOf(widths[i]), yb = top + i*lh + fs*0.92;
+    shown.forEach((sw,i)=>{ if (!sw.length) return; const w = widthOf(sw), x = xOf(lines[i].w), yb = top + i*lh + fs*0.92;
       rr(ctx, x - pad, yb - fs*0.86 - pad*0.25, w + pad*2, fs*1.12 + pad*0.5, fs*(h.bg.r ?? .3));
       if (h.bg.on){ ctx.fillStyle = hexA(h.bg.color, h.bg.op ?? .75); ctx.fill(); }
       if (h.border && h.border.on){ ctx.lineWidth = fs*(h.border.w||.05); ctx.strokeStyle = h.border.color; ctx.stroke(); } });
   }
-  shown.forEach((s,i)=>{ if (!s) return;
-    const x = xOf(widths[i]), yb = top + i*lh + fs*0.92;
-    if (h.shadow && h.shadow.on){ ctx.shadowColor = hexA(h.shadow.color, .75); ctx.shadowBlur = fs*0.4*(h.shadow.blur ?? .6); ctx.shadowOffsetY = fs*0.12*(h.shadow.dist ?? .3); }
-    if (h.outline && h.outline.on){ ctx.lineWidth = fs*(h.outline.w||.12); ctx.strokeStyle = h.outline.color; ctx.strokeText(s, x, yb); ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0; }
-    ctx.fillStyle = h.color; ctx.fillText(s, x, yb);
-    ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+  let lastX = 0, lastLine = 0;
+  shown.forEach((sw,i)=>{ if (!sw.length) return;
+    let x = xOf(lines[i].w); const yb = top + i*lh + fs*0.92;
+    for (const w of sw){
+      x += w.gap; ctx.font = w.hl ? fA : fN; const ww = ctx.measureText(w.t).width;
+      if (w.hl && A_.mode==='marker'){ ctx.save(); ctx.globalAlpha = alpha*0.95; ctx.fillStyle = A_.bg || '#f7e36b'; rr(ctx, x - fs*0.08, yb - fs*0.78, ww + fs*0.16, fs*0.98, fs*0.12); ctx.fill(); ctx.restore(); }
+      if (h.shadow && h.shadow.on){ ctx.shadowColor = hexA(h.shadow.color, .75); ctx.shadowBlur = fs*0.4*(h.shadow.blur ?? .6); ctx.shadowOffsetY = fs*0.12*(h.shadow.dist ?? .3); }
+      if (h.outline && h.outline.on){ ctx.lineWidth = fs*(h.outline.w||.12); ctx.strokeStyle = h.outline.color; ctx.strokeText(w.t, x, yb); ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0; }
+      ctx.fillStyle = w.hl ? (A_.color || '#f7e36b') : h.color; ctx.fillText(w.t, x, yb);
+      ctx.shadowColor='transparent'; ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+      if (w.hl && A_.mode==='underline'){ ctx.fillStyle = A_.bg || A_.color || '#d23a2c'; ctx.fillRect(x, yb + fs*0.1, ww, Math.max(2, fs*0.09)); }
+      x += ww;
+    }
+    lastX = x; lastLine = i;
   });
   // blinking cursor while it types (and a moment after)
-  if (h.anim==='typewriter' && h.cursor && (vis < total || Math.floor(lt*2.4)%2===0)){
-    let li = shown.length-1; while (li>0 && !shown[li]) li--; const s = shown[li]||'';
-    const x = xOf(widths[li]) + ctx.measureText(s).width + fs*0.04, yb = top + li*lh + fs*0.92;
-    ctx.fillStyle = h.color; ctx.fillRect(x, yb - fs*0.78, Math.max(2, fs*0.07), fs*0.92);
+  const typed = h.anim==='typewriter' ? Math.floor(lt*(h.speed||16)) : Infinity;
+  if (h.anim==='typewriter' && h.cursor && (typed < total || Math.floor(lt*2.4)%2===0)){
+    const yb = top + lastLine*lh + fs*0.92; ctx.fillStyle = h.color; ctx.fillRect((lastX || xOf(0)) + fs*0.04, yb - fs*0.78, Math.max(2, fs*0.07), fs*0.92);
   }
   ctx.restore();
   return {x: cx - bw/2 - pad, y: top - pad*0.4, w: bw + pad*2, h: totalH + pad*0.4};
@@ -1083,7 +1160,7 @@ function fireHookSfx(a, b){
   const ea = src2edit(a), eb = src2edit(b);
   for (const h of S.hooks){
     if (h.anim!=='typewriter' || !h.sound || eb < h.start || ea > h.start+h.dur) continue;
-    const text = h.text.replace(/\n/g,' '); const n = x => Math.min(text.length, Math.max(0, Math.floor((x-h.start)*(h.speed||16))));
+    const text = h.text.replace(/\*/g,'').replace(/\n/g,' '); const n = x => Math.min(text.length, Math.max(0, Math.floor((x-h.start)*(h.speed||16))));
     const na = n(ea), nb = n(eb); if (nb > na && text.slice(na, nb).trim()) playKey(h);
   }
 }
@@ -1211,6 +1288,19 @@ function drawTextLook(ctx,W,H,k,L,p){
 
 // GIFs, images and b-roll in a window: any size, any place (drag it on the preview), turned, framed or not.
 const MEDIA_ANIMS = {pop:'Pop', slide:'Deslizar', float:'Flutuar', spin:'Girar pela tela', none:'Nenhuma'};
+// A GIF, image or b-roll starts on the word you picked and stays k.dur seconds (in the finished reel).
+function mediaTime(k){
+  const L = lineById(k.line); if (!L || L.cut) return null;
+  let i = (k.w!=null && L.words[k.w] && !L.words[k.w].cut) ? k.w : L.words.findIndex(x=>!x.cut); if (i<0) return null;
+  const e0 = src2edit(L.words[i].s); let dur = k.dur;
+  if (dur==null){ const kr = keptRange(L); dur = Math.max(0.3, src2edit(kr[1]) - e0); }
+  return {e0, dur, i};
+}
+function timedMediaAt(et){
+  const out = [];
+  for (const k of S.looks){ if (k.type!=='media' && k.type!=='broll') continue; const m = mediaTime(k); if (!m) continue; const lt = et - m.e0; if (lt>=0 && lt<m.dur) out.push({k, lt, ld:m.dur}); }
+  return out;
+}
 function mediaPos(k){ return k.pos || (k.type==='broll' ? {x:.5, y:.3} : {x:.68, y:.24}); }
 function drawMediaLook(ctx,W,H,k,lt,ld){
   const m = mediaById(k.media); if(!m) return null;
@@ -1240,7 +1330,8 @@ function openMediaEditor(id){
   const P = [['Topo esq.','.3,.18'],['Topo','.5,.18'],['Topo dir.','.7,.18'],['Meio','.5,.45'],['Baixo esq.','.3,.7'],['Baixo','.5,.7'],['Baixo dir.','.7,.7']];
   openModal(`<div class="mhead"><div class="kick"><i></i> ${isB? 'B-roll' : 'Imagem / GIF'}</div><h2 class="mt">${esc(m? m.name : 'Mídia')}</h2><p class="mtxt">Na linha ${lineNum(L)}. Ajuste aqui ou arraste no preview.</p></div>
     <div class="mbody">
-      ${isB? `<div class="fgroup" style="border:0;margin-top:0;padding-top:0"><b>Como aparece</b><div class="seg"><button data-act="mdwin" data-v="0" class="${!k.win?'on':''}">Tela cheia (corta para o b-roll)</button><button data-act="mdwin" data-v="1" class="${k.win?'on':''}">Janela sobre o seu vídeo</button></div></div>`:''}
+      <div class="fgroup" style="border:0;margin-top:0;padding-top:0"><b>Quando aparece</b><div class="frow"><label>Na palavra <select data-md="w" data-num="1">${L.words.map((w,i)=>w.cut?'':`<option value="${i}" ${(mediaTime(k)||{}).i===i?'selected':''}>${esc(w.w)}</option>`).join('')}</select></label><label>Fica na tela <input type="number" min="0.3" max="30" step="0.1" data-md="dur" value="${(+((mediaTime(k)||{}).dur||2)).toFixed(1)}"> s</label><button class="btn ghost sm" data-act="mdplay">${ICO.play} Ver</button></div></div>
+      ${isB? `<div class="fgroup"><b>Como aparece</b><div class="seg"><button data-act="mdwin" data-v="0" class="${!k.win?'on':''}">Tela cheia (corta para o b-roll)</button><button data-act="mdwin" data-v="1" class="${k.win?'on':''}">Janela sobre o seu vídeo</button></div></div>`:''}
       <div id="mdWinOpts" style="${win?'':'opacity:.4;pointer-events:none'}">
       <div class="fgroup"><b>Tamanho e posição</b><div class="frow"><label>Tamanho <input type="range" min="0.12" max="1" step="0.01" data-md="size" value="${k.size || (isB? .6 : .42)}"></label><label>Girar <input type="range" min="-45" max="45" step="1" data-md="rot" value="${k.rot||0}"></label></div>
         <div class="seg">${P.map(([n,v])=>`<button data-act="mdpos" data-p="${v}">${n}</button>`).join('')}</div></div>
@@ -1455,7 +1546,7 @@ function lookCards(L){
     const th = m&&m.url&&m.kind!=='video'? `background-image:url(${m.url});background-size:cover` : thumbStyle(kr[0]);
     const icon = m&&m.emoji? m.emoji : (LOOK_TYPES[k.type]?.i||'');
     return `<div class="lk ${S.lockedLooks?'':''}"><div class="lth" style="${th}"><span style="text-shadow:0 1px 3px #000;color:#fff;font-weight:700;font-size:${m&&m.emoji?16:11}px">${icon}</span></div>
-      <div><b>${esc(lookName(k))}</b><small>${k.note? esc(k.note).slice(0,28): k.type==='broll'? 'de '+fmt(k.from||0): (k.data&&k.data.text)? '“'+esc(k.data.text).slice(0,26)+'”' : k.type==='vfx'&&k.text? '“'+esc(k.text).slice(0,26)+'”' : 'Esta linha'}</small></div>
+      <div><b>${esc(lookName(k))}</b><small>${k.note? esc(k.note).slice(0,28): (k.type==='broll'||k.type==='media')? (()=>{ const m=mediaTime(k); return m? 'em “'+esc(L.words[m.i].w.replace(/[,.?!]$/,''))+'” · '+(+m.dur).toFixed(1)+'s' : ''; })(): (k.data&&k.data.text)? '“'+esc(k.data.text).slice(0,26)+'”' : k.type==='vfx'&&k.text? '“'+esc(k.text).slice(0,26)+'”' : 'Esta linha'}</small></div>
       ${EDITABLE.includes(k.type)? `<button class="sb" data-act="editlook" data-k="${k.id}">✎ Editar</button>` : `<button class="sb" data-act="swaplook" data-k="${k.id}">${ICO.swap} Trocar</button>`}<button class="sb" data-act="lookmenu" data-k="${k.id}">${ICO.dots}</button></div>`;
   }).join('');
   return `<div class="lookcol">${cards}<button class="addlook" data-act="addlook" data-l="${L.id}">${ICO.plus.replace('<svg','<svg width=11 height=11')} Adicionar um look</button></div>`;
@@ -1470,7 +1561,7 @@ function renderVisuals(){
       <button class="chip" data-act="lookbook">${ICO.book} Lookbook</button>
       <button class="chip ${S.filter!=='none'?'on':''}" data-act="filtermenu">${ICO.filter} Filtro${S.filter!=='none'?': '+FILTERS[S.filter]:''}</button>
       <button class="chip ${S.face.on?'on':''}" data-act="coverface">${ICO.face} Cobrir um rosto</button>
-      <button class="chip" data-act="sandbox">${ICO.sand} Sandbox</button>
+      <button class="chip" data-act="sandbox">${ICO.sand} Fale pra o Claude</button>
       <button class="chip" data-act="effects">${ICO.fx} Biblioteca de efeitos</button>
     </div>
     ${UI.capPanel? capPanelHTML(): ''}
@@ -1575,7 +1666,7 @@ function renderTimeline(){
   const clips = segs.map((g,i)=>{ const x = g.es*p, w = (g.e-g.s)*p; const bgW = sw*p; const bg = strip.url? `background-image:url(${strip.url});background-size:${bgW}px 100%;background-position:${-g.s*p}px 0;background-repeat:no-repeat`: '';
     return `<div class="clip" data-seg="${i}" style="left:${x}px;width:${Math.max(2,w-1)}px;${bg}"><span class="hd l" data-h="l"></span><span class="hd r" data-h="r"></span></div>`; }).join('');
   let pills = '';
-  if (showLooks){ pills = S.looks.map(k=>{ const L = lineById(k.line); if(!L||L.cut) return ''; const kr=keptRange(L); if(!kr) return ''; const a=src2edit(kr[0]), b=src2edit(kr[1]); return `<div class="pill" style="left:${a*p}px;width:${Math.max(6,(b-a)*p-2)}px" title="${esc(lookName(k))}"></div>`; }).join(''); }
+  if (showLooks){ pills = S.looks.map(k=>{ const L = lineById(k.line); if(!L||L.cut) return ''; const kr=keptRange(L); if(!kr) return ''; let a=src2edit(kr[0]), b=src2edit(kr[1]); if (k.type==='media'||k.type==='broll'){ const m=mediaTime(k); if(!m) return ''; a=m.e0; b=m.e0+m.dur; } return `<div class="pill" style="left:${a*p}px;width:${Math.max(6,(b-a)*p-2)}px" title="${esc(lookName(k))}"></div>`; }).join(''); }
   let dots = '';
   if (showSfx){ dots = S.sfx.map(s=>{ const t = sfxTime(s); if (t==null) return ''; return `<div class="dot" style="left:${src2edit(t)*p}px" title="${esc(s.name||s.snd)}"></div>`; }).join(''); }
   tl.innerHTML = `<div class="ruler">${ruler}</div>
@@ -1610,7 +1701,7 @@ $('#main').addEventListener('mouseover', e=>{
   } else if (S.tab==='visuals'){
     const on = L.hl.includes(i);
     const label = sel && sel.L===L && sel.idx.length>1 && sel.idx.includes(i) ? `Destacar ${sel.idx.length} palavras` : (on? 'Tirar destaque':'Destacar');
-    showWtb(w, `<button data-act="highlight" data-l="${L.id}" data-i="${i}">${ICO.hl} ${label}</button><button data-act="capshere" data-l="${L.id}">${ICO.cap} Legendas daqui</button><button data-act="addlook" data-l="${L.id}">${ICO.plus} Adicionar look</button><button data-act="sfxhere" data-l="${L.id}" data-i="${i}">♪ Som aqui</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`);
+    showWtb(w, `<button data-act="highlight" data-l="${L.id}" data-i="${i}">${ICO.hl} ${label}</button><button data-act="capshere" data-l="${L.id}">${ICO.cap} Legendas daqui</button><button data-act="addlook" data-l="${L.id}" data-i="${i}">${ICO.plus} Adicionar look / GIF aqui</button><button data-act="sfxhere" data-l="${L.id}" data-i="${i}">♪ Som aqui</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`);
   } else if (S.tab==='sound' && !word.cut){
     const ss = S.sfx.filter(s=>s.line===L.id); const w0 = esc(word.w.replace(/[,.?!]$/,''));
     showWtb(w, `<button data-act="sfxhere" data-l="${L.id}" data-i="${i}">♪ Adicionar som em “${w0}”</button>` + ss.map(s=>{ const p=sfxWord(s); return p && p.i===i ? '' : `<button data-act="sfxmove" data-s="${s.id}" data-i="${i}">↦ Mover “${esc((s.name||(SFX_LIB.find(x=>x.id===s.snd)||{}).n||'som').slice(0,22))}” para cá</button>`; }).join(''));
@@ -1666,7 +1757,7 @@ const A = {
   filtermenu: el=>showPop(el, Object.entries(FILTERS).map(([k,v])=>`<button data-act="setfilter" data-f="${k}" class="${S.filter===k?'on':''}">${v}</button>`).join('')),
   setfilter: el=>{ commit(()=>S.filter=el.dataset.f); hidePop(); },
   lookbook: ()=>openLookbook(null), 'pbar-lookbook': ()=>openLookbook(null),
-  addlook: el=>{ wtb.classList.add('hidden'); openLookbook(el.dataset.l); },
+  addlook: el=>{ wtb.classList.add('hidden'); UI.addWord = el.dataset.i!=null ? +el.dataset.i : null; openLookbook(el.dataset.l); },
   swaplook: el=>{ const k=S.looks.find(x=>x.id===el.dataset.k); if(k.type==='media'||k.type==='broll') openMedia(k.line, k.id); else openLookbook(k.line, k.id); },
   lookmenu: el=>{ const k=el.dataset.k; showPop(el, `<button data-act="looknote" data-k="${k}">${ICO.note} Adicionar nota</button><button data-act="lookjump" data-k="${k}">${ICO.play} Ver este look</button><button data-act="looksave" data-k="${k}">${ICO.star} Salvar no lookbook</button><button data-act="lookdel" data-k="${k}" style="color:var(--red)">${ICO.trash} Remover</button>`); },
   lookdel: el=>{ hidePop(); commit(()=>S.looks=S.looks.filter(k=>k.id!==el.dataset.k)); toast('Look removido'); },
@@ -1674,8 +1765,8 @@ const A = {
   looknote: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); const v=prompt('Nota para o Claude sobre este look:', k.note||''); if(v!==null){ commit(()=>k.note=v); } },
   looksave: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); UI.saved = UI.saved||[]; UI.saved.push(JSON.parse(JSON.stringify(k))); toast('“'+lookName(k)+'” salvo no seu lookbook'); },
   pickLook: el=>{ applyLook(el.dataset.t, el.dataset.saved, el.dataset.tpl); },
-  'pbar-media': ()=>openMedia(currentLineForAdd()),
-  media: ()=>openMedia(currentLineForAdd()),
+  'pbar-media': ()=>{ UI.addWord=null; openMedia(currentLineForAdd()); },
+  media: ()=>{ UI.addWord=null; openMedia(currentLineForAdd()); },
   effects: ()=>{ UI.fxKeep = false; openEffects(); },
   coverface: ()=>{ UI.facePanel = !UI.facePanel; if (UI.facePanel && UI.faceScan!=='done' && UI.faceScan!=='running') startScan(); render(); },
   'pbar-face': ()=>{ if(S.tab!=='visuals') setTab('visuals'); UI.facePanel=true; if (UI.faceScan!=='done' && UI.faceScan!=='running') startScan(); render(); $('#main').scrollTop=0; },
@@ -1801,7 +1892,7 @@ function applyLook(type, savedIdx, tpl){
     commit(()=>{ if (old){ old.type='text'; old.data=data; } else S.looks.push({type:'text', data, id, line:lineId}); });
     closeModal(); openTextEditor(id); return;
   }
-  if (type==='countup' && !base.data){ const L=lineById(lineId); const m = keptText(L).match(/\$?([\d,]+)/); base.data = {target: m? +m[1].replace(/,/g,''): 100, suffix:'+', label: keptText(L).slice(0,40), style:1, prefix: /\$/.test(keptText(L))?'$':''}; }
+  if (type==='countup' && !base.data){ const L=lineById(lineId); const tx = keptText(L); const m = tx.match(/(R\$|\$)?\s?(\d[\d.,]*)/); const num = m? +m[2].replace(/[.,](?=\d{3}(\D|$))/g,'').replace(',','.') : 100; base.data = {target: num||100, suffix:'+', label: tx.slice(0,40), style:4, prefix: m && m[1] ? m[1] : ''}; }
   if (type==='eyebrow' && !base.data) base.data = {eyebrow:'OUÇA'};
   if (type==='headline' && !base.data) base.data = {sub:'e isso mudou tudo'};
   const newId = swap || nid('k');
@@ -1816,6 +1907,8 @@ let FXSTATUS = null;
 async function fxStatus(force){ if (FXSTATUS && !force) return FXSTATUS; try{ const r = await fetch('/api/status', {cache:'no-store'}); FXSTATUS = r.ok ? await r.json() : {effects:false, server:false}; FXSTATUS.server = r.ok; } catch(e){ FXSTATUS = {effects:false, server:false}; } return FXSTATUS; }
 /* ---------- effect previews made from your own footage (or a photo of you) ---------- */
 UI.fxPrev = null; try{ const k = localStorage.getItem('vb-fxprev'); if (k) UI.fxPrev = {key:k, done:[], running:false, total:0}; }catch(e){}
+// previews made earlier on this computer (by any browser) are reused
+async function fxPrevLatest(){ try{ const r = await fetch('/api/fx/previews/latest', {cache:'no-store'}); if (!r.ok) return; const d = await r.json(); if (d.key && (!UI.fxPrev || !UI.fxPrev.done.length || d.done.length >= UI.fxPrev.done.length)){ UI.fxPrev = d; try{ localStorage.setItem('vb-fxprev', d.key); }catch(e){} if ($('#fxGrid')){ fxRefreshGrid(); const pr=$('#fxPrevTxt'); if (pr) pr.innerHTML = fxPrevStatus(); } if (d.running) fxPrevPoll(); } }catch(e){} }
 function fxPrevHas(n){ return UI.fxPrev && UI.fxPrev.done.includes(n); }
 function fxPrevURL(n, ext){ return `work/previews/${UI.fxPrev.key}/${n}.${ext}`; }
 async function fxPrevPoll(){
@@ -1844,7 +1937,7 @@ async function fxMakePreviews(fileOrNull){
 function fxCard(n, d){
   const has = fxPrevHas(n);
   const th = has ? `<video class="fxv" muted loop playsinline preload="none" poster="${fxPrevURL(n,'jpg')}" src="${fxPrevURL(n,'mp4')}" style="width:100%;height:100%;object-fit:cover"></video>`
-    : `<div style="position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url(${UI.frameURL||''}) center/cover"></div><b style="position:relative;margin:0;font:600 11px var(--mono)">✦ ${n}</b>`;
+    : `<div style="position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url(${UI.frameURL||''}) center/cover"></div><b style="position:relative;margin:0;font:600 11px var(--mono)">✦ ${n}</b>${UI.fxPrev&&UI.fxPrev.running? '<small style="position:relative;color:#fff;opacity:.85;margin-top:4px">gerando prévia…</small>' : ''}`;
   return `<div class="lb" data-act="addvfx" data-fx="${n}"><div class="th" style="padding:0;background:#2a2420">${th}</div><b>${n}</b><small>${esc(d)}</small></div>`;
 }
 function fxRefreshGrid(){ const g = $('#fxGrid'); if (!g) return; const q = (UI.fxQ||'').toLowerCase(); g.innerHTML = VFX.filter(v=>!q || (v[0]+' '+v[1]).toLowerCase().includes(q)).map(([n,d])=>fxCard(n,d)).join(''); }
@@ -1866,12 +1959,14 @@ function openEffects(tab){
   fxRefreshGrid();
   const f = $('#fxQ'); if (f) f.oninput = ()=>{ UI.fxQ = f.value; clearTimeout(UI.fxT); UI.fxT = setTimeout(fxRefreshGrid, 150); };
   if (st==null) fxStatus().then(()=>{ if (!$('#modal').classList.contains('hidden') && $('#fxQ')) openEffects(); });
-  if (UI.fxPrev && !UI.fxPrev.done.length && !UI.fxPrev.running) fxPrevPoll();
+  // first time: make the previews from your video automatically
+  (async ()=>{ await fxPrevLatest(); const p = UI.fxPrev; const s2 = await fxStatus();
+    if ((!p || (!p.done.length && !p.running)) && hasVideo && s2.effects && !UI.fxAuto){ UI.fxAuto = true; fxMakePreviews(null); } })();
 }
 A.fxprevvid = ()=>fxMakePreviews(null);
 A.fxprevphoto = ()=>$('#filePhoto').click();
 document.getElementById('filePhoto').onchange = e=>{ const f = e.target.files[0]; e.target.value=''; if (f) fxMakePreviews(f); };
-fxPrevPoll();
+fxPrevPoll(); fxPrevLatest();
 A.fxtab = el=>openEffects(el.dataset.t);
 // effect cards play their preview while hovered
 $('#mbox').addEventListener('mouseover', e=>{ const c = e.target.closest('.lb'); const v = c && c.querySelector('video.fxv'); if (v && v.paused) v.play().catch(()=>{}); });
@@ -1981,7 +2076,38 @@ A.capdone = ()=>{ UI.capPanel = false; render(); };
 A.cappos = el=>{ const [x,y] = el.dataset.p.split(',').map(Number); commit(()=>{ S.cap.x=x; S.cap.y=y; }); };
 
 /* ---------- Hook tab ---------- */
-function hookSel(){ const hs = S.hooks||[]; let h = hs.find(x=>x.id===UI.hookSel); if (!h && hs.length){ h = hs[0]; UI.hookSel = h.id; } return h||null; }
+function hookSel(){ const hs = S.hooks||[]; let h = hs.find(x=>x.id===UI.hookSel); if (!h && hs.length){ h = hs[0]; UI.hookSel = h.id; } if (h && !h.acc) h.acc = {}; return h||null; }
+/* ---------- ready-made hook templates (YAP / talking-head style); every one stays fully editable ---------- */
+const SH = (color='#000000', blur=.6, dist=.3)=>({on:true, color, blur, dist}); const NOSH = {on:false, color:'#000000', blur:.6, dist:.3};
+const HOOK_TPLS = [
+  {n:'Serifa elegante', layers:[{text:'o Claude edita os meus\nreels enquanto eu durmo 😴', font:'DM Serif Display', size:1.0, lh:1.02, color:'#f7efe0', shadow:SH('#000000',1.2,.15), anim:'fade', y:.13}]},
+  {n:'Clássico TikTok', layers:[{text:'3 erros que travam\no seu crescimento', font:'Montserrat', size:.82, color:'#111111', bg:{on:true, color:'#ffffff', op:1, r:.28}, shadow:NOSH, anim:'pop', y:.14}]},
+  {n:'Contorno forte', layers:[{text:'ninguém te conta isso', font:'Montserrat', size:1.15, upper:true, outline:{on:true, color:'#000000', w:.17}, shadow:NOSH, anim:'pop', y:.14}]},
+  {n:'Palavra amarela', layers:[{text:'o *segredo* para\nviralizar em 2026', font:'Montserrat', size:1.05, acc:{color:'#ffd400'}, shadow:SH(), anim:'pop', y:.14}]},
+  {n:'Editorial', layers:[{text:'o jeito *certo* de\ngravar reels', font:'Inter', size:1.05, acc:{font:'Instrument Serif', scale:1.3, color:'#ffffff'}, shadow:SH(), anim:'fade', y:.14}]},
+  {n:'Marca-texto', layers:[{text:'pare de *postar todo dia*', font:'Inter', size:.95, acc:{mode:'marker', bg:'#f7e36b', color:'#111111'}, shadow:SH('#000000',.5,.2), anim:'pop', y:.14}]},
+  {n:'Gigante atrás de você', layers:[{text:'VIRAL', font:'Anton', size:3.4, lh:.95, shadow:NOSH, anim:'pop', y:.1, behind:true}]},
+  {n:'Máquina de escrever', layers:[{text:'eu testei isso por 30 dias', font:'Courier Prime', size:.85, bg:{on:true, color:'#000000', op:.85, r:.15}, shadow:NOSH, anim:'typewriter', sound:true, y:.15}]},
+  {n:'Neon', layers:[{text:'POV: você finalmente\nentendeu o algoritmo', font:'Pacifico', size:.95, shadow:SH('#ff2d95',2,0), anim:'fade', y:.14}]},
+  {n:'Etiqueta + manchete', layers:[{text:'ATENÇÃO', font:'Inter', size:.45, bg:{on:true, color:'#d23a2c', op:1, r:.5}, shadow:NOSH, anim:'pop', y:.1}, {text:'isso mudou o meu perfil', font:'Montserrat', size:1.05, shadow:SH(), anim:'pop', y:.15}]},
+  {n:'Pergunta sublinhada', layers:[{text:'você comete esse *erro*?', font:'Poppins', size:1.0, acc:{mode:'underline', color:'#ffffff', bg:'#ff3b30'}, shadow:SH(), anim:'slide', y:.14}]},
+  {n:'Notas do iPhone', layers:[{text:'📝 coisas que eu queria\nsaber antes de começar', font:'Inter', size:.72, color:'#1c1c1e', align:'left', bg:{on:true, color:'#fffbe6', op:1, r:.35}, shadow:NOSH, anim:'pop', y:.13}]},
+  {n:'Caixa alta condensada', layers:[{text:'PARE DE *FAZER ISSO*', font:'Bebas Neue', size:1.9, lh:.95, acc:{color:'#ff3b30'}, shadow:SH('#000000',.4,.2), anim:'pop', y:.12}]},
+];
+function hookFromTpl(layer){ const h = newHook('hook'); Object.assign(h, clone(layer)); h.id = nid('h'); h.start = 0; if (!layer.anim || layer.anim!=='typewriter') h.sound = !!layer.sound; return h; }
+UI.tplThumbs = null;
+function hookTplThumbs(){
+  if (UI.tplThumbs) return UI.tplThumbs;
+  UI.tplThumbs = HOOK_TPLS.map(t=>{ const c = document.createElement('canvas'); c.width = 180; c.height = 320; const x = c.getContext('2d');
+    if (hasVideo) drawVideoFrame(x, 180, 320); else drawPlaceholder(x, 180, 320, srcT);
+    x.fillStyle = 'rgba(0,0,0,.12)'; x.fillRect(0,0,180,320);
+    t.layers.forEach(l=>{ const h = hookFromTpl(l); h.anim = 'none'; drawHook(x, 180, 320, h, 1); });
+    return c.toDataURL('image/jpeg', .8); });
+  return UI.tplThumbs;
+}
+// thumbnails are redrawn once the template fonts have arrived
+Promise.all(HOOK_TPLS.flatMap(t=>t.layers.flatMap(l=>[l.font, l.acc && l.acc.font].filter(Boolean))).map(f=>{ const i = fontInfo(f); return document.fonts.load(`${i.it?'italic ':''}${i.w} 40px "${i.id}"`).catch(()=>{}); }))
+  .then(()=>{ UI.tplThumbs = null; if (S.tab==='hook') render(); });
 function renderHook(){
   const hs = S.hooks||[]; const sel = hookSel();
   const cards = hs.map(h=>`<div class="hkc ${sel===h?'on':''}" data-act="hksel" data-h="${h.id}"><div style="min-width:0"><div class="t" style="font-family:'${esc(h.font)}'">${esc(h.text.split('\n')[0]||'(vazio)')}</div><small>${(+h.start).toFixed(1)}s → ${(+h.start + +h.dur).toFixed(1)}s${h.anim!=='none'? '<span class="bd">'+HOOK_ANIMS[h.anim]+'</span>':''}${h.behind? '<span class="bd">atrás de você</span>':''}</small></div>
@@ -1989,6 +2115,8 @@ function renderHook(){
   $('#main').innerHTML = `<div class="inner"><div class="hdr"><div><h1>Hook e textos</h1>
     <p class="lede">Escreva o seu hook e quantos textos quiser. Escolha a fonte, a cor, a animação (até máquina de escrever, com som), quanto tempo fica na tela, e se fica na frente ou atrás de você. Arraste o texto no preview para mudar de lugar.</p>
     <div class="meta"><span>${hs.length} texto${hs.length===1?'':'s'}</span><span>${fmt(editDur)} de vídeo</span></div></div>${headerLinks()}</div>
+    <div class="sect" style="margin-top:4px">Modelos de hook <span style="text-transform:none;letter-spacing:0;font-family:Inter;font-weight:400">— toque para usar; depois edite tudo</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin-bottom:12px">${hookTplThumbs().map((u,i)=>`<div class="lb" data-act="hktpl" data-i="${i}"><div class="th" style="padding:0;background:#222 url(${u}) center/cover"></div><b style="font-size:11px">${HOOK_TPLS[i].n}</b></div>`).join('')}</div>
     <div class="chips"><button class="chip" data-act="hkadd" data-k="hook">${ICO.plus} Novo hook (máquina de escrever)</button><button class="chip" data-act="hkadd" data-k="text">${ICO.plus} Novo texto aqui (${fmt(src2edit(srcT))})</button></div>
     ${hs.length? `<div class="hklist">${cards}</div>` : '<div class="card panel"><b>Nenhum texto ainda.</b><div class="sub">Toque em “Novo hook” para começar.</div></div>'}
     ${sel? hookFormHTML(sel) : ''}</div>`;
@@ -2005,6 +2133,11 @@ function hookFormHTML(h){
       <label>Alinhar <select data-hk="align"><option value="left" ${h.align==='left'?'selected':''}>esquerda</option><option value="center" ${h.align==='center'?'selected':''}>centro</option><option value="right" ${h.align==='right'?'selected':''}>direita</option></select></label>
       <label><input type="checkbox" data-hk="upper" ${on(h.upper)}> MAIÚSCULAS</label></div>
       <div class="frow"><label class="fsub">Espaço entre letras <input type="range" min="-0.05" max="0.4" step="0.01" data-hk="ls" value="${h.ls||0}"></label><label class="fsub">Entre linhas <input type="range" min="0.8" max="2" step="0.05" data-hk="lh" value="${h.lh||1.15}"></label><label class="fsub">Largura <input type="range" min="0.3" max="0.98" step="0.01" data-hk="maxW" value="${h.maxW||.86}"></label></div></div>
+    <div class="fgroup"><b>Palavras destacadas</b><div class="fsub">Coloque as palavras entre *asteriscos* no texto, ex.: o *segredo* do reel.</div>
+      <div class="frow"><label>Estilo <select data-hk="acc.mode"><option value="" ${!(h.acc&&h.acc.mode)?'selected':''}>só a cor</option><option value="marker" ${h.acc&&h.acc.mode==='marker'?'selected':''}>marca-texto</option><option value="underline" ${h.acc&&h.acc.mode==='underline'?'selected':''}>sublinhado</option></select></label>
+        <label>Cor <input type="color" data-hk="acc.color" value="${(h.acc&&h.acc.color)||'#f7e36b'}"></label><label>Fundo / linha <input type="color" data-hk="acc.bg" value="${(h.acc&&h.acc.bg)||'#f7e36b'}"></label>
+        <label>Fonte <select data-hk="acc.font"><option value="">a mesma</option>${allFonts().map(f=>`<option value="${esc(f.id)}" ${h.acc&&h.acc.font===f.id?'selected':''}>${esc(f.n)}</option>`).join('')}</select></label>
+        <label class="fsub">tamanho <input type="range" min="0.6" max="2" step="0.05" data-hk="acc.scale" value="${(h.acc&&h.acc.scale)||1}"></label></div></div>
     <div class="fgroup"><b>Contorno, sombra e borda</b>
       <div class="frow"><label><input type="checkbox" data-hk="outline.on" ${on(h.outline.on)}> Contorno nas letras</label><input type="color" data-hk="outline.color" value="${h.outline.color}"><label class="fsub">espessura <input type="range" min="0.03" max="0.4" step="0.01" data-hk="outline.w" value="${h.outline.w}"></label></div>
       <div class="frow"><label><input type="checkbox" data-hk="shadow.on" ${on(h.shadow.on)}> Sombra</label><input type="color" data-hk="shadow.color" value="${h.shadow.color}"><label class="fsub">desfoque <input type="range" min="0" max="2" step="0.05" data-hk="shadow.blur" value="${h.shadow.blur}"></label><label class="fsub">distância <input type="range" min="0" max="1.5" step="0.05" data-hk="shadow.dist" value="${h.shadow.dist}"></label></div>
@@ -2023,7 +2156,7 @@ function hookFormHTML(h){
   </div>`;
 }
 function hkSet(o, path, v){ const p = path.split('.'); while (p.length>1) o = o[p.shift()]; o[p[0]] = v; }
-const hkVal = f => f.type==='checkbox' ? f.checked : (f.type==='range' || f.type==='number') ? +f.value : f.value;
+const hkVal = f => f.type==='checkbox' ? f.checked : (f.type==='range' || f.type==='number' || f.dataset.num) ? +f.value : f.value;
 // Typing in the form updates the preview live; one undo step per field you touch.
 document.addEventListener('input', e=>{
   const tf = e.target.closest('[data-tx],[data-md]'); if (tf){ const k = S.looks.find(x=>x.id===(tf.dataset.tx!=null? UI.txLook : UI.mdLook)); if (k){ hkSet(tf.dataset.tx!=null? k.data : k, tf.dataset.tx!=null? tf.dataset.tx : tf.dataset.md, hkVal(tf)); persist(); } return; }
@@ -2041,6 +2174,7 @@ document.addEventListener('change', e=>{
   UI.formSnap = null;
   if (f.dataset.hk==='start' || f.dataset.hk==='dur'){ renderTimeline(); const c = document.querySelector('.hkc.on small'); if (c) { const h = hookSel(); c.firstChild.textContent = `${(+h.start).toFixed(1)}s → ${(+h.start + +h.dur).toFixed(1)}s`; } }
 });
+A.hktpl = el=>{ const t = HOOK_TPLS[+el.dataset.i]; const hs = t.layers.map(hookFromTpl); commit(()=>{ S.hooks = S.hooks||[]; S.hooks.push(...hs); }); UI.hookSel = hs[hs.length-1].id; render(); seekEdit(0.05); preloadSfx(); if (hs.some(h=>h.behind)) getSegmenter(); toast('Modelo “'+t.n+'” adicionado — edite o texto abaixo'); };
 A.hkadd = el=>{ const h = newHook(el.dataset.k); commit(()=>{ S.hooks = S.hooks||[]; S.hooks.push(h); }); UI.hookSel = h.id; render(); seekEdit(h.start+0.05); preloadSfx(); };
 A.hksel = (el, e)=>{ if (e.target.closest('[data-act="hkdup"],[data-act="hkdel"]')) return; UI.hookSel = el.dataset.h; render(); const h = hookSel(); if (h) seekEdit(h.start + Math.min(h.dur*0.9, 1.5)); };
 A.hkdup = el=>{ const src = S.hooks.find(x=>x.id===el.dataset.h); const h = {...clone(src), id:nid('h'), y:Math.min(.9, src.y+.08)}; commit(()=>S.hooks.push(h)); UI.hookSel = h.id; render(); };
@@ -2118,6 +2252,7 @@ function openTextEditor(id){
   $('#txDel').onclick = ()=>{ S.looks = S.looks.filter(x=>x!==k); UI.txLook = null; undoStack.push(before); redoStack.length=0; closeModal(); afterChange(); };
 }
 const mdLook = ()=> S.looks.find(x=>x.id===UI.mdLook);
+A.mdplay = ()=>{ const k = mdLook(); const m = k && mediaTime(k); if (!m) return; ensureAudio(); seekEdit(Math.max(0, m.e0-0.4)); if (!playing) play(); };
 A.mdpos = el=>{ const k = mdLook(); if (!k) return; const [x,y] = el.dataset.p.split(',').map(Number); k.pos = {x,y}; persist(); };
 A.mdanim = el=>{ const k = mdLook(); if (!k) return; k.anim = el.dataset.v; persist(); document.querySelectorAll('[data-act="mdanim"]').forEach(b=>b.classList.toggle('on', b===el)); const L = lineById(k.line); const kr = keptRange(L); if (kr){ seekSrc(kr[0]); play(); } };
 A.mdwin = el=>{ const k = mdLook(); if (!k) return; k.win = el.dataset.v==='1'; persist(); document.querySelectorAll('[data-act="mdwin"]').forEach(b=>b.classList.toggle('on', b===el)); const o = $('#mdWinOpts'); if (o){ o.style.opacity = k.win? '' : .4; o.style.pointerEvents = k.win? '' : 'none'; } };
@@ -2127,10 +2262,12 @@ function openCountEditor(k){
   openModal(`<div class="mhead"><div class="kick"><i></i> Contador</div><h2 class="mt">Edite o cartão</h2></div>
     <div class="mbody"><div style="display:grid;grid-template-columns:80px 1fr 80px;gap:8px"><label class="field">Antes<input class="in" id="cuPre" value="${esc(d.prefix||'')}"></label><label class="field">Número<input class="in" id="cuN" type="number" value="${d.target||0}"></label><label class="field">Depois<input class="in" id="cuSuf" value="${esc(d.suffix||'')}"></label></div>
       <label class="field">Legenda<input class="in" id="cuL" value="${esc(d.label||'')}"></label>
-      <div class="seg">${[1,2,3].map(s=>`<button data-st="${s}" class="${(d.style||1)===s?'on':''}">${['Cartão branco','Cartão escuro','Cartão vermelho'][s-1]}</button>`).join('')}</div></div>
+      <div class="seg">${[4,5,1,2,3].map(s=>`<button data-st="${s}" class="${(d.style||1)===s?'on':''}">${['Cartão branco','Cartão escuro','Cartão vermelho','Letreiro de placas','Letreiro LED'][s-1]}</button>`).join('')}</div>
+      <div class="frow"><label>Cor dos números <input type="color" id="cuC" value="${d.color||'#f5f1e6'}"></label><label>Altura <input type="range" id="cuY" min="0.1" max="0.85" step="0.01" value="${d.y ?? .6}"></label></div></div>
     <div class="mfoot"><span></span><button class="btn" id="cuOk">${ICO.check} Pronto</button></div>`);
-  const live = ()=>{ d.prefix=$('#cuPre').value; d.target=+$('#cuN').value||0; d.suffix=$('#cuSuf').value; d.label=$('#cuL').value; persist(); };
-  ['cuPre','cuN','cuSuf','cuL'].forEach(i=>$('#'+i).addEventListener('input', live));
+  const live = ()=>{ d.prefix=$('#cuPre').value; d.target=+$('#cuN').value||0; d.suffix=$('#cuSuf').value; d.label=$('#cuL').value; d.color=$('#cuC').value; d.y=+$('#cuY').value; persist(); };
+  ['cuPre','cuN','cuSuf','cuL','cuC','cuY'].forEach(i=>$('#'+i).addEventListener('input', live));
+  const L0 = lineById(k.line); const kr0 = L0 && keptRange(L0); if (kr0){ pause(); seekSrc(kr0[0]+0.05); play(); } $('#modal').classList.add('left');
   document.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{ d.style=+b.dataset.st; document.querySelectorAll('[data-st]').forEach(x=>x.classList.toggle('on',x===b)); persist(); });
   $('#cuOk').onclick = ()=>{ live(); if (snapshot()!==before){ undoStack.push(before); redoStack.length=0; } closeModal(); afterChange(); };
 }
@@ -2138,12 +2275,15 @@ const EDITABLE = ['hook','eyebrow','headline','text','countup','vfx','media','br
 
 /* ---------- Media ---------- */
 function openMedia(lineId, replaceId){
-  UI.mediaModal = {line:lineId, replace:replaceId, tab:UI.mediaModal?.tab||'fav', filt:UI.mediaModal?.filt||'all', sel:UI.mediaModal?.sel||null};
+  const prev = UI.mediaModal; const L0 = lineById(lineId);
+  let word = prev && prev.line===lineId && prev.word!=null ? prev.word : UI.addWord;
+  if (word==null || !L0.words[word] || L0.words[word].cut) word = lineAt(srcT)===L0 && wordAt(L0, srcT)>=0 ? wordAt(L0, srcT) : L0.words.findIndex(x=>!x.cut);
+  UI.mediaModal = {line:lineId, replace:replaceId, tab:prev?.tab||'fav', filt:prev?.filt||'all', sel:prev?.sel||null, word};
   const mm = UI.mediaModal; const L = lineById(lineId);
   const list = UI.media.filter(m=> mm.tab==='inbox'? !!m.url : true).filter(m=> mm.filt==='all' || (mm.filt==='gif'&&m.kind==='gif') || (mm.filt==='graphic'&&m.kind==='graphic') || (mm.filt==='photo'&&(m.kind==='photo')) || (mm.filt==='video'&&m.kind==='video'));
   const cnt = k => UI.media.filter(m=>k==='all'||m.kind===k).length;
   const items = list.map(m=>`<div class="med ${mm.sel===m.id?'on':''}" data-act="medsel" data-m="${m.id}"><div class="th" style="${m.url&&m.kind!=='video'?`background-image:url(${m.url})`:''}">${m.kind==='video'? `<video src="${m.url}" muted playsinline></video>`: m.url?'':m.emoji}<span class="badge">${m.kind.toUpperCase()}</span></div><b>${esc(m.name)}</b></div>`).join('');
-  openModal(`<div class="mhead"><div class="kick"><i></i> Seus favoritos</div><h2 class="mt">Adicionar imagem, GIF ou b-roll</h2><p class="msub">“${esc(keptText(L))}” · ${fmt(src2edit((keptRange(L)||[lineStart(L)])[0]))}</p>
+  openModal(`<div class="mhead"><div class="kick"><i></i> Seus favoritos</div><h2 class="mt">Adicionar imagem, GIF ou b-roll</h2><p class="msub">Aparece na palavra <b>“${esc((L.words[mm.word]||{w:''}).w.replace(/[,.?!]$/,''))}”</b> · ${fmt(src2edit((L.words[mm.word]||{s:0}).s))} — dá para mudar a palavra e a duração depois</p>
     <div class="utabs"><button class="${mm.tab==='fav'?'on':''}" data-act="medtab" data-t="fav">Favoritos</button><button class="${mm.tab==='inbox'?'on':''}" data-act="medtab" data-t="inbox">Seus arquivos</button></div>
     <p class="mtxt">Uma imagem ou GIF fica por cima do seu vídeo nesta linha. Um b-roll pode ocupar a tela toda ou ficar numa janela enquanto a sua voz continua. Depois de adicionar, você ajusta o tamanho e a posição.</p>
     <div class="seg">${[['all','Todos'],['gif','GIFs'],['graphic','Gráficos'],['photo','Fotos'],['video','Vídeos']].map(([k,v])=>`<button class="${mm.filt===k?'on':''}" data-act="medfilt" data-f="${k}">${v} ${cnt(k)}</button>`).join('')}</div></div>
@@ -2160,11 +2300,11 @@ A.medadd = ()=>{
   const mm = UI.mediaModal; const m = mediaById(mm.sel); const note = $('#medNote').value.trim().toLowerCase();
   let anim = 'pop'; if (/slide|desliz/.test(note)) anim='slide'; else if (/spin|across|gir/.test(note)) anim='spin'; else if (/float|bob|flutu/.test(note)) anim='float';
   const isB = m.kind==='video';
-  const look = {type: isB?'broll':'media', media:m.id, anim, note: $('#medNote').value.trim(), from: 0};
+  const look = {type: isB?'broll':'media', media:m.id, anim, note: $('#medNote').value.trim(), from: 0, w: mm.word, dur: isB? 2.5 : 2};
   if (isB && m.el){ const d = m.el.duration||6; look.from = Math.max(0, Math.min(d-3, d*0.3)); }
   const newId = mm.replace || nid('k');
-  commit(()=>{ if (mm.replace){ const k=S.looks.find(x=>x.id===mm.replace); Object.assign(k, look); } else S.looks.push({...look, id:newId, line:mm.line}); });
-  closeModal(); openMediaEditor(newId); toast(isB? 'B-roll adicionado · começa em '+fmt(look.from) : '“'+m.name+'” adicionado'+(anim!=='pop'?' · '+anim:''));
+  commit(()=>{ if (mm.replace){ const k=S.looks.find(x=>x.id===mm.replace); Object.assign(k, look, {w:k.w ?? look.w, dur:k.dur ?? look.dur}); } else S.looks.push({...look, id:newId, line:mm.line}); });
+  UI.mediaModal = null; UI.addWord = null; closeModal(); openMediaEditor(newId); toast(isB? 'B-roll adicionado · começa em '+fmt(look.from) : '“'+m.name+'” adicionado'+(anim!=='pop'?' · '+anim:''));
 };
 
 /* ---------- Cover a face ---------- */
@@ -2214,7 +2354,7 @@ function openSandbox(step, lineId){
   UI.sb = UI.sb && UI.sb.line===L.id ? UI.sb : {line:L.id, prompt:'', sketches:null, pick:null, ver:0};
   const sb = UI.sb; const steps = n=>`<div class="steps">${[1,2,3,4].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>`;
   if (step===1){
-    openModal(`<div class="mhead">${steps(1)}<div class="kick"><i></i> Sandbox · passo 1 de 4</div><h2 class="mt">O que você está imaginando?</h2><p class="msub">Conte com as suas palavras: as linhas ou o momento, o texto na tela, como se mexe. O Claude propõe três rascunhos rápidos.</p></div>
+    openModal(`<div class="mhead">${steps(1)}<div class="kick"><i></i> Fale pra o Claude · passo 1 de 4</div><h2 class="mt">O que você está imaginando?</h2><p class="msub">Conte com as suas palavras: as linhas ou o momento, o texto na tela, como se mexe. O Claude propõe três rascunhos rápidos.</p></div>
       <div class="mbody"><textarea class="in" id="sbIn" rows="5">${esc(sb.prompt || `Para a linha “${keptText(L)}” em ${fmt(src2edit((keptRange(L)||[lineStart(L)])[0]))}: `)}</textarea>
       <div class="hint">${ICO.mic.replace('<svg','<svg width=14 height=14')} <span>Prefere falar? Toque no microfone e fale — suas palavras aparecem aqui. No Mac você também pode usar a tecla de microfone.</span></div>
       <button class="btn ghost sm" id="micBtn" style="margin-top:8px">${ICO.mic} Falar com o Claude</button></div>
@@ -2223,11 +2363,11 @@ function openSandbox(step, lineId){
     $('#micBtn').onclick = ()=>dictate(ta, $('#micBtn'));
     $('#sbSend').onclick = ()=>{ sb.prompt = ta.value.trim(); sb.sketches=null; openSandbox(2); };
   } else if (step===2){
-    openModal(`<div class="mhead">${steps(2)}<div class="kick"><i></i> Sandbox · passo 2 de 4</div><h2 class="mt">O Claude está rascunhando…</h2><p class="msub">“${esc(sb.prompt.slice(0,120))}”</p></div>
+    openModal(`<div class="mhead">${steps(2)}<div class="kick"><i></i> Fale pra o Claude · passo 2 de 4</div><h2 class="mt">O Claude está rascunhando…</h2><p class="msub">“${esc(sb.prompt.slice(0,120))}”</p></div>
       <div class="mbody"><div class="prog"><i id="sbBar"></i></div><p class="mtxt" id="sbTxt">Lendo a sua linha e o seu lookbook…</p><p class="mtxt">Pode fechar — o Chef Claude avisa quando os três rascunhos ficarem prontos.</p></div>
       <div class="mfoot"><button class="btn ghost" data-act="close">Continuar editando</button><span></span></div>`);
     let p=0, done=false; const msgs=['Lendo a sua linha e o seu lookbook…','Pensando em três ideias…','Sincronizando com as suas palavras…','Finalizando…'];
-    const finish = sk=>{ done=true; sb.sketches=sk; if (!$('#modal').classList.contains('hidden') && $('#sbBar')) openSandbox(3); else { UI.chef={msg:'Seus 3 rascunhos estão no Sandbox. Toque num para testar no seu vídeo.',btn:'Abrir o Sandbox',open:()=>openSandbox(3)}; renderChef(); toast('Chef Claude: seus rascunhos estão prontos'); } };
+    const finish = sk=>{ done=true; sb.sketches=sk; if (!$('#modal').classList.contains('hidden') && $('#sbBar')) openSandbox(3); else { UI.chef={msg:'Seus 3 rascunhos estão prontos em “Fale pra o Claude”. Toque num para testar no seu vídeo.',btn:'Ver os rascunhos',open:()=>openSandbox(3)}; renderChef(); toast('Chef Claude: seus rascunhos estão prontos'); } };
     const tick=()=>{ if(done) return; p += p<85? 3+Math.random()*5 : 0.25; const b=$('#sbBar'); if(b) b.style.width=Math.min(97,p)+'%'; const t=$('#sbTxt'); if(t) t.textContent=msgs[Math.min(3,Math.floor(p/26))]; setTimeout(tick,160); };
     tick();
     const req = UI.sbReq = (UI.sbReq||0)+1;
@@ -2236,7 +2376,7 @@ function openSandbox(step, lineId){
       .catch(err=>{ if (req!==UI.sbReq) return; toast(claudeError(err)+' — mostrando rascunhos offline'); finish(makeSketches(sb)); });
   } else if (step===3){
     const sk = sb.sketches || (sb.sketches = makeSketches(sb));
-    openModal(`<div class="mhead">${steps(3)}<div class="kick"><i></i> Sandbox · passo 3 de 4</div><h2 class="mt">Escolha um rascunho</h2><p class="msub">Três ideias rápidas para “${esc(sb.prompt.slice(0,110))}${sb.prompt.length>110?'…':''}”</p><p class="mtxt">${fmt(src2edit((keptRange(L)||[lineStart(L)])[0]))} · Passe o mouse para ver. Toque para escolher.</p></div>
+    openModal(`<div class="mhead">${steps(3)}<div class="kick"><i></i> Fale pra o Claude · passo 3 de 4</div><h2 class="mt">Escolha um rascunho</h2><p class="msub">Três ideias rápidas para “${esc(sb.prompt.slice(0,110))}${sb.prompt.length>110?'…':''}”</p><p class="mtxt">${fmt(src2edit((keptRange(L)||[lineStart(L)])[0]))} · Passe o mouse para ver. Toque para escolher.</p></div>
       <div class="mbody"><div class="grid3">${sk.map((s,i)=>`<div class="sk ${sb.pick===i?'on':''}" data-act="sbpick" data-i="${i}"><div class="scr" style="background-image:url(${grabFrameURL()})">${sketchMock(s)}</div><b>Rascunho ${i+1}</b><small>${esc(s.desc)}</small></div>`).join('')}</div></div>
       <div class="mfoot"><div style="display:flex;gap:6px"><button class="btn ghost sm" id="sbBack">‹ Voltar</button><button class="btn ghost sm" data-act="sbcancel">Cancelar esta ideia</button></div><div style="display:flex;gap:6px"><button class="btn ghost sm" id="sbRemix">↻ Outras ideias</button><button class="btn sm" id="sbLock" ${sb.pick==null?'disabled':''}>${ICO.check} Usar este</button></div></div>`, true);
     document.querySelectorAll('.sk').forEach(el=>{ el.onmouseenter=()=>animateMock(el); });
@@ -2244,7 +2384,7 @@ function openSandbox(step, lineId){
     $('#sbLock').onclick=()=>{ const s=sk[sb.pick]; commit(()=>S.looks.push({id:nid('k'),line:sb.line,type:s.type,data:s.data,custom:s.name,note:sb.prompt})); openSandbox(4); };
   } else if (step===4){
     const s = sb.sketches[sb.pick];
-    openModal(`<div class="mhead">${steps(4)}<div class="kick"><i></i> Sandbox · passo 4 de 4</div><h2 class="mt">Pronto ✓</h2><p class="msub">“${esc(s.name)}” está na linha ${lineNum(L)}.</p></div>
+    openModal(`<div class="mhead">${steps(4)}<div class="kick"><i></i> Fale pra o Claude · passo 4 de 4</div><h2 class="mt">Pronto ✓</h2><p class="msub">“${esc(s.name)}” está na linha ${lineNum(L)}.</p></div>
       <div class="mbody"><p class="mtxt">Quer usar de novo? Salve no seu lookbook e ele aparece em todos os reels.</p></div>
       <div class="mfoot"><button class="btn ghost" id="sbSave">${ICO.star} Salvar no meu lookbook</button><button class="btn" id="sbPlay">${ICO.play} Assistir</button></div>`);
     $('#sbSave').onclick=()=>{ UI.saved=UI.saved||[]; UI.saved.push({type:s.type,data:s.data,custom:s.name}); toast('Salvo no seu lookbook'); closeModal(); UI.sb=null; };
@@ -2555,7 +2695,7 @@ async function askClaude({system, prompt, schema, effort='medium', images=[]}){
   } finally { claudeBusy--; setDot(); }
 }
 A.claudesettings = ()=>{
-  openModal(`<div class="mhead"><div class="kick"><i></i> Claude</div><h2 class="mt">Conectar o Claude</h2><p class="mtxt">O Claude edita com você: corta repetições e vícios de fala, escolhe destaques, looks e sons, segue as suas notas e propõe rascunhos no Sandbox. Cole uma chave de API de <b>console.anthropic.com</b>. Ela vai só para api.anthropic.com, direto deste navegador.</p></div>
+  openModal(`<div class="mhead"><div class="kick"><i></i> Claude</div><h2 class="mt">Conectar o Claude</h2><p class="mtxt">O Claude edita com você: corta repetições e vícios de fala, escolhe destaques, looks e sons, segue as suas notas e propõe rascunhos no “Fale pra o Claude”. Cole uma chave de API de <b>console.anthropic.com</b>. Ela vai só para api.anthropic.com, direto deste navegador.</p></div>
     <div class="mbody"><label class="field">Chave de API<input class="in" type="password" id="ckey" autocomplete="off" placeholder="sk-ant-..." value="${esc(CFG.key)}"></label>
     <label class="field">Modelo<select id="cmodel">${Object.entries(MODELS).map(([k,v])=>`<option value="${k}" ${CFG.model===k?'selected':''}>${v}</option>`).join('')}</select></label>
     <label style="display:flex;gap:6px;align-items:center;font-size:12px"><input type="checkbox" id="cremember" ${CFG.remember?'checked':''}> Lembrar a chave neste computador</label>
