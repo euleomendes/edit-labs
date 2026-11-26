@@ -7,24 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- Fontes do texto (hook e legendas), no estilo das fontes do Edits -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Anton&family=Bebas+Neue&family=Oswald:wght@700&family=Poppins:wght@700&family=Fredoka:wght@600&family=Playfair+Display:ital,wght@1,700&family=DM+Serif+Display&family=Special+Elite&family=Courier+Prime:wght@700&family=Pacifico&family=Caveat:wght@700&family=Permanent+Marker&family=Bangers&family=Archivo+Black&family=Space+Grotesk:wght@700&family=Lobster&family=Righteous&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,800;1,800&family=Anton&family=Bebas+Neue&family=Oswald:wght@700&family=Poppins:wght@700;800&family=Fredoka:wght@600&family=Playfair+Display:ital,wght@0,800;1,400;1,700&family=DM+Serif+Display&family=Special+Elite&family=Courier+Prime:wght@700&family=Pacifico&family=Caveat:wght@700&family=Permanent+Marker&family=Bangers&family=Archivo+Black&family=Space+Grotesk:wght@700&family=Lobster&family=Righteous&family=Sacramento&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f8f4ed;--panel:#fffdf9;--panel2:#fbf8f2;--line:#ece5d9;--line2:#e2d9ca;--ink:#1f1b17;--ink2:#4a443d;--muted:#958c80;
-  --red:#d23a2c;--red2:#b82d21;--redsoft:#fbe7e3;--active:#fbf5d8;--mark:#f4e98f;--markInk:#5a4a08;--cutbg:#f3efe7;
-  --shadow:0 1px 2px rgba(40,30,20,.06),0 8px 24px rgba(40,30,20,.08);--dock:#fffdf9;--chip:#fff;
+  --bg:#f5f5f7;--panel:#ffffff;--panel2:#f5f5f7;--line:#ececf0;--line2:#d9d9de;--ink:#1d1d1f;--ink2:#424245;--muted:#86868b;
+  --red:#0071e3;--red2:#0062c4;--redsoft:#e8f1fd;--active:#eef5ff;--mark:#fff1a8;--markInk:#5a4a00;--cutbg:#f5f5f7;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.06);--dock:#ffffff;--chip:#ffffff;--glass:rgba(255,255,255,.78);
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Inter,system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--serif:"Instrument Serif",Georgia,serif;
 }
 :root[data-theme="dark"]{
-  --bg:#171513;--panel:#1f1c19;--panel2:#24211d;--line:#302b26;--line2:#3a342d;--ink:#f3eee6;--ink2:#d0c8bc;--muted:#8e857a;
-  --redsoft:#3a201c;--active:#2c2818;--mark:#5d5419;--markInk:#f6ea9b;--cutbg:#24211d;--dock:#1c1916;--chip:#25221e;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  --bg:#000000;--panel:#1c1c1e;--panel2:#2c2c2e;--line:#2c2c2e;--line2:#3a3a3c;--ink:#f5f5f7;--ink2:#d1d1d6;--muted:#8e8e93;
+    --red:#0a84ff;--red2:#409cff;--redsoft:#0a2a4a;--active:#0d2238;--mark:#5c4b00;--markInk:#ffe680;--cutbg:#1c1c1e;--dock:#1c1c1e;--chip:#2c2c2e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45);--glass:rgba(28,28,30,.72);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#171513;--panel:#1f1c19;--panel2:#24211d;--line:#302b26;--line2:#3a342d;--ink:#f3eee6;--ink2:#d0c8bc;--muted:#8e857a;
-    --redsoft:#3a201c;--active:#2c2818;--mark:#5d5419;--markInk:#f6ea9b;--cutbg:#24211d;--dock:#1c1916;--chip:#25221e;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+    --bg:#000000;--panel:#1c1c1e;--panel2:#2c2c2e;--line:#2c2c2e;--line2:#3a3a3c;--ink:#f5f5f7;--ink2:#d1d1d6;--muted:#8e8e93;
+    --red:#0a84ff;--red2:#409cff;--redsoft:#0a2a4a;--active:#0d2238;--mark:#5c4b00;--markInk:#ffe680;--cutbg:#1c1c1e;--dock:#1c1c1e;--chip:#2c2c2e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45);--glass:rgba(28,28,30,.72);
   }
 }
 :root{color-scheme:light}
@@ -56,10 +57,10 @@ input,textarea,select{font:inherit;color:inherit}
 .ib:disabled{opacity:.35;cursor:default}
 .ib svg{width:16px;height:16px}
 /* layout */
-.app{position:absolute;top:54px;left:0;right:0;bottom:var(--dockh,178px);display:grid;grid-template-columns:1fr 330px}
-.main{overflow:auto;padding:22px 24px 60px 56px}
+.app{position:absolute;top:54px;left:0;right:0;bottom:var(--dockh,178px);display:grid;grid-template-columns:360px 1fr}
+.main{overflow:auto;padding:22px 24px 60px 40px}
 .inner{max-width:760px}
-.side{border-left:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:16px 18px;gap:10px;overflow:auto;position:relative}
+.side{order:-1;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:16px 18px;gap:10px;overflow:auto;position:relative}
 h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px;font-weight:800}
 .hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 .hlinks{display:flex;gap:6px;flex-shrink:0;margin-top:6px}
@@ -88,7 +89,7 @@ h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px;font-weight:800}
 .w.cur{box-shadow:inset 0 -2px 0 var(--red)}
 .w.x{text-decoration:line-through;color:var(--muted);text-decoration-color:var(--red)}
 .w.hl{font-family:var(--serif);font-style:italic;font-size:17px;background:var(--mark);color:var(--markInk);padding:0 2px}
-.w.sel{background:rgba(210,58,44,.2)}
+.w.sel{background:var(--redsoft);box-shadow:0 0 0 1.5px var(--red);border-radius:4px}
 .tag{font:500 9px var(--mono);color:var(--muted);border:1px solid var(--line2);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px;white-space:nowrap}
 .note{display:inline-flex;gap:5px;align-items:center;font-size:11px;color:var(--ink2);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 7px;margin-top:6px}
 .cutrow{background:var(--cutbg)}
@@ -117,11 +118,18 @@ h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px;font-weight:800}
 .wtb button:hover{background:rgba(255,255,255,.12)}
 .wtb svg{width:12px;height:12px}
 /* side preview */
-.phone{position:relative;width:230px;aspect-ratio:9/16;border-radius:22px;background:#111;border:5px solid #161412;box-shadow:0 10px 30px rgba(0,0,0,.25);overflow:hidden;flex-shrink:0}
+.iphone{position:relative;flex-shrink:0;padding:0;margin-top:6px}
+.iphone .hw{position:absolute;width:4px;border-radius:2px;background:linear-gradient(90deg,#4a4a4f,#8d8d93 50%,#4a4a4f)}
+.iphone .hw.act{left:-3px;top:96px;height:26px}
+.iphone .hw.vu{left:-3px;top:140px;height:46px}.iphone .hw.vd{left:-3px;top:196px;height:46px}
+.iphone .hw.pw{right:-3px;top:150px;height:72px}
+.phone{position:relative;width:250px;aspect-ratio:9/16;border-radius:44px;background:#000;border:11px solid #0c0c0d;
+  box-shadow:0 0 0 2px #6e6e73,0 0 0 3px #2a2a2c,0 22px 50px rgba(0,0,0,.35);overflow:hidden;flex-shrink:0}
+.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:31%;height:23px;border-radius:14px;background:#000;z-index:4;pointer-events:none}
 .phone canvas{width:100%;height:100%;display:block}
-.pbadge{position:absolute;top:8px;right:8px;font-size:9.5px;color:#fff;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:2px 7px;display:flex;gap:4px;align-items:center;backdrop-filter:blur(4px)}
+.pbadge{position:absolute;top:40px;right:10px;font-size:9.5px;color:#fff;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:2px 7px;display:flex;gap:4px;align-items:center;backdrop-filter:blur(4px)}
 .plook{position:absolute;left:50%;transform:translateX(-50%);bottom:34px;font-size:9.5px;color:#fff;background:rgba(0,0,0,.5);border-radius:10px;padding:2px 8px;white-space:nowrap}
-.pbar{position:absolute;left:6px;right:6px;bottom:6px;display:flex;justify-content:space-around;background:rgba(0,0,0,.45);border-radius:8px;padding:4px;backdrop-filter:blur(4px)}
+.pbar{position:absolute;left:14px;right:14px;bottom:14px;display:flex;justify-content:space-around;background:rgba(0,0,0,.45);border-radius:8px;padding:4px;backdrop-filter:blur(4px)}
 .pbar button{color:#fff;width:22px;height:20px;display:grid;place-items:center;border-radius:5px}
 .pbar button:hover{background:rgba(255,255,255,.15)}
 .pbar svg{width:12px;height:12px}
@@ -180,8 +188,10 @@ h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px;font-weight:800}
 .mbox{background:var(--panel);border-radius:16px;width:min(560px,100%);max-height:calc(100vh - 40px);overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;display:flex;flex-direction:column}
 .mbox.wide{width:min(760px,100%)}
 /* editing windows sit to the left so the preview on the right stays visible */
-.modal.left{place-items:center start;padding-left:max(16px,calc((100vw - 330px - 760px)/2));background:rgba(30,25,20,.12);backdrop-filter:none}
-@media (max-width:1150px){ .modal.left{place-items:center;padding-left:16px} }
+/* editing windows open to the right of the iPhone, so the preview stays visible while you adjust */
+.modal.left{place-items:center;padding-left:376px;background:rgba(30,25,20,.08);backdrop-filter:none;-webkit-backdrop-filter:none}
+@media (max-width:980px){ .modal.left{padding-left:286px} }
+@media (max-width:700px){ .modal.left{padding-left:16px;place-items:end center} }
 .mhead{padding:20px 22px 6px}
 .mbody{padding:6px 22px 16px;flex:1}
 .mfoot{padding:12px 22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;bottom:0;background:var(--panel)}
@@ -317,8 +327,8 @@ textarea.in:focus,input.in:focus{border-color:var(--red)}
 .fgroup{border-top:1px solid var(--line);padding-top:8px;margin-top:10px}
 .fgroup>b{display:block;font-size:12px;margin-bottom:2px}
 @media (max-width:980px){
-  .app{grid-template-columns:1fr 250px}
-  .phone{width:190px}
+  .app{grid-template-columns:270px 1fr}
+  .phone{width:200px}
   .main{padding:18px 16px 50px}
   .zoomer{display:none}
   .tool .lbl{display:none}
@@ -331,7 +341,7 @@ textarea.in:focus,input.in:focus{border-color:var(--red)}
   .brand>div:last-child{display:none}
   .tab{padding:5px 7px}.tab span{display:none}
   .app{position:static;display:flex;flex-direction:column-reverse;padding-bottom:var(--dockh,178px)}
-  .side{border-left:0;border-bottom:1px solid var(--line)}
+  .side{order:0;border-right:0;border-bottom:1px solid var(--line)}
   .main{overflow:visible;padding:16px}
   .row{grid-template-columns:36px 1fr;padding:12px}
   .lookcol{grid-column:1/-1;min-width:0}
@@ -344,6 +354,110 @@ textarea.in:focus,input.in:focus{border-color:var(--red)}
   .snd{grid-template-columns:34px 1fr auto auto;}
   .snd .hm{display:none}
 }
+
+/* ================= Edit Labs · light & minimal (Apple-style) ================= */
+body{font-family:var(--sans);font-size:14px;letter-spacing:-.005em}
+button,input,textarea,select{font-family:var(--sans)}
+.top{height:60px;background:var(--glass);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line);padding:0 22px}
+.app{top:60px}
+.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(180deg,#2b8cff,#0060d6)}
+.bname{font-size:15px;font-weight:650;letter-spacing:-.01em}
+.bsub{font-size:11px}
+.tabs{background:rgba(118,118,128,.12);border:0;border-radius:11px;padding:3px;gap:0}
+.tab{padding:6px 16px;border-radius:8px;font-size:13px;font-weight:550;color:var(--ink2)}
+.tab.on{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04)}
+.tab.on svg{color:var(--red)}
+.ib{border-radius:50%}
+.hlink{border-radius:999px;border-color:var(--line2);background:var(--panel);padding:4px 11px;font-size:11.5px}
+.btn{border-radius:999px;padding:8px 16px;font-weight:600;font-size:12.5px;background:var(--red)}
+.btn.sm{padding:5px 12px;font-size:11.5px}
+.btn.ghost{background:var(--panel);border:1px solid var(--line2)}
+.btn.ghost:hover{border-color:var(--muted);background:var(--panel2)}
+/* left column: the iPhone on a calm gray */
+.side{background:var(--panel2);border-right:1px solid var(--line);padding:22px 18px;gap:14px;justify-content:flex-start}
+.pctl{background:var(--panel);border-radius:999px;padding:5px 8px 5px 14px;box-shadow:var(--shadow);font-size:11.5px}
+.pplay{width:32px;height:32px}
+.chef{border-radius:16px;border-color:transparent;box-shadow:var(--shadow)}
+/* right column */
+.main{padding:30px 40px 70px 40px;background:var(--bg)}
+.inner{max-width:820px}
+h1{font-size:30px;font-weight:700;letter-spacing:-.03em;margin-bottom:8px}
+.lede{font-size:13.5px;color:var(--ink2);max-width:560px}
+.meta{color:var(--muted)}
+.chips{gap:8px;margin:8px 0 18px}
+.chip{border:0;border-radius:999px;padding:7px 14px;background:var(--chip);box-shadow:var(--shadow);font-weight:550}
+.chip:hover{box-shadow:0 0 0 1.5px var(--red),var(--shadow)}
+.chip.on{background:var(--redsoft);box-shadow:0 0 0 1.5px var(--red)}
+.chip svg{color:var(--red)}
+.card{border:0;border-radius:18px;box-shadow:var(--shadow)}
+/* each line of the script is its own rounded card */
+.card.rows{background:transparent;box-shadow:none;border-radius:0;display:flex;flex-direction:column;gap:10px}
+.row{background:var(--panel);border:0;border-radius:16px;box-shadow:var(--shadow);padding:16px 20px;transition:box-shadow .15s}
+.row:last-child{border-bottom:0}
+.row:hover{box-shadow:0 0 0 1px var(--line2),var(--shadow)}
+.row.active{background:var(--panel);box-shadow:0 0 0 2px var(--red),var(--shadow)}
+.row.active .num b{color:var(--red)}
+.cutrow{background:var(--panel2);box-shadow:none}
+.egroup{border:0;border-radius:14px;overflow:hidden;background:var(--panel);box-shadow:var(--shadow)}
+.etoggle{background:transparent;font-family:var(--sans);font-size:12px;font-weight:550;padding:11px}
+.num{font-family:var(--sans);font-weight:600}
+.num small{font-family:var(--sans)}
+.txt{font-size:15px;line-height:1.75}
+.w.hl{border-radius:5px}
+.tag{font-family:var(--sans);border-radius:999px;padding:1px 7px}
+.note{border-radius:999px;border:0;background:var(--panel2)}
+.panel{padding:18px 22px}
+.panel h3{font-size:15px}
+.sect{font-family:var(--sans);font-size:11px;letter-spacing:.02em;text-transform:none;font-weight:650;color:var(--muted)}
+.seg button{border-radius:999px;border-color:var(--line2);padding:5px 12px;background:var(--panel)}
+.seg button.on{background:var(--ink);color:var(--panel)}
+.fbtn{border-radius:12px;border-color:var(--line)}
+.lb .th{border-radius:14px}
+.hkc{border-radius:14px;border-color:transparent;box-shadow:var(--shadow)}
+.hkc.on{box-shadow:0 0 0 2px var(--red),var(--shadow)}
+textarea.in,input.in,.field select{border-radius:12px;border-color:var(--line2);background:var(--panel)}
+textarea.in:focus,input.in:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--redsoft)}
+.frow input[type=number],.frow select{border-radius:8px}
+/* windows */
+.modal{background:rgba(0,0,0,.25);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.mbox{border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.mfoot{border-top-color:var(--line)}
+.kick{font-family:var(--sans);letter-spacing:.04em;font-size:10.5px;font-weight:650}
+.kick i{width:8px;height:8px}
+.mt{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.msub{font-family:var(--sans);font-style:normal;font-size:13.5px;color:var(--ink2)}
+.utabs button.on{border-color:var(--red);color:var(--ink)}
+.pop{border-radius:14px;border:0;box-shadow:0 10px 40px rgba(0,0,0,.18)}
+.wtb{border-radius:12px;background:rgba(29,29,31,.92);backdrop-filter:blur(12px)}
+.toast{border-radius:999px;background:rgba(29,29,31,.92);backdrop-filter:blur(12px)}
+.tgl.on{background:#34c759}
+/* bottom: player + timeline */
+.dock{background:var(--dock);border-top:1px solid var(--line)}
+.dtools{border-bottom:1px solid var(--line)}
+.tool{border-radius:999px;font-weight:550}
+.kbd{font-family:var(--sans);border-radius:5px}
+.bigplay{width:42px;height:42px;box-shadow:0 4px 14px rgba(0,113,227,.35)}
+.bigtime b{font-weight:650}
+.clip{border-radius:8px}
+.pill{background:var(--red);opacity:.55}
+.dot{background:#ff9f0a}
+.ph{background:var(--red)}
+.ph span{border-radius:999px;font-family:var(--sans)}
+.next{border-radius:999px;padding:11px 18px}
+.cdot.on{background:#34c759}
+/* welcome screen */
+#welcome{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:radial-gradient(1200px 600px at 50% 0%,var(--redsoft),transparent 70%),var(--bg);transition:opacity .25s}
+#welcome.out{opacity:0;pointer-events:none}
+.wcard{width:min(460px,100%);text-align:center}
+.wlogo{width:64px;height:64px;border-radius:18px;margin:0 auto 18px;box-shadow:0 10px 30px rgba(0,113,227,.3)}
+#welcome h1{font-size:30px;letter-spacing:-.03em;margin:0}
+.wsub{color:var(--muted);font-size:15px;margin:6px 0 28px}
+.wopts{display:flex;flex-direction:column;gap:10px}
+.wopt{display:block;text-align:left;width:100%;background:var(--panel);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s}
+.wopt:hover{box-shadow:0 0 0 2px var(--red),var(--shadow);transform:translateY(-1px)}
+.wopt b{display:block;font-size:15px;font-weight:650}
+.wopt small{display:block;color:var(--muted);font-size:12.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wopt:first-child b{color:var(--red)}
 </style>
 </head>
 <body>
@@ -373,6 +487,7 @@ textarea.in:focus,input.in:focus{border-color:var(--red)}
   <main class="main" id="main"></main>
   <aside class="side" id="side">
     <div id="chef" class="chef hidden"></div>
+    <div class="iphone"><span class="hw act"></span><span class="hw vu"></span><span class="hw vd"></span><span class="hw pw"></span>
     <div class="phone" id="phone">
       <canvas id="cv" width="720" height="1280"></canvas>
       <span class="pbadge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Prévia</span>
@@ -380,12 +495,12 @@ textarea.in:focus,input.in:focus{border-color:var(--red)}
       <div class="pbar">
         <button data-act="pbar-captions" title="Legendas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M10 6v13M14 6v13"/></svg></button>
         <button data-act="pbar-media" title="Adicionar mídia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 8"/></svg></button>
-        <button data-act="pbar-lookbook" title="Lookbook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v16H4zM13 4h7v7h-7zM13 13h7v7h-7z"/></svg></button>
+        <button data-act="pbar-lookbook" title="Looks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v16H4zM13 4h7v7h-7zM13 13h7v7h-7z"/></svg></button>
         <button data-act="snap" title="Salvar este quadro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
         <button data-act="pbar-face" title="Cobrir um rosto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9.5h.01M15 9.5h.01"/></svg></button>
       </div>
       <div class="drop empty" id="drop">Solte o seu vídeo aqui</div>
-    </div>
+    </div></div>
     <div class="pctl">
       <span id="ptime">0:00 / 0:00</span>
       <button class="ib" data-act="back5" title="Voltar 5s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg></button>
@@ -512,6 +627,9 @@ const FONTS = [
   {id:'Special Elite', n:'Máquina', w:400}, {id:'Courier Prime', n:'Typewriter', w:700}, {id:'Pacifico', n:'Neon', w:400},
   {id:'Lobster', n:'Retrô', w:400}, {id:'Righteous', n:'Diretora', w:400}, {id:'Caveat', n:'Manuscrita', w:700},
   {id:'Permanent Marker', n:'Marcador', w:400}, {id:'Bangers', n:'Quadrinhos', w:400},
+  {id:'Montserrat Light', fam:'Montserrat', n:'Fina', w:300}, {id:'Montserrat Italic', fam:'Montserrat', n:'Itálica forte', w:800, it:true},
+  {id:'Poppins Black', fam:'Poppins', n:'Ultra forte', w:800}, {id:'Playfair Italic', fam:'Playfair Display', n:'Serifa itálica', w:400, it:true},
+  {id:'Playfair Bold', fam:'Playfair Display', n:'Serifa forte', w:800}, {id:'Sacramento', n:'Cursiva fina', w:400}, {id:'Dancing Script', n:'Cursiva', w:600},
 ];
 const CAP_BASE = {font:'Inter', color:'#ffffff', active:'none', activeColor:'#f7e36b', dim:false, upper:false, serifHl:false, scale:.85, layout:'2',
   outline:{on:false, color:'#000000', w:.14}, shadow:{on:true, color:'#000000'}, bg:{on:false, color:'#000000', op:.55}};
@@ -875,9 +993,11 @@ function renderFrame(ctx, W, H, t, opts={}){
   // text behind the person: draw it on the footage, then put the cut-out person back on top
   const et = src2edit(t); const hooksDrawn = new Set();
   const behind = (S.hooks||[]).filter(h=>h.behind && hookOn(h, et));
-  if (behind.length && !brm && !fxClip){
+  const mediaBehind = timed.filter(x=>x.k.behind && !(x.k.type==='broll' && !x.k.win)); const mediaDrawn = new Set();
+  if ((behind.length || mediaBehind.length) && !brm && !fxClip){
     const cut = personCutout(t);
     ctx.save(); ctx.setTransform(1,0,0,1,0,0);
+    for (const x of mediaBehind){ const b = drawMediaLook(ctx,W,H,x.k,x.lt,x.ld); mediaDrawn.add(x.k.id); if (b && opts.hits) opts.hits.push({kind:'media', id:x.k.id, box:b}); }
     for (const h of behind){ const b = drawHook(ctx,W,H,h,et); hooksDrawn.add(h.id); if (b && opts.hits) opts.hits.push({kind:'hook', id:h.id, box:b}); }
     ctx.restore();
     if (cut){ ctx.filter = FILTER_CSS[S.filter]||'none'; ctx.drawImage(cut, 0, 0, W, H); ctx.filter='none'; }
@@ -909,7 +1029,7 @@ function renderFrame(ctx, W, H, t, opts={}){
     if (!capsOff && !opts.noCaps){ const b = drawCaptions(ctx,W,H,L,t); if (b && opts.hits) opts.hits.push({kind:'cap', box:b}); }
   }
   // GIFs, images and windowed b-roll, each on its own word for its own time
-  for (const x of timed){ if (x.k.type==='broll' && !x.k.win) continue; const b = drawMediaLook(ctx,W,H,x.k,x.lt,x.ld); if (b && opts.hits) opts.hits.push({kind:'media', id:x.k.id, box:b}); }
+  for (const x of timed){ if ((x.k.type==='broll' && !x.k.win) || mediaDrawn.has(x.k.id)) continue; const b = drawMediaLook(ctx,W,H,x.k,x.lt,x.ld); if (b && opts.hits) opts.hits.push({kind:'media', id:x.k.id, box:b}); }
   // hooks and texts from the Hook tab, on top of everything
   for (const h of S.hooks||[]){ if (hooksDrawn.has(h.id) || !hookOn(h, et)) continue; const b = drawHook(ctx,W,H,h,et); if (b && opts.hits) opts.hits.push({kind:'hook', id:h.id, box:b}); }
   ctx.restore();
@@ -990,12 +1110,13 @@ function fontInfo(id){ return allFonts().find(f=>f.id===id) || {id:id||'Inter', 
 // Canvas font string; asks the browser to fetch the font the first time it's used (the preview redraws every frame).
 function fontStr(id, px){
   const f = fontInfo(id);
-  if (!fontLoaded.has(f.id)){ fontLoaded.add(f.id); document.fonts.load(`${f.it?'italic ':''}${f.w} 40px "${f.id}"`).catch(()=>{}); }
-  return `${f.it?'italic ':''}${f.w} ${px}px "${f.id}", Inter, sans-serif`;
+  const fam = f.fam || f.id;
+  if (!fontLoaded.has(f.id)){ fontLoaded.add(f.id); document.fonts.load(`${f.it?'italic ':''}${f.w} 40px "${fam}"`).catch(()=>{}); }
+  return `${f.it?'italic ':''}${f.w} ${px}px "${fam}", Inter, sans-serif`;
 }
 function hexA(hex, a){ const m = /^#?([0-9a-f]{6})$/i.exec(hex||''); if (!m) return hex||'#000'; const n = parseInt(m[1],16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; }
 function fontPicker(cur, act){
-  return `<div class="fgrid">${allFonts().map(f=>`<button class="fbtn ${cur===f.id?'on':''}" data-act="${act}" data-f="${esc(f.id)}" title="${esc(f.id)}"><span style="font-family:'${esc(f.id)}';font-weight:${f.w};${f.it?'font-style:italic':''}">Aa</span><small>${esc(f.n)}</small></button>`).join('')}<button class="fbtn" data-act="fontupload" data-for="${act}" title="Instale uma fonte .ttf, .otf ou .woff"><span>＋</span><small>Instalar fonte</small></button></div>`;
+  return `<div class="fgrid">${allFonts().map(f=>`<button class="fbtn ${cur===f.id?'on':''}" data-act="${act}" data-f="${esc(f.id)}" title="${esc(f.id)}"><span style="font-family:'${esc(f.fam||f.id)}';font-weight:${f.w};${f.it?'font-style:italic':''}">Aa</span><small>${esc(f.n)}</small></button>`).join('')}<button class="fbtn" data-act="fontupload" data-for="${act}" title="Instale uma fonte .ttf, .otf ou .woff"><span>＋</span><small>Instalar fonte</small></button></div>`;
 }
 async function installFont(file){
   const name = (file.name.replace(/\.[^.]+$/,'').replace(/[^\p{L}\p{N}\s_-]/gu,'').trim().slice(0,40)) || 'Minha fonte';
@@ -1107,7 +1228,10 @@ function drawHook(ctx, W, H, h, et){
     lines.push(line);
   }
   lines.forEach(l=>{ l.w = l.reduce((a,w)=>a+w.gap+w.ww, 0); });
-  const bw = Math.max(1, ...lines.map(l=>l.w)); const lh = fs*(h.lh||1.15), totalH = lines.length*lh;
+  const bw = Math.max(1, ...lines.map(l=>l.w)); const lh = fs*(h.lh||1.15);
+  const LH = h.lh||1.15; const lsc = lines.map(l=>l.length ? Math.max(...l.map(w=>w.hl ? (A_.scale||1) : 1)) : 1);
+  const ybs = []; let yy = 0; lines.forEach((l,i)=>{ yy += (i ? fs*(LH-0.92)*lsc[i-1] : 0) + fs*0.92*lsc[i]; ybs.push(yy); });
+  const totalH = yy + fs*(LH-0.92)*lsc[lsc.length-1];
   // animation in, and a short fade out at the end
   const pin = ease(lt/0.3); let alpha = 1, dy = 0, sc = 1;
   if (h.anim==='fade') alpha = pin;
@@ -1126,14 +1250,14 @@ function drawHook(ctx, W, H, h, et){
   const widthOf = sw => sw.reduce((a,w)=>{ ctx.font = w.hl ? fA : fN; return a + w.gap + ctx.measureText(w.t).width; }, 0);
   // box behind each line (like the Instagram text background), and/or a border around it
   if ((h.bg && h.bg.on) || (h.border && h.border.on)){
-    shown.forEach((sw,i)=>{ if (!sw.length) return; const w = widthOf(sw), x = xOf(lines[i].w), yb = top + i*lh + fs*0.92;
+    shown.forEach((sw,i)=>{ if (!sw.length) return; const w = widthOf(sw), x = xOf(lines[i].w), yb = top + ybs[i];
       rr(ctx, x - pad, yb - fs*0.86 - pad*0.25, w + pad*2, fs*1.12 + pad*0.5, fs*(h.bg.r ?? .3));
       if (h.bg.on){ ctx.fillStyle = hexA(h.bg.color, h.bg.op ?? .75); ctx.fill(); }
       if (h.border && h.border.on){ ctx.lineWidth = fs*(h.border.w||.05); ctx.strokeStyle = h.border.color; ctx.stroke(); } });
   }
   let lastX = 0, lastLine = 0;
   shown.forEach((sw,i)=>{ if (!sw.length) return;
-    let x = xOf(lines[i].w); const yb = top + i*lh + fs*0.92;
+    let x = xOf(lines[i].w); const yb = top + ybs[i];
     for (const w of sw){
       x += w.gap; ctx.font = w.hl ? fA : fN; const ww = ctx.measureText(w.t).width;
       if (w.hl && A_.mode==='marker'){ ctx.save(); ctx.globalAlpha = alpha*0.95; ctx.fillStyle = A_.bg || '#f7e36b'; rr(ctx, x - fs*0.08, yb - fs*0.78, ww + fs*0.16, fs*0.98, fs*0.12); ctx.fill(); ctx.restore(); }
@@ -1149,7 +1273,7 @@ function drawHook(ctx, W, H, h, et){
   // blinking cursor while it types (and a moment after)
   const typed = h.anim==='typewriter' ? Math.floor(lt*(h.speed||16)) : Infinity;
   if (h.anim==='typewriter' && h.cursor && (typed < total || Math.floor(lt*2.4)%2===0)){
-    const yb = top + lastLine*lh + fs*0.92; ctx.fillStyle = h.color; ctx.fillRect((lastX || xOf(0)) + fs*0.04, yb - fs*0.78, Math.max(2, fs*0.07), fs*0.92);
+    const yb = top + ybs[lastLine]; ctx.fillStyle = h.color; ctx.fillRect((lastX || xOf(0)) + fs*0.04, yb - fs*0.78, Math.max(2, fs*0.07), fs*0.92);
   }
   ctx.restore();
   return {x: cx - bw/2 - pad, y: top - pad*0.4, w: bw + pad*2, h: totalH + pad*0.4};
@@ -1315,6 +1439,7 @@ function drawMediaLook(ctx,W,H,k,lt,ld){
   ctx.save(); ctx.globalAlpha=a; ctx.translate(x,y); ctx.rotate(rot); ctx.scale(s,s);
   if (vw){
     if (m.kind==='video'){ const want = (k.from||0) + lt; if (Math.abs(el.currentTime-want) > 0.35) el.currentTime = want; if (playing && el.paused) el.play().catch(()=>{}); }
+    else if (el.tagName==='VIDEO' && el.paused) el.play().catch(()=>{});
     const r = W*0.02*(k.round ?? 1); const fr = k.frame===false ? 0 : W*0.012;
     if (k.frame!==false){ ctx.shadowColor='rgba(0,0,0,.35)'; ctx.shadowBlur=18; ctx.fillStyle='#fff'; rr(ctx,-w/2-fr,-h/2-fr,w+fr*2,h+fr*2,r+fr); ctx.fill(); ctx.shadowBlur=0; }
     ctx.save(); rr(ctx,-w/2,-h/2,w,h,r); ctx.clip(); drawCover(ctx,el,-w/2,-h/2,w,h); ctx.restore();
@@ -1335,6 +1460,7 @@ function openMediaEditor(id){
       <div id="mdWinOpts" style="${win?'':'opacity:.4;pointer-events:none'}">
       <div class="fgroup"><b>Tamanho e posição</b><div class="frow"><label>Tamanho <input type="range" min="0.12" max="1" step="0.01" data-md="size" value="${k.size || (isB? .6 : .42)}"></label><label>Girar <input type="range" min="-45" max="45" step="1" data-md="rot" value="${k.rot||0}"></label></div>
         <div class="seg">${P.map(([n,v])=>`<button data-act="mdpos" data-p="${v}">${n}</button>`).join('')}</div></div>
+      <div class="fgroup"><b>Camada</b><div class="seg"><button data-act="mdbehind" data-v="0" class="${!k.behind?'on':''}">Na frente de você</button><button data-act="mdbehind" data-v="1" class="${k.behind?'on':''}">Atrás de você (recorte)</button></div></div>
       <div class="fgroup"><b>Visual</b><div class="frow"><label><input type="checkbox" data-md="frame" ${k.frame===false?'':'checked'}> Moldura branca</label><label class="fsub">cantos <input type="range" min="0" max="4" step="0.1" data-md="round" value="${k.round ?? 1}"></label></div></div>
       <div class="fgroup"><b>Animação</b><div class="seg">${Object.entries(MEDIA_ANIMS).map(([a,n])=>`<button data-act="mdanim" data-v="${a}" class="${(k.anim||'pop')===a?'on':''}">${n}</button>`).join('')}</div></div>
       </div>
@@ -1493,7 +1619,7 @@ const ICO = {
 function render(){
   document.querySelectorAll('.tab').forEach(b=>{ b.classList.toggle('on', b.dataset.tab===S.tab); b.classList.toggle('done', !!S.done[b.dataset.tab]); });
   document.getElementById('undo').disabled = !undoStack.length; document.getElementById('redo').disabled = !redoStack.length;
-  ({cut:renderCut, hook:renderHook, visuals:renderVisuals, sound:renderSound, finish:renderFinish})[S.tab]();
+  ({cut:renderCut, hook:renderHook, visuals:renderVisuals, sound:renderSound, finish:renderFinish})[S.tab](); paintWsel();
   renderDock(); renderTimeline(); renderChef(); activeId = null; UI.curKey=null; updateLive(); updatePlayIcons();
   document.getElementById('spd').textContent = S.speed+'x';
 }
@@ -1558,7 +1684,7 @@ function renderVisuals(){
     <div class="meta"><span>${nLooks} looks</span><span>${fmt(editDur)} de duração</span></div></div>${headerLinks()}</div>
     <div class="chips">
       <button class="chip ${UI.capPanel?'on':''}" data-act="capmenu">${ICO.cap} Legendas: ${CAP_STYLES[S.capStyle]} · ${CAP_LAYOUTS[capOptFor(S.capStyle).layout]||''} <span style="opacity:.6">▾</span></button>
-      <button class="chip" data-act="lookbook">${ICO.book} Lookbook</button>
+      <button class="chip" data-act="media">${ICO.img} IMG, GIF e B-roll</button>
       <button class="chip ${S.filter!=='none'?'on':''}" data-act="filtermenu">${ICO.filter} Filtro${S.filter!=='none'?': '+FILTERS[S.filter]:''}</button>
       <button class="chip ${S.face.on?'on':''}" data-act="coverface">${ICO.face} Cobrir um rosto</button>
       <button class="chip" data-act="sandbox">${ICO.sand} Fale pra o Claude</button>
@@ -1697,18 +1823,33 @@ $('#main').addEventListener('mouseover', e=>{
   if (S.tab==='cut'){
     if (sel && sel.L===L && sel.idx.length>1 && sel.idx.includes(i)){ showWtb(w, `<button data-act="cutsel">${ICO.cut} Cortar ${sel.idx.length} palavras</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`); return; }
     showWtb(w, word.cut? `<button data-act="restoreword" data-l="${L.id}" data-i="${i}">${ICO.back} Trazer de volta “${esc(word.w)}”</button>` :
-      `<button data-act="splitline" data-l="${L.id}" data-i="${i}">${ICO.split} Dividir a linha aqui</button><button data-act="cutword" data-l="${L.id}" data-i="${i}">${ICO.cut} Cortar “${esc(word.w.replace(/[,.?!]$/,''))}”</button><button data-act="cutline" data-l="${L.id}">${ICO.trash} Cortar a linha</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`);
+      `<button data-act="splitline" data-l="${L.id}" data-i="${i}">${ICO.split} Dividir a linha aqui</button><button data-act="cutword" data-l="${L.id}" data-i="${i}">${ICO.cut} Cortar “${esc(word.w.replace(/[,.?!]$/,''))}”</button><button data-act="cutline" data-l="${L.id}">${ICO.trash} Cortar a linha</button><button data-act="edittext" data-l="${L.id}">✎ Editar texto</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`);
   } else if (S.tab==='visuals'){
     const on = L.hl.includes(i);
     const label = sel && sel.L===L && sel.idx.length>1 && sel.idx.includes(i) ? `Destacar ${sel.idx.length} palavras` : (on? 'Tirar destaque':'Destacar');
-    showWtb(w, `<button data-act="highlight" data-l="${L.id}" data-i="${i}">${ICO.hl} ${label}</button><button data-act="capshere" data-l="${L.id}">${ICO.cap} Legendas daqui</button><button data-act="addlook" data-l="${L.id}" data-i="${i}">${ICO.plus} Adicionar look / GIF aqui</button><button data-act="sfxhere" data-l="${L.id}" data-i="${i}">♪ Som aqui</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`);
+    showWtb(w, `<button data-act="highlight" data-l="${L.id}" data-i="${i}">${ICO.hl} ${label}</button><button data-act="capshere" data-l="${L.id}">${ICO.cap} Legendas daqui</button><button data-act="medhere" data-l="${L.id}" data-i="${i}">${ICO.img} IMG, GIF ou B-roll aqui</button><button data-act="addlook" data-l="${L.id}" data-i="${i}">${ICO.plus} Adicionar look</button><button data-act="sfxhere" data-l="${L.id}" data-i="${i}">♪ Som aqui</button><button data-act="note" data-l="${L.id}">${ICO.note} Adicionar nota</button>`);
   } else if (S.tab==='sound' && !word.cut){
     const ss = S.sfx.filter(s=>s.line===L.id); const w0 = esc(word.w.replace(/[,.?!]$/,''));
     showWtb(w, `<button data-act="sfxhere" data-l="${L.id}" data-i="${i}">♪ Adicionar som em “${w0}”</button>` + ss.map(s=>{ const p=sfxWord(s); return p && p.i===i ? '' : `<button data-act="sfxmove" data-s="${s.id}" data-i="${i}">↦ Mover “${esc((s.name||(SFX_LIB.find(x=>x.id===s.snd)||{}).n||'som').slice(0,22))}” para cá</button>`; }).join(''));
   }
 });
 $('#main').addEventListener('mouseout', e=>{ if (e.target.closest('.w') || e.target.closest('.cutrow')) hideWtb(); });
+// Several words of one line: drag across them with the mouse, or click one and Shift+click another.
+UI.wsel = null;
+function wselIdx(){ const ws = UI.wsel; if (!ws) return null; const L = lineById(ws.line); if (!L) return null; const a = Math.min(ws.a, ws.b), b = Math.max(ws.a, ws.b); const idx = []; for (let i=a;i<=b;i++) if (L.words[i] && !L.words[i].cut) idx.push(i); return idx.length ? {L, idx} : null; }
+function paintWsel(){ document.querySelectorAll('#main .w.sel').forEach(e=>e.classList.remove('sel')); const s = wselIdx(); if (!s || s.idx.length<2) return; s.idx.forEach(i=>{ const el = document.querySelector(`#main .row[data-line="${s.L.id}"] .w[data-i="${i}"]`); if (el) el.classList.add('sel'); }); }
+function clearWsel(){ UI.wsel = null; paintWsel(); }
+$('#main').addEventListener('mousedown', e=>{
+  const w = e.target.closest('.w'); if (!w || e.button!==0 || S.tab==='hook' || S.tab==='finish') return;
+  const row = w.closest('.row'); const L = row && lineById(row.dataset.line); if (!L || L.cut) return; const i = +w.dataset.i;
+  if (e.shiftKey && UI.wsel && UI.wsel.line===L.id){ e.preventDefault(); UI.wsel.b = i; paintWsel(); UI.wselShift = true; return; }
+  e.preventDefault(); getSelection().removeAllRanges(); UI.wsel = {line:L.id, a:i, b:i}; UI.wselDrag = true; paintWsel();
+});
+$('#main').addEventListener('mouseover', e=>{ if (!UI.wselDrag) return; const w = e.target.closest('.w'); const row = w && w.closest('.row'); if (!row || row.dataset.line!==UI.wsel.line) return; UI.wsel.b = +w.dataset.i; paintWsel(); });
+document.addEventListener('mouseup', ()=>{ UI.wselDrag = false; });
+document.addEventListener('mousedown', e=>{ if (UI.wsel && !e.target.closest('#main .w') && !e.target.closest('#wtb') && !e.target.closest('#modal') && !e.target.closest('#pop')) clearWsel(); });
 function selectedWords(){
+  const picked = wselIdx(); if (picked && picked.idx.length>1) return picked;
   const s = getSelection(); if (!s || s.isCollapsed) return null;
   const ws = [...document.querySelectorAll('#main .w')].filter(w=>s.containsNode(w,true)); if (ws.length<2) return null;
   const row = ws[0].closest('.row'); if (ws.some(w=>w.closest('.row')!==row)) return null;
@@ -1717,6 +1858,8 @@ function selectedWords(){
 $('#main').addEventListener('click', e=>{
   const w = e.target.closest('.w'); if (!w || e.target.closest('[data-act]')) return;
   if (!getSelection().isCollapsed) return;
+  if (UI.wselShift){ UI.wselShift = false; return; }
+  const sw = wselIdx(); if (sw && sw.idx.length>1) return;
   const row = w.closest('.row'); const L = lineById(row.dataset.line); const i = +w.dataset.i; const word = L.words[i];
   if (S.tab==='cut' && word.cut && !L.cut){ commit(()=>{ word.cut=false; word.by=null; }); toast('“'+word.w+'” voltou'); return; }
   if (S.tab==='visuals' && !L.cut && !word.cut && e.detail===2) return;
@@ -1744,11 +1887,11 @@ const A = {
   bringback: el=>{ const L=lineById(el.dataset.l); commit(()=>{ L.cut=false; L.by=null; }); wtb.classList.add('hidden'); toast('Linha '+lineNum(L)+' voltou'); },
   restoreword: el=>{ const L=lineById(el.dataset.l); const w=L.words[+el.dataset.i]; commit(()=>{ w.cut=false; w.by=null; }); wtb.classList.add('hidden'); },
   cutword: el=>{ const L=lineById(el.dataset.l); const w=L.words[+el.dataset.i]; commit(()=>{ w.cut=true; w.by='you'; if(L.words.every(x=>x.cut)){ L.cut=true; L.by='you'; } }); wtb.classList.add('hidden'); toast('“'+w.w+'” cortada'); },
-  cutsel: ()=>{ const s=selectedWords(); if(!s) return; commit(()=>{ s.idx.forEach(i=>{ s.L.words[i].cut=true; s.L.words[i].by='you'; }); if(s.L.words.every(x=>x.cut)){ s.L.cut=true; s.L.by='you'; } }); getSelection().removeAllRanges(); wtb.classList.add('hidden'); },
+  cutsel: ()=>{ const s=selectedWords(); if(!s) return; commit(()=>{ s.idx.forEach(i=>{ s.L.words[i].cut=true; s.L.words[i].by='you'; }); if(s.L.words.every(x=>x.cut)){ s.L.cut=true; s.L.by='you'; } }); getSelection().removeAllRanges(); clearWsel(); wtb.classList.add('hidden'); },
   cutline: el=>{ const L=lineById(el.dataset.l); commit(()=>{ L.cut=true; L.by='you'; }); wtb.classList.add('hidden'); toast('Linha '+lineNum(L)+' cortada · toque no grupo para trazer de volta'); },
   splitline: el=>{ const L=lineById(el.dataset.l); splitAt(L, +el.dataset.i); wtb.classList.add('hidden'); },
   note: el=>{ const L=lineById(el.dataset.l); wtb.classList.add('hidden'); noteModal(L); },
-  highlight: el=>{ const L=lineById(el.dataset.l); const i=+el.dataset.i; const s=selectedWords(); commit(()=>{ const idx = (s && s.L===L && s.idx.length>1)? s.idx : [i]; const turnOn = !L.hl.includes(i); idx.forEach(j=>{ const has=L.hl.includes(j); if(turnOn && !has) L.hl.push(j); if(!turnOn && has) L.hl.splice(L.hl.indexOf(j),1); }); }); getSelection().removeAllRanges(); wtb.classList.add('hidden'); },
+  highlight: el=>{ const L=lineById(el.dataset.l); const i=+el.dataset.i; const s=selectedWords(); commit(()=>{ const idx = (s && s.L===L && s.idx.length>1)? s.idx : [i]; const turnOn = !L.hl.includes(i); idx.forEach(j=>{ const has=L.hl.includes(j); if(turnOn && !has) L.hl.push(j); if(!turnOn && has) L.hl.splice(L.hl.indexOf(j),1); }); }); getSelection().removeAllRanges(); clearWsel(); wtb.classList.add('hidden'); },
   capshere: el=>{ wtb.classList.add('hidden'); const L=lineById(el.dataset.l); showPop(document.querySelector(`.row[data-line="${L.id}"] .txt`), '<div class="sect" style="margin:4px 8px">Legendas a partir da linha '+lineNum(L)+'</div>'+Object.entries(CAP_STYLES).map(([k,v])=>`<button data-act="setcaphere" data-l="${L.id}" data-c="${k}" class="${capStyleFor(L)===k?'on':''}">${v}</button>`).join('')); },
   setcaphere: el=>{ const L=lineById(el.dataset.l); commit(()=>{ L.cap = el.dataset.c; }); hidePop(); toast('Legendas mudam para '+CAP_STYLES[el.dataset.c]+' a partir da linha '+lineNum(L)); },
   capmenu: ()=>{ UI.capPanel = !UI.capPanel; render(); },
@@ -1830,6 +1973,32 @@ function splitAt(L, i){
   commit(()=>{ const idx=S.lines.indexOf(L); const nw = L.words.splice(i); const hl2 = L.hl.filter(h=>h>=i).map(h=>h-i); L.hl = L.hl.filter(h=>h<i); S.lines.splice(idx+1,0,{id:nid('L'),words:nw,cut:false,by:null,hl:hl2,note:'',cap:null}); });
   toast('Linha '+lineNum(L)+' dividida');
 }
+// Fix the words of a line (what the captions show). Same number of words keeps every timing;
+// a different number spreads the new words over the same moment of the video.
+function editLineText(L){
+  const kept = L.words.filter(w=>!w.cut);
+  openModal(`<div class="mhead"><div class="kick"><i></i> Legenda</div><h2 class="mt">Editar o texto da linha ${lineNum(L)}</h2><p class="mtxt">Corrija o que a transcrição errou. É isso que aparece nas legendas.</p></div>
+    <div class="mbody"><textarea class="in" id="ltIn" rows="3">${esc(kept.map(w=>w.w).join(' '))}</textarea></div>
+    <div class="mfoot"><button class="btn ghost" data-act="close">Cancelar</button><button class="btn" id="ltSave">${ICO.check} Salvar</button></div>`);
+  const ta = $('#ltIn'); setTimeout(()=>{ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 30);
+  $('#ltSave').onclick = ()=>{
+    const toks = ta.value.trim().split(/\s+/).filter(Boolean); if (!toks.length){ toast('Escreva pelo menos uma palavra'); return; }
+    commit(()=>{
+      if (toks.length === kept.length){ kept.forEach((w,i)=>{ w.w = toks[i]; }); return; }
+      const i0 = L.words.indexOf(kept[0]), i1 = L.words.indexOf(kept[kept.length-1]);
+      const b0 = kept[0].bs, b1 = kept[kept.length-1].be, span = Math.max(0.1, b1-b0);
+      const weight = toks.map(t=>0.6 + t.length); const tot = weight.reduce((a,x)=>a+x,0); let t = b0;
+      const nw = toks.map((w,i)=>{ const d = span*weight[i]/tot; const o = {w, bs:t, be:t+d*0.92, cut:false, by:null}; t += d; return o; });
+      L.words.splice(i0, i1-i0+1, ...nw); L.hl = [];
+      S.sfx.forEach(x=>{ if (x.line===L.id && x.w!=null && !L.words[x.w]) x.w = 0; });
+      S.looks.forEach(k=>{ if (k.line===L.id && k.w!=null && !L.words[k.w]) delete k.w; });
+      applyScale();
+    });
+    closeModal(); toast('Texto da linha '+lineNum(L)+' atualizado');
+  };
+}
+A.edittext = el=>{ wtb.classList.add('hidden'); editLineText(lineById(el.dataset.l)); };
+$('#main').addEventListener('dblclick', e=>{ if (S.tab!=='cut') return; const w = e.target.closest('.w'); const row = w && w.closest('.row'); const L = row && lineById(row.dataset.line); if (L && !L.cut){ getSelection().removeAllRanges(); editLineText(L); } });
 function noteModal(L){
   openModal(`<div class="mhead"><div class="kick"><i></i> Nota para o Claude</div><h2 class="mt">Linha ${lineNum(L)}</h2><p class="msub">“${esc(keptText(L))}”</p></div>
     <div class="mbody"><textarea class="in" id="noteIn" rows="3" placeholder="ex.: segure aqui um pouco mais, ou dê zoom em “lançamento”">${esc(L.note)}</textarea></div>
@@ -1951,8 +2120,7 @@ function openEffects(tab){
       <button class="btn ghost sm" data-act="fxprevvid" ${UI.fxPrev&&UI.fxPrev.running?'disabled':''}>${ICO.cam} Gerar com o meu vídeo</button><button class="btn ghost sm" data-act="fxprevphoto" ${UI.fxPrev&&UI.fxPrev.running?'disabled':''}>${ICO.img} Usar uma foto minha</button></div></div>
     <input class="in" id="fxQ" placeholder="Busque entre os 51 efeitos: zoom, vidro, manchete, checklist…" value="${esc(UI.fxQ||'')}" style="padding:7px 10px;margin-bottom:10px">
     <p class="hint" style="margin:-4px 0 10px">Passe o mouse num cartão para ver o efeito. Escolha um e ele já roda no seu vídeo.</p>
-    <div class="grid4" id="fxGrid"></div>
-    <p class="hint" style="margin-top:10px">51 efeitos de @vibha.in.progress — github.com/Vibha-Ramprakash/claude-video-effects (MIT).</p>`;
+    <div class="grid4" id="fxGrid"></div>`;
   openModal(`<div class="mhead"><div class="kick"><i></i> Biblioteca de efeitos</div><h2 class="mt">Adicionar um efeito</h2><p class="mtxt">Vai na linha ${lineNum(L)}: “${esc(keptText(L))}”. Mova o playhead para escolher outra linha.</p>
     <div class="utabs"><button class="${UI.fxTab==='video'?'on':''}" data-act="fxtab" data-t="video">Efeitos de vídeo · 51</button><button class="${UI.fxTab==='quick'?'on':''}" data-act="fxtab" data-t="quick">Efeitos rápidos</button></div></div>
     <div class="mbody">${UI.fxTab==='quick'? quick : video}</div>`, true);
@@ -2080,6 +2248,26 @@ function hookSel(){ const hs = S.hooks||[]; let h = hs.find(x=>x.id===UI.hookSel
 /* ---------- ready-made hook templates (YAP / talking-head style); every one stays fully editable ---------- */
 const SH = (color='#000000', blur=.6, dist=.3)=>({on:true, color, blur, dist}); const NOSH = {on:false, color:'#000000', blur:.6, dist:.3};
 const HOOK_TPLS = [
+  {n:'eu parei de / editar meus vídeos', layers:[{text:'eu parei de\n*editar meus vídeos*', font:'Dancing Script', color:'#f4dc7a', size:1.1, lh:1.08, acc:{font:'Montserrat', color:'#ffffff', scale:0.87}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'o que ninguém / te contou sobre IA', layers:[{text:'o que ninguém\n*te contou sobre IA*', font:'Montserrat Light', color:'#ffffff', size:0.8, lh:1.08, acc:{font:'Montserrat Italic', color:'#f4dc7a', scale:1.2}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'como criar / CONTEÚDO MELHOR', layers:[{text:'como criar\n*CONTEÚDO MELHOR*', font:'Playfair Italic', color:'#ffffff', size:0.95, lh:1.08, acc:{font:'Bebas Neue', color:'#f4dc7a', scale:1.35}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'uma forma simples / de começar', layers:[{text:'uma forma simples\n*de começar*', font:'Courier Prime', color:'#ffffff', size:0.72, lh:1.08, acc:{font:'Montserrat', color:'#f6b394', scale:1.75}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'você ainda usa / essa ferramenta?', layers:[{text:'você ainda usa\n*essa ferramenta?*', font:'Dancing Script', color:'#f4dc7a', size:1.1, lh:1.08, acc:{font:'Montserrat', color:'#ffffff', scale:0.87}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'o futuro da / criação de conteúdo', layers:[{text:'o futuro da\n*criação de conteúdo*', font:'Playfair Italic', color:'#f4dc7a', size:1.1, lh:1.08, acc:{font:'Montserrat', color:'#ffffff', scale:0.85}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'testei uma IA / e olha o resultado', layers:[{text:'testei uma IA\n*e olha o resultado*', font:'Montserrat Light', color:'#ffffff', size:0.95, lh:1.08, acc:{font:'Montserrat Italic', color:'#f6b394', scale:0.95}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'o problema está / na sua estratégia', layers:[{text:'o problema está\n*na sua estratégia*', font:'Montserrat Light', color:'#ffffff', size:0.78, lh:1.08, acc:{font:'Montserrat', color:'#f4dc7a', scale:1.25}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'criar vídeos / ficou mais fácil', layers:[{text:'criar vídeos\n*ficou mais fácil*', font:'Sacramento', color:'#ffffff', size:1.6, lh:1.08, acc:{font:'Montserrat', color:'#f4dc7a', scale:0.69}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'antes de postar / veja isso', layers:[{text:'antes de postar\n*veja isso*', font:'Playfair Italic', color:'#ffffff', size:0.95, lh:1.08, acc:{font:'Montserrat', color:'#f6b394', scale:1.75}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'eu testei / e funciona', layers:[{text:'eu testei\n*e funciona*', font:'Sacramento', color:'#ffffff', size:1.6, lh:1.08, acc:{font:'Playfair Bold', color:'#f4dc7a', scale:0.94}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'ninguém te conta / essa parte', layers:[{text:'ninguém te conta\n*essa parte*', font:'Montserrat Light', color:'#ffffff', size:0.78, lh:1.08, acc:{font:'Dancing Script', color:'#f4dc7a', scale:1.9}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'o jeito mais simples / de começar', layers:[{text:'o jeito mais simples\n*de começar*', font:'Playfair Italic', color:'#ffffff', size:0.8, lh:1.08, acc:{font:'Playfair Bold', color:'#f4dc7a', scale:1.6}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'isso mudou / meus vídeos', layers:[{text:'isso mudou\n*meus vídeos*', font:'Montserrat Light', color:'#ffffff', size:0.9, lh:1.08, acc:{font:'Dancing Script', color:'#f4dc7a', scale:1.7}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'você ainda / faz assim?', layers:[{text:'você ainda\n*faz assim?*', font:'Montserrat Light', color:'#ffffff', size:0.9, lh:1.08, acc:{font:'Playfair Italic', color:'#f4dc7a', scale:1.75}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'tem um erro / aqui', layers:[{text:'tem um erro\n*aqui*', font:'Playfair Italic', color:'#ffffff', size:0.85, lh:1.08, acc:{font:'Poppins Black', color:'#f4dc7a', scale:2.3}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'parei de editar / do jeito antigo', layers:[{text:'parei de editar\n*do jeito antigo*', font:'Sacramento', color:'#ffffff', size:1.6, lh:1.08, acc:{font:'Montserrat', color:'#f4dc7a', scale:0.66}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'uma forma melhor / de criar', layers:[{text:'uma forma melhor\n*de criar*', font:'Montserrat Light', color:'#ffffff', size:0.8, lh:1.08, acc:{font:'Playfair Italic', color:'#f4dc7a', scale:1.9}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'antes de postar / veja isso', layers:[{text:'antes de postar\n*veja isso*', font:'Montserrat Light', color:'#ffffff', size:0.8, lh:1.08, acc:{font:'Dancing Script', color:'#f4dc7a', scale:1.9}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
+  {n:'foi assim que / eu fiz', layers:[{text:'foi assim que\n*eu fiz*', font:'Sacramento', color:'#ffffff', size:1.5, lh:1.08, acc:{font:'Poppins Black', color:'#f4dc7a', scale:1.33}, shadow:SH('#000000',.9,.12), anim:'fade', y:.12}]},
   {n:'Serifa elegante', layers:[{text:'o Claude edita os meus\nreels enquanto eu durmo 😴', font:'DM Serif Display', size:1.0, lh:1.02, color:'#f7efe0', shadow:SH('#000000',1.2,.15), anim:'fade', y:.13}]},
   {n:'Clássico TikTok', layers:[{text:'3 erros que travam\no seu crescimento', font:'Montserrat', size:.82, color:'#111111', bg:{on:true, color:'#ffffff', op:1, r:.28}, shadow:NOSH, anim:'pop', y:.14}]},
   {n:'Contorno forte', layers:[{text:'ninguém te conta isso', font:'Montserrat', size:1.15, upper:true, outline:{on:true, color:'#000000', w:.17}, shadow:NOSH, anim:'pop', y:.14}]},
@@ -2106,7 +2294,7 @@ function hookTplThumbs(){
   return UI.tplThumbs;
 }
 // thumbnails are redrawn once the template fonts have arrived
-Promise.all(HOOK_TPLS.flatMap(t=>t.layers.flatMap(l=>[l.font, l.acc && l.acc.font].filter(Boolean))).map(f=>{ const i = fontInfo(f); return document.fonts.load(`${i.it?'italic ':''}${i.w} 40px "${i.id}"`).catch(()=>{}); }))
+Promise.all(HOOK_TPLS.flatMap(t=>t.layers.flatMap(l=>[l.font, l.acc && l.acc.font].filter(Boolean))).map(f=>{ const i = fontInfo(f); return document.fonts.load(`${i.it?'italic ':''}${i.w} 40px "${i.fam||i.id}"`).catch(()=>{}); }))
   .then(()=>{ UI.tplThumbs = null; if (S.tab==='hook') render(); });
 function renderHook(){
   const hs = S.hooks||[]; const sel = hookSel();
@@ -2253,6 +2441,7 @@ function openTextEditor(id){
 }
 const mdLook = ()=> S.looks.find(x=>x.id===UI.mdLook);
 A.mdplay = ()=>{ const k = mdLook(); const m = k && mediaTime(k); if (!m) return; ensureAudio(); seekEdit(Math.max(0, m.e0-0.4)); if (!playing) play(); };
+A.mdbehind = el=>{ const k = mdLook(); if (!k) return; k.behind = el.dataset.v==='1'; persist(); document.querySelectorAll('[data-act="mdbehind"]').forEach(b=>b.classList.toggle('on', b===el)); if (k.behind){ getSegmenter(); toast('Atrás de você: o recorte separa você do fundo (leva alguns segundos para carregar na primeira vez)'); } };
 A.mdpos = el=>{ const k = mdLook(); if (!k) return; const [x,y] = el.dataset.p.split(',').map(Number); k.pos = {x,y}; persist(); };
 A.mdanim = el=>{ const k = mdLook(); if (!k) return; k.anim = el.dataset.v; persist(); document.querySelectorAll('[data-act="mdanim"]').forEach(b=>b.classList.toggle('on', b===el)); const L = lineById(k.line); const kr = keptRange(L); if (kr){ seekSrc(kr[0]); play(); } };
 A.mdwin = el=>{ const k = mdLook(); if (!k) return; k.win = el.dataset.v==='1'; persist(); document.querySelectorAll('[data-act="mdwin"]').forEach(b=>b.classList.toggle('on', b===el)); const o = $('#mdWinOpts'); if (o){ o.style.opacity = k.win? '' : .4; o.style.pointerEvents = k.win? '' : 'none'; } };
@@ -2274,24 +2463,74 @@ function openCountEditor(k){
 const EDITABLE = ['hook','eyebrow','headline','text','countup','vfx','media','broll'];
 
 /* ---------- Media ---------- */
+/* ---------- GIPHY: search GIFs and stickers (needs a free API key from developers.giphy.com) ---------- */
+const GIPHY = {q:'', type:'gifs', res:null, busy:false, err:''};
+function giphyKey(){ try{ return localStorage.getItem('vb-giphy-key')||''; }catch(e){ return ''; } }
+// GIFs come as small looping MP4s, stickers as transparent animated WebP; both load with CORS so the export can record them.
+function giphyMedia(it){
+  const m = {id:it.id, kind:it.kind, name:it.name, url:it.url, giphy:true};
+  if (it.kind==='gif'){ const v = document.createElement('video'); v.crossOrigin='anonymous'; v.src=it.url; v.muted=true; v.loop=true; v.playsInline=true; v.autoplay=true; v.preload='auto'; v.play().catch(()=>{}); m.el = v; }
+  else { const im = new Image(); im.crossOrigin='anonymous'; im.src = it.url; m.el = im; }
+  return m;
+}
+function giphySaved(){ try{ return JSON.parse(localStorage.getItem('vb-giphy')||'[]'); }catch(e){ return []; } }
+function giphyRemember(it){ const all = giphySaved().filter(x=>x.id!==it.id); all.unshift(it); try{ localStorage.setItem('vb-giphy', JSON.stringify(all.slice(0,60))); }catch(e){} }
+giphySaved().slice().reverse().forEach(it=>{ if (!UI.media.find(m=>m.id===it.id)) UI.media.unshift(giphyMedia(it)); });
+async function giphySearch(){
+  const key = giphyKey(); if (!key) return; GIPHY.busy = true; GIPHY.err = ''; if (UI.mediaModal) openMedia(UI.mediaModal.line, UI.mediaModal.replace);
+  try {
+    const base = 'https://api.giphy.com/v1/'+GIPHY.type+'/'+(GIPHY.q? 'search' : 'trending');
+    const r = await fetch(base+'?'+new URLSearchParams({api_key:key, q:GIPHY.q, limit:'24', rating:'pg-13', lang:'pt'}));
+    if (r.status===401 || r.status===403) throw new Error('A GIPHY recusou a chave. Confira se copiou certinho.');
+    if (!r.ok) throw new Error('A GIPHY respondeu '+r.status);
+    const d = await r.json();
+    GIPHY.res = (d.data||[]).map(x=>{ const im = x.images||{}; const sticker = GIPHY.type==='stickers';
+      return {id:'gph_'+x.id, kind: sticker? 'sticker':'gif', name:(x.title||'GIF').replace(/\s*(GIF|Sticker).*$/i,'').slice(0,40) || 'GIF',
+        url: sticker ? ((im.original||{}).webp || (im.fixed_height||{}).webp) : ((im.original||{}).mp4 || (im.fixed_height||{}).mp4),
+        thumb: (im.fixed_width_small||im.fixed_width||{}).url}; }).filter(x=>x.url);
+  } catch(err){ GIPHY.err = err.message; }
+  GIPHY.busy = false; if (UI.mediaModal && !$('#modal').classList.contains('hidden')) openMedia(UI.mediaModal.line, UI.mediaModal.replace);
+}
+function giphyBody(){
+  if (!giphyKey()) return `<div class="card panel" style="box-shadow:none;background:var(--panel2)"><b>Conectar a GIPHY</b>
+    <p class="mtxt" style="margin:6px 0 10px">A GIPHY pede uma chave gratuita: entre em <b>developers.giphy.com</b>, clique em <b>Create an App</b> → <b>API</b>, dê um nome e copie a <b>API Key</b>. Cole aqui (fica salva só neste navegador).</p>
+    <div style="display:flex;gap:8px"><input class="in" id="gphKey" placeholder="Cole a API Key da GIPHY" style="padding:8px 10px"><button class="btn sm" data-act="gphsave">Salvar</button></div></div>`;
+  const items = (GIPHY.res||[]).map(it=>`<div class="med" data-act="gphpick" data-id="${it.id}"><div class="th" style="background:${it.kind==='sticker'?'repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0 0/16px 16px':'#222'} url(${it.thumb}) center/cover"><span class="badge">${it.kind==='sticker'?'STICKER':'GIF'}</span></div><b>${esc(it.name)}</b></div>`).join('');
+  return `<form id="gphForm" style="display:flex;gap:8px;margin-bottom:10px"><input class="in" id="gphQ" placeholder="Buscar na GIPHY: uau, dinheiro, festa…" value="${esc(GIPHY.q)}" style="padding:8px 10px"><button class="btn sm">Buscar</button></form>
+    <div class="seg" style="margin-top:0"><button class="${GIPHY.type==='gifs'?'on':''}" data-act="gphtype" data-t="gifs">GIFs</button><button class="${GIPHY.type==='stickers'?'on':''}" data-act="gphtype" data-t="stickers">Stickers (fundo transparente)</button><button data-act="gphforget" style="margin-left:auto">Trocar chave</button></div>
+    ${GIPHY.busy? '<p class="mtxt">Buscando…</p>' : GIPHY.err? `<p class="err">${esc(GIPHY.err)}</p>` : `<div class="grid4">${items || '<p class="mtxt">Nada encontrado.</p>'}</div>`}
+    <p class="hint">Powered by GIPHY</p>`;
+}
+A.gphsave = ()=>{ const k = ($('#gphKey').value||'').trim(); if (!k){ toast('Cole a chave primeiro'); return; } try{ localStorage.setItem('vb-giphy-key', k); }catch(e){} GIPHY.res = null; giphySearch(); };
+A.gphforget = ()=>{ try{ localStorage.removeItem('vb-giphy-key'); }catch(e){} GIPHY.res = null; openMedia(UI.mediaModal.line, UI.mediaModal.replace); };
+A.gphtype = el=>{ GIPHY.type = el.dataset.t; giphySearch(); };
+A.gphpick = el=>{ const it = (GIPHY.res||[]).find(x=>x.id===el.dataset.id); if (!it) return;
+  let m = UI.media.find(x=>x.id===it.id); if (!m){ m = giphyMedia(it); UI.media.unshift(m); } giphyRemember({id:it.id, kind:it.kind, name:it.name, url:it.url});
+  UI.mediaModal.sel = it.id; document.querySelectorAll('.med').forEach(x=>x.classList.toggle('on', x===el)); $('[data-act="medadd"]').disabled = false; };
+
 function openMedia(lineId, replaceId){
   const prev = UI.mediaModal; const L0 = lineById(lineId);
   let word = prev && prev.line===lineId && prev.word!=null ? prev.word : UI.addWord;
   if (word==null || !L0.words[word] || L0.words[word].cut) word = lineAt(srcT)===L0 && wordAt(L0, srcT)>=0 ? wordAt(L0, srcT) : L0.words.findIndex(x=>!x.cut);
-  UI.mediaModal = {line:lineId, replace:replaceId, tab:prev?.tab||'fav', filt:prev?.filt||'all', sel:prev?.sel||null, word};
+  UI.mediaModal = {line:lineId, replace:replaceId, tab:prev?.tab||'fav', filt:prev?.filt||'all', sel:prev?.sel||null, word, dur: prev && prev.line===lineId && prev.dur ? prev.dur : UI.addDur};
   const mm = UI.mediaModal; const L = lineById(lineId);
-  const list = UI.media.filter(m=> mm.tab==='inbox'? !!m.url : true).filter(m=> mm.filt==='all' || (mm.filt==='gif'&&m.kind==='gif') || (mm.filt==='graphic'&&m.kind==='graphic') || (mm.filt==='photo'&&(m.kind==='photo')) || (mm.filt==='video'&&m.kind==='video'));
+  const list = UI.media.filter(m=> mm.tab==='inbox'? !!m.url : true).filter(m=> mm.filt==='all' || (mm.filt==='gif'&&(m.kind==='gif'||m.kind==='sticker')) || (mm.filt==='graphic'&&m.kind==='graphic') || (mm.filt==='photo'&&(m.kind==='photo')) || (mm.filt==='video'&&m.kind==='video'));
   const cnt = k => UI.media.filter(m=>k==='all'||m.kind===k).length;
-  const items = list.map(m=>`<div class="med ${mm.sel===m.id?'on':''}" data-act="medsel" data-m="${m.id}"><div class="th" style="${m.url&&m.kind!=='video'?`background-image:url(${m.url})`:''}">${m.kind==='video'? `<video src="${m.url}" muted playsinline></video>`: m.url?'':m.emoji}<span class="badge">${m.kind.toUpperCase()}</span></div><b>${esc(m.name)}</b></div>`).join('');
-  openModal(`<div class="mhead"><div class="kick"><i></i> Seus favoritos</div><h2 class="mt">Adicionar imagem, GIF ou b-roll</h2><p class="msub">Aparece na palavra <b>“${esc((L.words[mm.word]||{w:''}).w.replace(/[,.?!]$/,''))}”</b> · ${fmt(src2edit((L.words[mm.word]||{s:0}).s))} — dá para mudar a palavra e a duração depois</p>
-    <div class="utabs"><button class="${mm.tab==='fav'?'on':''}" data-act="medtab" data-t="fav">Favoritos</button><button class="${mm.tab==='inbox'?'on':''}" data-act="medtab" data-t="inbox">Seus arquivos</button></div>
+  const items = list.map(m=>`<div class="med ${mm.sel===m.id?'on':''}" data-act="medsel" data-m="${m.id}"><div class="th" style="${m.url&&m.kind!=='video'&&m.kind!=='gif'?`background-image:url(${m.url})`:''}">${m.kind==='video'||(m.giphy&&m.kind==='gif')? `<video src="${m.url}" muted playsinline autoplay loop></video>`: m.url?'':m.emoji}<span class="badge">${m.kind.toUpperCase()}</span></div><b>${esc(m.name)}</b></div>`).join('');
+  openModal(`<div class="mhead"><div class="kick"><i></i> IMG, GIF e B-roll</div><h2 class="mt">Adicionar imagem, GIF ou b-roll</h2><p class="msub">Aparece na palavra <b>“${esc((L.words[mm.word]||{w:''}).w.replace(/[,.?!]$/,''))}”</b> · ${fmt(src2edit((L.words[mm.word]||{s:0}).s))} ${mm.dur? ' · fica '+mm.dur.toFixed(1)+'s (as palavras selecionadas)' : ''} — dá para mudar a palavra e a duração depois</p>
+    <div class="utabs"><button class="${mm.tab==='fav'?'on':''}" data-act="medtab" data-t="fav">Favoritos</button><button class="${mm.tab==='inbox'?'on':''}" data-act="medtab" data-t="inbox">Seus arquivos</button><button class="${mm.tab==='giphy'?'on':''}" data-act="medtab" data-t="giphy">GIPHY</button></div>
     <p class="mtxt">Uma imagem ou GIF fica por cima do seu vídeo nesta linha. Um b-roll pode ocupar a tela toda ou ficar numa janela enquanto a sua voz continua. Depois de adicionar, você ajusta o tamanho e a posição.</p>
-    <div class="seg">${[['all','Todos'],['gif','GIFs'],['graphic','Gráficos'],['photo','Fotos'],['video','Vídeos']].map(([k,v])=>`<button class="${mm.filt===k?'on':''}" data-act="medfilt" data-f="${k}">${v} ${cnt(k)}</button>`).join('')}</div></div>
-    <div class="mbody"><div class="grid4"><div class="med addnew" data-act="medup"><div class="th">${ICO.plus.replace('<svg','<svg width=18 height=18')}<br>Adicionar novo<br><small style="color:var(--muted)">Solte um arquivo aqui ou escolha um</small></div></div>${items}</div>
+    ${mm.tab==='giphy'? '' : `<div class="seg">${[['all','Todos'],['gif','GIFs'],['graphic','Gráficos'],['photo','Fotos'],['video','Vídeos']].map(([k,v])=>`<button class="${mm.filt===k?'on':''}" data-act="medfilt" data-f="${k}">${v} ${cnt(k)}</button>`).join('')}</div>`}</div>
+    <div class="mbody">${mm.tab==='giphy'? giphyBody() : `<div class="grid4"><div class="med addnew" data-act="medup"><div class="th">${ICO.plus.replace('<svg','<svg width=18 height=18')}<br>Adicionar novo<br><small style="color:var(--muted)">Solte um arquivo aqui ou escolha um</small></div></div>${items}</div>`}
     <textarea class="in" id="medNote" rows="2" style="margin-top:12px" placeholder="Como ele se mexe? ex.: “deslizar”, “girar pela tela”, “flutuar”"></textarea></div>
     <div class="mfoot"><button class="btn ghost" data-act="close">Cancelar</button><button class="btn" data-act="medadd" ${mm.sel?'':'disabled'}>${ICO.plus} ${replaceId?'Trocar':'Adicionar'}</button></div>`, true);
+  const gf = $('#gphForm'); if (gf) gf.onsubmit = e=>{ e.preventDefault(); GIPHY.q = $('#gphQ').value.trim(); giphySearch(); };
+  if (mm.tab==='giphy' && giphyKey() && !GIPHY.res && !GIPHY.busy && !GIPHY.err) giphySearch();
   const box = $('#mbox'); box.ondragover = e=>e.preventDefault(); box.ondrop = e=>{ e.preventDefault(); const dt = new DataTransfer(); [...e.dataTransfer.files].forEach(f=>dt.items.add(f)); const inp=$('#fileMedia'); inp.files = dt.files; inp.onchange({target:inp}); };
 }
+A.medhere = el=>{ wtb.classList.add('hidden'); const s = selectedWords(); UI.addWord = +el.dataset.i; UI.addDur = null;
+  if (s && s.L.id===el.dataset.l && s.idx.length>1){ UI.addWord = s.idx[0]; UI.addDur = Math.max(0.3, src2edit(s.L.words[s.idx[s.idx.length-1]].e) - src2edit(s.L.words[s.idx[0]].s)); }
+  UI.mediaModal = null; openMedia(el.dataset.l); };
 A.medtab = el=>{ UI.mediaModal.tab=el.dataset.t; openMedia(UI.mediaModal.line, UI.mediaModal.replace); };
 A.medfilt = el=>{ UI.mediaModal.filt=el.dataset.f; openMedia(UI.mediaModal.line, UI.mediaModal.replace); };
 A.medsel = el=>{ UI.mediaModal.sel = el.dataset.m; document.querySelectorAll('.med').forEach(m=>m.classList.toggle('on', m.dataset.m===el.dataset.m)); $('[data-act="medadd"]').disabled=false; };
@@ -2300,11 +2539,12 @@ A.medadd = ()=>{
   const mm = UI.mediaModal; const m = mediaById(mm.sel); const note = $('#medNote').value.trim().toLowerCase();
   let anim = 'pop'; if (/slide|desliz/.test(note)) anim='slide'; else if (/spin|across|gir/.test(note)) anim='spin'; else if (/float|bob|flutu/.test(note)) anim='float';
   const isB = m.kind==='video';
-  const look = {type: isB?'broll':'media', media:m.id, anim, note: $('#medNote').value.trim(), from: 0, w: mm.word, dur: isB? 2.5 : 2};
+  const look = {type: isB?'broll':'media', media:m.id, anim, note: $('#medNote').value.trim(), from: 0, w: mm.word, dur: mm.dur || (isB? 2.5 : 2)};
   if (isB && m.el){ const d = m.el.duration||6; look.from = Math.max(0, Math.min(d-3, d*0.3)); }
+  if (m.kind==='sticker') look.frame = false;
   const newId = mm.replace || nid('k');
   commit(()=>{ if (mm.replace){ const k=S.looks.find(x=>x.id===mm.replace); Object.assign(k, look, {w:k.w ?? look.w, dur:k.dur ?? look.dur}); } else S.looks.push({...look, id:newId, line:mm.line}); });
-  UI.mediaModal = null; UI.addWord = null; closeModal(); openMediaEditor(newId); toast(isB? 'B-roll adicionado · começa em '+fmt(look.from) : '“'+m.name+'” adicionado'+(anim!=='pop'?' · '+anim:''));
+  UI.mediaModal = null; UI.addWord = null; UI.addDur = null; clearWsel(); closeModal(); openMediaEditor(newId); toast(isB? 'B-roll adicionado · começa em '+fmt(look.from) : '“'+m.name+'” adicionado'+(anim!=='pop'?' · '+anim:''));
 };
 
 /* ---------- Cover a face ---------- */
@@ -3037,11 +3277,44 @@ addEventListener('resize', ()=>{ renderTimeline(); updateLive(); });
 /* ============================== BOOT ============================== */
 try{ const th = localStorage.getItem('vb-theme'); if (th) document.documentElement.dataset.theme = th; }catch(e){}
 S.lines = buildLines(SCRIPT); applyScale(); seedLooks();
-try{ const saved = localStorage.getItem('vb-state'); if (saved){ const o=JSON.parse(saved); if (o.lines && o.lines.length){ restore(saved); const last=o.lines[o.lines.length-1]; rawDur = last.words[last.words.length-1].be+0.5; } } }catch(e){}
+// A clean project (the sample script, no looks, sounds or texts) for "start from scratch".
+const FRESH = (()=>{ const o = JSON.parse(snapshot()); o.looks = []; o.sfx = []; o.hooks = []; return JSON.stringify(o); })();
 buildSegments(); srcT = segs[0]? segs[0].s: 0;
 document.fonts.ready.then(()=>{ buildStrip(); render(); });
 render(); requestAnimationFrame(loop); setDot(); loadSavedFonts();
-try { if (localStorage.getItem('vb-state')) videoDB.get('video').then(f=>{ if (f && !hasVideo) loadVideo(f, true); }).catch(()=>{}); } catch(e){}
+// Welcome screen: pick up the last project, or start a new one.
+function savedProject(){ try{ const saved = localStorage.getItem('vb-state'); if (!saved) return null; const o = JSON.parse(saved); return o.lines && o.lines.length ? {raw:saved, o} : null; }catch(e){ return null; } }
+function continueProject(){
+  const sp = savedProject(); if (sp){ restore(sp.raw); const last = sp.o.lines[sp.o.lines.length-1]; rawDur = last.words[last.words.length-1].be+0.5; buildSegments(); seekSrc(segs[0]? segs[0].s: 0); buildStrip(); render();
+    videoDB.get('video').then(f=>{ if (f && !hasVideo) loadVideo(f, true); }).catch(()=>{}); }
+  closeWelcome();
+}
+async function freshProject(pick){
+  try{ localStorage.removeItem('vb-state'); }catch(e){} try{ await videoDB.put('video', null); }catch(e){}
+  if (hasVideo){ vid.removeAttribute('src'); vid.load(); hasVideo = false; document.getElementById('drop').classList.add('empty'); }
+  UI.videoFile = null; UI.srcUpload = null; UI.faceTracks = []; UI.faceScan = null; lastFrameOk = false;
+  S.lines = buildLines(SCRIPT); S.k = 1; restore(FRESH); applyScale(); undoStack.length = 0; redoStack.length = 0;
+  buildSegments(); seekSrc(segs[0]? segs[0].s: 0); buildStrip(); setTab('cut'); persist();
+  closeWelcome(); if (pick) document.getElementById('fileVid').click();
+}
+function closeWelcome(){ const w = document.getElementById('welcome'); if (w){ w.classList.add('out'); setTimeout(()=>w.remove(), 250); } }
+(function showWelcome(){
+  const sp = savedProject(); const o = sp && sp.o;
+  const kept = o ? o.lines.filter(l=>!l.cut) : []; const words = kept.reduce((a,l)=>a+l.words.filter(w=>!w.cut).length, 0);
+  const first = kept[0] ? kept[0].words.filter(w=>!w.cut).map(w=>w.w).join(' ') : '';
+  const el = document.createElement('div'); el.id = 'welcome';
+  el.innerHTML = `<div class="wcard">
+    <div class="logo wlogo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg></div>
+    <h1>Bem-vindo ao seu Edit Labs</h1><p class="wsub">Laboratório de Edição</p>
+    <div class="wopts">
+      ${sp? `<button class="wopt" data-w="continue"><b>Continuar de onde parei</b><small>${kept.length} linhas · ${words} palavras${first? ' · “'+esc(first.slice(0,48))+(first.length>48?'…':'')+'”' : ''}</small></button>` : ''}
+      <button class="wopt ${sp?'':'main'}" data-w="new"><b>${sp? 'Começar do zero' : 'Começar um novo vídeo'}</b><small>Importe um vídeo novo e comece um projeto limpo</small></button>
+      ${sp? '' : `<button class="wopt" data-w="demo"><b>Ver o exemplo</b><small>Explore o editor com o vídeo de demonstração</small></button>`}
+    </div></div>`;
+  document.body.appendChild(el);
+  el.addEventListener('click', e=>{ const b = e.target.closest('[data-w]'); if (!b) return; const w = b.dataset.w;
+    if (w==='continue') continueProject(); else if (w==='new') freshProject(true); else closeWelcome(); });
+})();
 </script>
 </body>
 </html>
