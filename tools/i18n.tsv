@@ -859,3 +859,23 @@ Cobrir com	Cover with	Cubrir con
 Imagem sua	Your image	Tu imagen
 coberto	covered	cubierto
 Fale pra o Claude · passo	Tell Claude · step	Dile a Claude · paso
+O Claude edita com você: corta repetições e vícios de fala, escolhe destaques, looks e sons, segue as suas notas e propõe rascunhos no “Fale pra o Claude”. Ele usa a	Claude edits with you: cuts repeats and filler words, picks highlights, looks and sounds, follows your notes and pitches drafts in “Tell Claude”. It uses	Claude edita contigo: corta repeticiones y muletillas, elige destacados, looks y sonidos, sigue tus notas y propone borradores en “Dile a Claude”. Usa
+sua conta Claude	your Claude account	tu cuenta de Claude
+(Pro ou Max) pelo Claude Code instalado neste computador. Não precisa de chave de API nem paga nada à parte.	(Pro or Max) through Claude Code installed on this computer. No API key needed and nothing extra to pay.	(Pro o Max) a través de Claude Code instalado en esta computadora. No necesitas clave de API ni pagas nada aparte.
+Verificando…	Checking…	Verificando…
+Conectado com a sua conta Claude	Connected with your Claude account	Conectado con tu cuenta de Claude
+Falta entrar na sua conta Claude	You still need to sign in to your Claude account	Falta iniciar sesión en tu cuenta de Claude
+O Claude Code ainda não está instalado	Claude Code isn't installed yet	Claude Code aún no está instalado
+Clique em	Click	Haz clic en
+Instalar e entrar	Install and sign in	Instalar e iniciar sesión
+: abre uma janela do Terminal que instala o Claude Code (se faltar) e abre o navegador para você entrar na sua conta. Depois volte aqui e clique em	: it opens a Terminal window that installs Claude Code (if missing) and opens the browser so you can sign in. Then come back here and click	: abre una ventana de Terminal que instala Claude Code (si falta) y abre el navegador para que inicies sesión. Luego vuelve aquí y haz clic en
+Verificar de novo	Check again	Verificar de nuevo
+Modelo do Claude	Claude model	Modelo de Claude
+Claude Haiku 5.5 (o mais leve)	Claude Haiku 5.5 (lightest)	Claude Haiku 5.5 (el más ligero)
+Usar o Claude neste editor	Use Claude in this editor	Usar Claude en este editor
+Os pedidos contam no limite de uso da sua assinatura Claude.	Requests count toward your Claude plan's usage limits.	Las solicitudes cuentan en el límite de uso de tu plan de Claude.
+Abri o Terminal — siga as instruções por lá	Terminal is open — follow the steps there	Abrí la Terminal — sigue las instrucciones allí
+Não consegui abrir o Terminal. Dê dois cliques em “Conectar Claude.command”, na pasta do Edit Labs.	Couldn't open Terminal. Double-click “Conectar Claude.command” in the Edit Labs folder.	No pude abrir la Terminal. Haz doble clic en “Conectar Claude.command”, en la carpeta de Edit Labs.
+Não consegui falar com o Edit Labs. Ele ainda está aberto?	Couldn't reach Edit Labs. Is it still open?	No pude comunicarme con Edit Labs. ¿Sigue abierto?
+O Claude Code não está instalado. Clique em Claude, no topo, e em “Instalar e entrar”.	Claude Code isn't installed. Click Claude at the top, then “Install and sign in”.	Claude Code no está instalado. Haz clic en Claude, arriba, y en “Instalar e iniciar sesión”.
+Entre na sua conta Claude: clique em Claude, no topo, e em “Instalar e entrar”.	Sign in to your Claude account: click Claude at the top, then “Install and sign in”.	Inicia sesión en tu cuenta de Claude: haz clic en Claude, arriba, y en “Instalar e iniciar sesión”.

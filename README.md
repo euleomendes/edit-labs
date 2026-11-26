@@ -21,7 +21,7 @@ Precisa de: macOS, Python 3, Google Chrome. A transcrição baixa o modelo de fa
 - **Sound**: passe o mouse numa palavra → **♪ Add a sound** — bibliotecas Real SFX (936), earshot (252) e Openverse (busca).
 - **Finish**: exporta MP4 (com os efeitos de vídeo) ou um rascunho para o CapCut; carrossel, story e trial reels.
 - **Idioma** (🌐 no topo direito): Português, English ou Español. O botão ◐ ao lado troca entre claro e escuro.
-- **Claude** (topo direito): cole sua chave de API de console.anthropic.com para o **✦ Edit with Claude**, notas e Sandbox. A chave fica só no seu navegador.
+- **Claude** (topo direito): usa a **sua conta Claude** (Pro ou Max) pelo Claude Code instalado no computador — sem chave de API. Na primeira vez, clique em **Instalar e entrar** (ou dê dois cliques em `Conectar Claude.command`), entre na conta no navegador e clique em **Verificar de novo**. Vale para o **✦ Edit with Claude**, notas e Sandbox.
 
 ## Arquivos
 
@@ -30,6 +30,7 @@ Precisa de: macOS, Python 3, Google Chrome. A transcrição baixa o modelo de fa
 | `visual-builder.html` | o editor |
 | `server.py` | servidor local (só no seu computador) que serve o editor e roda os efeitos |
 | `Abrir Editor.command` | abre o editor |
+| `Conectar Claude.command` | instala o Claude Code e entra na sua conta Claude (uma vez) |
 | `Instalar.command` / `setup.sh` | instalação num computador novo |
 | `sounds/` | Real SFX (CC0) e earshot (MIT), com as licenças |
 | `effects-previews/` | prévias animadas dos 51 efeitos |

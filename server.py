@@ -42,6 +42,76 @@ def effects_ready():
     return os.path.exists(FX_PY) and os.path.exists(FX_SCRIPT) and bool(shutil.which('ffmpeg'))
 
 
+# ---------- Claude, through the Claude Code app on this computer (your Claude subscription, no API key) ----------
+CLAUDE_CWD = os.path.join(WORK, 'claude')
+CLAUDE_MODELS = ('claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5')
+CLAUDE_EFFORTS = ('low', 'medium', 'high', 'xhigh', 'max')
+CONNECT_SCRIPT = os.path.join(ROOT, 'Conectar Claude.command')
+
+
+def claude_bin():
+    home = os.path.expanduser('~')
+    for p in (shutil.which('claude'), home + '/.local/bin/claude', home + '/.claude/local/claude',
+              home + '/.edite-reels/env/bin/claude', '/opt/homebrew/bin/claude', '/usr/local/bin/claude'):
+        if p and os.path.isfile(p) and os.access(p, os.X_OK):
+            return p
+    return None
+
+
+def claude_env():
+    # Without these, Claude Code signs in with your Claude account instead of a paid API key.
+    env = dict(os.environ)
+    for k in ('ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'CLAUDECODE'):
+        env.pop(k, None)
+    return env
+
+
+def claude_status():
+    b = claude_bin()
+    if not b:
+        return {'installed': False, 'loggedIn': False}
+    os.makedirs(CLAUDE_CWD, exist_ok=True)
+    try:
+        r = subprocess.run([b, 'auth', 'status'], cwd=CLAUDE_CWD, env=claude_env(),
+                           capture_output=True, text=True, timeout=30)
+        st = json.loads(r.stdout or '{}')
+    except (subprocess.TimeoutExpired, json.JSONDecodeError, OSError):
+        st = {}
+    return {'installed': True, 'loggedIn': bool(st.get('loggedIn')), 'method': st.get('authMethod')}
+
+
+def claude_ask(body):
+    """One structured answer from Claude Code in print mode, with no tools: it only reads the prompt and replies."""
+    b = claude_bin()
+    if not b:
+        raise RuntimeError('O Claude Code não está instalado. Clique em Claude, no topo, e em “Instalar e entrar”.')
+    schema = body.get('schema')
+    if not isinstance(schema, dict):
+        raise ValueError('missing schema')
+    model = body.get('model') if body.get('model') in CLAUDE_MODELS else CLAUDE_MODELS[0]
+    effort = body.get('effort') if body.get('effort') in CLAUDE_EFFORTS else 'medium'
+    os.makedirs(CLAUDE_CWD, exist_ok=True)
+    cmd = [b, '-p', '--output-format', 'json', '--json-schema', json.dumps(schema),
+           '--system-prompt', str(body.get('system') or '')[:200000], '--model', model, '--effort', effort,
+           '--tools', '', '--strict-mcp-config', '--no-session-persistence']
+    r = subprocess.run(cmd, cwd=CLAUDE_CWD, env=claude_env(), input=str(body.get('prompt') or '')[:800000],
+                       capture_output=True, text=True, timeout=900)
+    try:
+        out = json.loads(r.stdout.strip().splitlines()[-1])
+    except (IndexError, json.JSONDecodeError):
+        raise RuntimeError('O Claude Code não respondeu: ' + (r.stderr or r.stdout or '').strip()[-300:])
+    if out.get('is_error'):
+        msg = str(out.get('result') or 'erro desconhecido')
+        if 'login' in msg.lower():
+            raise PermissionError('Entre na sua conta Claude: clique em Claude, no topo, e em “Instalar e entrar”.')
+        raise RuntimeError('O Claude Code deu erro: ' + msg[:300])
+    if isinstance(out.get('structured_output'), dict):
+        return out['structured_output']
+    text = str(out.get('result') or '')
+    m = re.search(r'\{.*\}', text, re.S)
+    return json.loads(m.group(0) if m else text)
+
+
 def clean_effects(items):
     """Keep only plain, known fields; the renderer gets them as a JSON plan, never as shell text."""
     out = []
@@ -209,6 +279,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/api/status':
             return self.send_json(200, {'effects': effects_ready(), 'ffmpeg': bool(shutil.which('ffmpeg'))})
+        if self.path == '/api/claude/status':
+            return self.send_json(200, claude_status())
         if self.path.startswith('/api/fx/previews/'):
             key = self.path.rsplit('/', 1)[-1]
             if key == 'latest':  # the last set of previews made on this computer, kept across restarts
@@ -226,6 +298,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         length = int(self.headers.get('Content-Length') or 0)
         try:
+            if self.path in ('/api/claude', '/api/claude/connect'):
+                # the page talks to us from this computer only; refuse requests from other web pages
+                origin = self.headers.get('Origin')
+                if origin and not re.match(r'^http://(localhost|127\.0\.0\.1):%d$' % PORT, origin):
+                    return self.send_json(403, {'error': 'forbidden'})
+            if self.path == '/api/claude/connect':
+                # opens Terminal with the one-time install + sign-in script
+                subprocess.Popen(['open', '-a', 'Terminal', CONNECT_SCRIPT])
+                return self.send_json(200, {'ok': True})
+            if self.path == '/api/claude':
+                body = json.loads(self.rfile.read(length) or b'{}')
+                try:
+                    return self.send_json(200, {'result': claude_ask(body)})
+                except PermissionError as e:
+                    return self.send_json(401, {'error': str(e)})
+                except RuntimeError as e:
+                    return self.send_json(502, {'error': str(e)})
             if self.path == '/api/upload':
                 if not 0 < length <= MAX_UPLOAD:
                     return self.send_json(413, {'error': 'file too large'})

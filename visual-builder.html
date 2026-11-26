@@ -2936,66 +2936,60 @@ function exportOrdered(name, order, done){
   UI.ordered = true; r.start(250); runSeg();
 }
 
-/* ============================== CLAUDE (Anthropic SDK in the browser) ============================== */
-const SDK_URL = 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.5.0/+esm';
-const MODELS = {'claude-opus-5-5':'Claude Opus 5.5 (o melhor)','claude-sonnet-5-5':'Claude Sonnet 5.5 (mais rápido)','claude-haiku-5-5':'Claude Haiku 5.5 (mais barato)'};
-const CFG = {key:'', model:'claude-opus-5-5', remember:false};
-try{ const c = JSON.parse(localStorage.getItem('vb-claude')||'null'); if (c){ Object.assign(CFG, c); } }catch(e){}
-try{ const k = sessionStorage.getItem('vb-claude-key'); if (k && !CFG.key) CFG.key = k; }catch(e){}
-let SDK = null, client = null, claudeBusy = 0;
-function saveCfg(){ try{ if (CFG.remember) localStorage.setItem('vb-claude', JSON.stringify(CFG)); else { localStorage.setItem('vb-claude', JSON.stringify({model:CFG.model, remember:false})); sessionStorage.setItem('vb-claude-key', CFG.key); } }catch(e){} }
-function claudeOn(){ return !!CFG.key; }
+/* ============================== CLAUDE (via Claude Code on this computer — your Claude account, no API key) ============================== */
+const MODELS = {'claude-opus-5-5':'Claude Opus 5.5 (o melhor)','claude-sonnet-5-5':'Claude Sonnet 5.5 (mais rápido)','claude-haiku-5-5':'Claude Haiku 5.5 (o mais leve)'};
+const CFG = {model:'claude-opus-5-5', off:false, ready:false, installed:false, checked:false};
+try{ const c = JSON.parse(localStorage.getItem('vb-claude')||'null'); if (c){ if (MODELS[c.model]) CFG.model = c.model; CFG.off = !!c.off; } }catch(e){}
+try{ localStorage.removeItem('vb-claude-key'); sessionStorage.removeItem('vb-claude-key'); }catch(e){} // old API-key storage
+let claudeBusy = 0;
+function saveCfg(){ try{ localStorage.setItem('vb-claude', JSON.stringify({model:CFG.model, off:CFG.off})); }catch(e){} }
+function claudeOn(){ return CFG.ready && !CFG.off; }
 function setDot(){ const d=$('#cdot'); if(!d) return; d.className = 'cdot' + (claudeBusy? ' busy' : claudeOn()? ' on':''); $('#claudeBtn').title = claudeBusy? 'O Claude está trabalhando…' : claudeOn()? 'Conectado · '+MODELS[CFG.model] : 'Conectar o Claude'; }
-async function getClient(){
-  if (!SDK) SDK = await import(SDK_URL);
-  if (!client || client._vbKey !== CFG.key){ const Anthropic = SDK.default; client = new Anthropic({apiKey: CFG.key, dangerouslyAllowBrowser: true}); client._vbKey = CFG.key; }
-  return client;
+async function claudeCheck(){
+  try{ const r = await fetch('/api/claude/status'); const s = await r.json(); CFG.installed = !!s.installed; CFG.ready = !!(s.installed && s.loggedIn); }
+  catch(e){ CFG.installed = false; CFG.ready = false; }
+  CFG.checked = true; setDot(); return CFG.ready;
 }
-function claudeError(err){
-  const A_ = SDK && SDK.default;
-  if (A_ && err instanceof A_.AuthenticationError) return 'Sua chave de API foi recusada. Confira nas configurações do Claude.';
-  if (A_ && err instanceof A_.PermissionDeniedError) return 'Esta chave de API não tem acesso a esse modelo.';
-  if (A_ && err instanceof A_.RateLimitError) return 'Limite de uso atingido — espere um pouco e tente de novo.';
-  if (A_ && err instanceof A_.APIConnectionError) return 'Não consegui falar com a API do Claude. Confira a sua internet.';
-  if (A_ && err instanceof A_.APIError) return 'Erro na API do Claude'+(err.status?' ('+err.status+')':'')+': '+(err.message||'').slice(0,160);
-  return (err && err.message) || String(err);
-}
-// One structured-output call. Returns parsed JSON matching `schema`.
-async function askClaude({system, prompt, schema, effort='medium', images=[]}){
+function claudeError(err){ return (err && err.message) || String(err); }
+// One structured-output call through the local server. Returns parsed JSON matching `schema`.
+async function askClaude({system, prompt, schema, effort='medium'}){
   if (!claudeOn()) throw new Error('Conecte o Claude primeiro (canto superior direito).');
-  const c = await getClient(); claudeBusy++; setDot();
+  claudeBusy++; setDot();
   try{
-    const content = [...images.map(url=>({type:'image', source:{type:'base64', media_type: url.slice(5, url.indexOf(';')), data: url.split(',')[1]}})), {type:'text', text: prompt}];
-    const stream = c.beta.messages.stream({
-      model: CFG.model, max_tokens: 32000,
-      betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default',
-      thinking: {type:'adaptive'},
-      output_config: {effort, format: {type:'json_schema', schema}},
-      system, messages: [{role:'user', content}],
-    });
-    const msg = await stream.finalMessage();
-    if (msg.stop_reason === 'refusal') throw new Error('O Claude recusou este pedido.');
-    if (msg.stop_reason === 'max_tokens') throw new Error('A resposta do Claude foi cortada — tente um pedido mais curto.');
-    const text = msg.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    return JSON.parse(text);
+    let r;
+    try{ r = await fetch('/api/claude', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({system, prompt, schema, effort, model: CFG.model})}); }
+    catch(e){ throw new Error('Não consegui falar com o Edit Labs. Ele ainda está aberto?'); }
+    const j = await r.json().catch(()=>({}));
+    if (r.status === 401){ CFG.ready = false; }
+    if (!r.ok) throw new Error(j.error || ('Erro do Claude ('+r.status+')'));
+    return j.result;
   } finally { claudeBusy--; setDot(); }
 }
-A.claudesettings = ()=>{
-  openModal(`<div class="mhead"><div class="kick"><i></i> Claude</div><h2 class="mt">Conectar o Claude</h2><p class="mtxt">O Claude edita com você: corta repetições e vícios de fala, escolhe destaques, looks e sons, segue as suas notas e propõe rascunhos no “Fale pra o Claude”. Cole uma chave de API de <b>console.anthropic.com</b>. Ela vai só para api.anthropic.com, direto deste navegador.</p></div>
-    <div class="mbody"><label class="field">Chave de API<input class="in" type="password" id="ckey" autocomplete="off" placeholder="sk-ant-..." value="${esc(CFG.key)}"></label>
-    <label class="field">Modelo<select id="cmodel">${Object.entries(MODELS).map(([k,v])=>`<option value="${k}" ${CFG.model===k?'selected':''}>${v}</option>`).join('')}</select></label>
-    <label style="display:flex;gap:6px;align-items:center;font-size:12px"><input type="checkbox" id="cremember" ${CFG.remember?'checked':''}> Lembrar a chave neste computador</label>
-    <div class="hint">Sem “lembrar”, a chave é esquecida quando você fecha esta aba. Quem usar este perfil do navegador consegue ler uma chave lembrada.</div><div class="err" id="cerr"></div></div>
-    <div class="mfoot"><button class="btn ghost" id="cforget">Desconectar</button><button class="btn" id="csave">${ICO.check} Salvar e testar</button></div>`);
-  $('#cforget').onclick = ()=>{ CFG.key=''; CFG.remember=false; try{ localStorage.removeItem('vb-claude'); sessionStorage.removeItem('vb-claude-key'); }catch(e){} client=null; setDot(); closeModal(); toast('Claude desconectado'); };
-  $('#csave').onclick = async ()=>{
-    CFG.key = $('#ckey').value.trim(); CFG.model = $('#cmodel').value; CFG.remember = $('#cremember').checked;
-    if (!CFG.key){ $('#cerr').textContent='Cole uma chave primeiro.'; return; }
-    $('#csave').disabled = true; $('#csave').textContent = 'Testando…'; $('#cerr').textContent='';
-    try{ const r = await askClaude({system:'Reply with JSON only.', prompt:'Diga oi a um criador de reels em até cinco palavras, em português do Brasil.', schema:{type:'object',properties:{hi:{type:'string'}},required:['hi'],additionalProperties:false}, effort:'low'});
-      saveCfg(); closeModal(); toast('Conectado ✓ O Claude diz: '+r.hi); render(); }
-    catch(err){ $('#cerr').textContent = claudeError(err); $('#csave').disabled=false; $('#csave').innerHTML = ICO.check+' Salvar e testar'; }
+A.claudesettings = async ()=>{
+  const draw = ()=>{
+    const st = !CFG.checked? ['…','Verificando…'] : CFG.ready? ['✅','Conectado com a sua conta Claude'] : CFG.installed? ['🔑','Falta entrar na sua conta Claude'] : ['⬇️','O Claude Code ainda não está instalado'];
+    openModal(`<div class="mhead"><div class="kick"><i></i> Claude</div><h2 class="mt">Conectar o Claude</h2><p class="mtxt">O Claude edita com você: corta repetições e vícios de fala, escolhe destaques, looks e sons, segue as suas notas e propõe rascunhos no “Fale pra o Claude”. Ele usa a <b>sua conta Claude</b> (Pro ou Max) pelo Claude Code instalado neste computador. Não precisa de chave de API nem paga nada à parte.</p></div>
+    <div class="mbody"><div style="display:flex;gap:10px;align-items:center;justify-content:flex-start;text-align:left;font-size:14px;padding:12px 14px;border-radius:12px;background:var(--bg2,rgba(127,127,127,.08));margin-bottom:12px"><span style="font-size:20px">${st[0]}</span><b>${st[1]}</b></div>
+    ${CFG.ready? '' : `<p class="mtxt" style="margin:0 0 12px;font-size:12.5px">Clique em <b>Instalar e entrar</b>: abre uma janela do Terminal que instala o Claude Code (se faltar) e abre o navegador para você entrar na sua conta. Depois volte aqui e clique em <b>Verificar de novo</b>.</p>`}
+    <label class="field">Modelo do Claude<select id="cmodel">${Object.entries(MODELS).map(([k,v])=>`<option value="${k}" ${CFG.model===k?'selected':''}>${v}</option>`).join('')}</select></label>
+    ${CFG.ready? `<label style="display:flex;gap:6px;align-items:center;font-size:12px"><input type="checkbox" id="con" ${CFG.off?'':'checked'}> Usar o Claude neste editor</label><div class="hint">Os pedidos contam no limite de uso da sua assinatura Claude.</div>` : ''}
+    <div class="err" id="cerr"></div></div>
+    <div class="mfoot">${CFG.ready? `<button class="btn ghost" id="ccheck">Verificar de novo</button><button class="btn" id="ctest">${ICO.check} Salvar e testar</button>` : `<button class="btn ghost" id="ccheck">Verificar de novo</button><button class="btn" id="cconnect">Instalar e entrar</button>`}</div>`);
+    $('#cmodel').onchange = e=>{ CFG.model = e.target.value; saveCfg(); setDot(); };
+    if ($('#con')) $('#con').onchange = e=>{ CFG.off = !e.target.checked; saveCfg(); setDot(); render(); };
+    $('#ccheck').onclick = async ()=>{ $('#ccheck').disabled = true; $('#ccheck').textContent = 'Verificando…'; await claudeCheck(); draw(); render(); };
+    if ($('#cconnect')) $('#cconnect').onclick = async ()=>{
+      try{ const r = await fetch('/api/claude/connect', {method:'POST'}); if (!r.ok) throw 0; toast('Abri o Terminal — siga as instruções por lá'); }
+      catch(e){ $('#cerr').textContent = 'Não consegui abrir o Terminal. Dê dois cliques em “Conectar Claude.command”, na pasta do Edit Labs.'; }
+    };
+    if ($('#ctest')) $('#ctest').onclick = async ()=>{
+      CFG.off = false; saveCfg(); $('#ctest').disabled = true; $('#ctest').textContent = 'Testando…'; $('#cerr').textContent='';
+      try{ const r = await askClaude({system:'Reply with JSON only.', prompt:'Diga oi a um criador de reels em até cinco palavras, em português do Brasil.', schema:{type:'object',properties:{hi:{type:'string'}},required:['hi'],additionalProperties:false}, effort:'low'});
+        closeModal(); toast('Conectado ✓ O Claude diz: '+r.hi); render(); }
+      catch(err){ $('#cerr').textContent = claudeError(err); $('#ctest').disabled=false; $('#ctest').innerHTML = ICO.check+' Salvar e testar'; }
+    };
   };
+  draw(); if (!CFG.ready){ await claudeCheck(); if ($('#cmodel')) draw(); }
 };
 
 /* ---------- describing the reel to Claude ---------- */
@@ -3327,7 +3321,7 @@ S.lines = buildLines(SCRIPT); applyScale(); seedLooks();
 const FRESH = (()=>{ const o = JSON.parse(snapshot()); o.looks = []; o.sfx = []; o.hooks = []; return JSON.stringify(o); })();
 buildSegments(); srcT = segs[0]? segs[0].s: 0;
 document.fonts.ready.then(()=>{ buildStrip(); render(); });
-render(); requestAnimationFrame(loop); setDot(); loadSavedFonts();
+render(); requestAnimationFrame(loop); setDot(); claudeCheck().then(()=>render()); loadSavedFonts();
 // Welcome screen: pick up the last project, or start a new one.
 function savedProject(){ try{ const saved = localStorage.getItem('vb-state'); if (!saved) return null; const o = JSON.parse(saved); return o.lines && o.lines.length ? {raw:saved, o} : null; }catch(e){ return null; } }
 function continueProject(){
