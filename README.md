@@ -20,6 +20,7 @@ Precisa de: macOS, Python 3, Google Chrome. A transcrição baixa o modelo de fa
 - **Visuals**: hooks de texto editáveis (8 modelos), legendas que você arrasta no preview, Cover a face (detecta e segue o rosto), Lookbook, Sandbox e **Effects library** (51 efeitos com prévia).
 - **Sound**: passe o mouse numa palavra → **♪ Add a sound** — bibliotecas Real SFX (936), earshot (252) e Openverse (busca).
 - **Finish**: exporta MP4 (com os efeitos de vídeo) ou um rascunho para o CapCut; carrossel, story e trial reels.
+- **Idioma** (🌐 no topo direito): Português, English ou Español. O botão ◐ ao lado troca entre claro e escuro.
 - **Claude** (topo direito): cole sua chave de API de console.anthropic.com para o **✦ Edit with Claude**, notas e Sandbox. A chave fica só no seu navegador.
 
 ## Arquivos
@@ -32,6 +33,9 @@ Precisa de: macOS, Python 3, Google Chrome. A transcrição baixa o modelo de fa
 | `Instalar.command` / `setup.sh` | instalação num computador novo |
 | `sounds/` | Real SFX (CC0) e earshot (MIT), com as licenças |
 | `effects-previews/` | prévias animadas dos 51 efeitos |
+| `i18n.js` | a interface em inglês e espanhol (gerado — não edite à mão) |
+| `tools/i18n.tsv` | as traduções: português, inglês e espanhol, uma por linha. Depois de editar, rode `python3 tools/build_i18n.py` |
+| `assets/logo-edit-labs.png` | o logo |
 | `tools/make_fx_previews.py` | regenera as prévias dos efeitos |
 
 ## Créditos

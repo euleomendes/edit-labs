@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Edit Labs</title>
+<script src="i18n.js"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%2080%22%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2298%22%20height%3D%2278%22%20rx%3D%2213%22%20fill%3D%22%231d1d22%22%20stroke%3D%22none%22%20stroke-width%3D%221.5%22/%3E%3Crect%20x%3D%228.3%22%20y%3D%227.7%22%20width%3D%2283.4%22%20height%3D%2239.6%22%20rx%3D%226%22%20fill%3D%22%23f7f7f8%22/%3E%3Cpath%20d%3D%22M41%2015.5v23.6c0%201.3%201.4%202.1%202.5%201.4l19.5-11.8c1-.6%201-2.2%200-2.8L43.5%2014.1c-1.1-.7-2.5.1-2.5%201.4z%22%20fill%3D%22%230a5cff%22/%3E%3Cpath%20d%3D%22M6.3%2057.8h87.4M15%2053.6v4.2M34.5%2053.6v4.2M69%2053.6v4.2M87.5%2053.6v4.2%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22/%3E%3Crect%20x%3D%226.3%22%20y%3D%2263.4%22%20width%3D%2219%22%20height%3D%229%22%20rx%3D%221.6%22%20fill%3D%22%230a5cff%22/%3E%3Crect%20x%3D%2228.3%22%20y%3D%2263.4%22%20width%3D%2244.6%22%20height%3D%229%22%20rx%3D%221.6%22%20fill%3D%22%230a5cff%22/%3E%3Crect%20x%3D%2275.8%22%20y%3D%2263.4%22%20width%3D%2217.6%22%20height%3D%229%22%20rx%3D%221.6%22%20fill%3D%22%230a5cff%22/%3E%3Cpath%20d%3D%22M50.5%2057v17%22%20stroke%3D%22%23ff7a00%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2250.5%22%20cy%3D%2256.4%22%20r%3D%224.4%22%20fill%3D%22%23ff7a00%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <!-- Fontes do texto (hook e legendas), no estilo das fontes do Edits -->
@@ -276,6 +278,8 @@ textarea.in:focus,input.in:focus{border-color:var(--red)}
 .pop button{display:flex;width:100%;gap:8px;align-items:center;padding:7px 9px;border-radius:6px;font-size:12px;text-align:left}
 .pop button:hover{background:var(--panel2)}
 .pop button.on{color:var(--red);font-weight:600}
+.pop button svg{width:15px;height:15px;flex-shrink:0}
+.pop .em{font-style:normal;font-size:14px;width:18px;text-align:center;flex-shrink:0}
 .tour{position:fixed;z-index:95;background:#1d1a17;color:#fff;border-radius:10px;padding:12px 14px;width:260px;font-size:12.5px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
 .tour b{display:block;margin-bottom:3px}
 .tour .tf{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font:10px var(--mono);color:#aaa}
@@ -458,13 +462,30 @@ textarea.in:focus,input.in:focus{border-color:var(--red);box-shadow:0 0 0 3px va
 .wopt b{display:block;font-size:15px;font-weight:650}
 .wopt small{display:block;color:var(--muted);font-size:12.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wopt:first-child b{color:var(--red)}
+
+/* Edit Labs logo */
+:root{--markLine:transparent;--brandInk:#1d1d22;--brandBlue:#0a5cff}
+:root[data-theme="dark"]{--markLine:rgba(255,255,255,.18);--brandInk:#f5f5f7;--brandBlue:#3d7dff}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--markLine:rgba(255,255,255,.18);--brandInk:#f5f5f7;--brandBlue:#3d7dff} }
+.brand .mark{width:40px;height:32px;flex-shrink:0;display:block}
+.brand .bname{font-size:17px;font-weight:900;letter-spacing:.01em;line-height:1;color:var(--brandInk)}
+.bname b{font-weight:900}.bname .labs{color:var(--brandBlue)}
+.brand .bsub{font-size:10.5px;margin-top:3px;color:var(--muted)}
+.wbrand{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 auto 22px}
+.wbrand .mark{width:70px;height:56px}
+.wbrand .bname{font-size:38px;font-weight:900;letter-spacing:.01em;color:var(--brandInk)}
+.langb{width:auto!important;padding:0 7px!important;gap:4px;display:inline-flex;align-items:center;font-size:13px}
+.langb b{font:600 10.5px var(--sans);letter-spacing:.04em;color:var(--ink2)}
+.wlang{position:absolute;top:18px;right:20px;display:flex;gap:4px;background:var(--panel);border-radius:999px;padding:3px;box-shadow:var(--shadow)}
+.wlang button{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;color:var(--muted)}
+.wlang button.on{background:var(--red);color:#fff}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="brand">
-    <div class="logo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></div>
-    <div><div class="bname">Edit Labs</div><div class="bsub">seu laboratório de edição</div></div>
+    <svg class="mark" viewBox="0 0 100 80" aria-hidden="true"><rect x="1" y="1" width="98" height="78" rx="13" fill="#1d1d22" stroke="var(--markLine)" stroke-width="1.5"/><rect x="8.3" y="7.7" width="83.4" height="39.6" rx="6" fill="#f7f7f8"/><path d="M41 15.5v23.6c0 1.3 1.4 2.1 2.5 1.4l19.5-11.8c1-.6 1-2.2 0-2.8L43.5 14.1c-1.1-.7-2.5.1-2.5 1.4z" fill="#0a5cff"/><path d="M6.3 57.8h87.4M15 53.6v4.2M34.5 53.6v4.2M69 53.6v4.2M87.5 53.6v4.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><rect x="6.3" y="63.4" width="19" height="9" rx="1.6" fill="#0a5cff"/><rect x="28.3" y="63.4" width="44.6" height="9" rx="1.6" fill="#0a5cff"/><rect x="75.8" y="63.4" width="17.6" height="9" rx="1.6" fill="#0a5cff"/><path d="M50.5 57v17" stroke="#ff7a00" stroke-width="2.2" stroke-linecap="round"/><circle cx="50.5" cy="56.4" r="4.4" fill="#ff7a00"/></svg>
+    <div><div class="bname"><b>EDIT</b> <b class="labs">LABS</b></div><div class="bsub">Seu laboratório de edição com IA.</div></div>
   </div>
   <nav class="tabs" id="tabs">
     <button class="tab" data-tab="cut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/></svg><span>Corte</span></button>
@@ -479,6 +500,7 @@ textarea.in:focus,input.in:focus{border-color:var(--red);box-shadow:0 0 0 3px va
     <button class="hlink" id="claudeBtn" data-act="claudesettings" style="height:30px;margin-right:4px"><span class="cdot" id="cdot"></span> Claude</button>
     <button class="btn sm" id="importBtn" title="Importar um vídeo para editar" style="height:30px;margin-right:4px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21V9M7 14l5-5 5 5M4 3h16"/></svg> Importar vídeo</button>
     <button class="ib" id="warnBtn" title="Atalhos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3L2 20h20z"/><path d="M12 10v4M12 17v.5"/></svg></button>
+    <button class="ib langb" id="langBtn" title="Idioma" data-act="langmenu"><span>🌐</span><b id="langCode">PT</b></button>
     <button class="ib" id="themeBtn" title="Claro / escuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button>
   </div>
 </header>
@@ -668,7 +690,7 @@ let uid = 1; const nid = p => (p||'x') + (uid++) + Math.random().toString(36).sl
 const S = {
   tab:'cut', lines:[], looks:[], sfx:[], capStyle:'single', filter:'none',
   face:{on:false,scanned:false,cover:'emoji',emoji:'😊',img:null,size:1,x:.5,y:.36,manual:false},
-  music:{on:false,id:'lofi',vol:.5}, sfxOn:true, pause:{on:true,max:0.35}, cap:{x:.5,y:.66,size:1}, dest:'mp4', speed:1, zoom:1,
+  music:{on:false,id:'lofi',vol:.5}, sfxOn:true, pause:{on:true,max:0.5,pad:0.2}, cap:{x:.5,y:.66,size:1}, dest:'mp4', speed:1, zoom:1,
   snaps:[], exported:false, lockedLooks:false, notes:'', defaultNotes:false, k:1, done:{},
   capOpt:{...clone(CAP_PRESET.single), style:'single'}, hooks:[]
 };
@@ -720,7 +742,7 @@ function seedLooks(){
 /* ============================== PERSIST / UNDO ============================== */
 const KEYS = ['k','pause','cap','lines','looks','sfx','capStyle','filter','face','music','sfxOn','dest','notes','defaultNotes','capOpt','hooks'];
 function snapshot(){ const o={}; KEYS.forEach(k=>o[k]=S[k]); return JSON.stringify(o); }
-function restore(js){ const o = JSON.parse(js); KEYS.forEach(k=>{ if(o[k]!==undefined) S[k]=o[k]; }); applyScale(); }
+function restore(js){ const o = JSON.parse(js); KEYS.forEach(k=>{ if(o[k]!==undefined) S[k]=o[k]; }); if (S.pause && S.pause.pad==null){ S.pause.pad = 0.2; if (S.pause.max===0.35) S.pause.max = 0.5; } applyScale(); }
 function commit(fn){ undoStack.push(snapshot()); if(undoStack.length>100) undoStack.shift(); redoStack.length=0; fn(); afterChange(); }
 function undo(){ if(!undoStack.length) return; redoStack.push(snapshot()); restore(undoStack.pop()); afterChange(); toast('Desfeito'); }
 function redo(){ if(!redoStack.length) return; undoStack.push(snapshot()); restore(redoStack.pop()); afterChange(); toast('Refeito'); }
@@ -730,23 +752,31 @@ function afterChange(){ buildSegments(); render(); persist(); if (typeof preload
 /* ============================== TIME MAP ============================== */
 function buildSegments(){
   segs = []; let cur = null, prevKept = null;
+  if (S.pause && S.pause.pad==null) S.pause.pad = 0.2;
   const lim = S.pause && S.pause.on ? S.pause.max : 0.9*S.k;
+  // Breathing room around speech, so a cut never lands on top of a syllable.
+  const pad = S.pause ? S.pause.pad : 0.2, pre = pad*0.6, post = pad;
   UI.pauses = 0; UI.pauseSaved = 0;
+  const removed = [];   // words that are cut: the padding never reaches into them
   for (const L of S.lines){
-    if (L.cut){ cur=null; prevKept=null; continue; }
+    if (L.cut){ L.words.forEach(w=>removed.push(w)); cur=null; prevKept=null; continue; }
     for (const w of L.words){
-      if (w.cut){ cur=null; prevKept=null; continue; }
+      if (w.cut){ removed.push(w); cur=null; prevKept=null; continue; }
       if (cur && w.s - cur.e < lim){ cur.e = w.e; if(!cur.lines.includes(L.id)) cur.lines.push(L.id); }
       else {
-        if (cur && prevKept && w.s - cur.e > 0.15){ UI.pauses++; UI.pauseSaved += (w.s - cur.e) - 0.15; }
+        if (cur && prevKept && w.s - cur.e > pre+post){ UI.pauses++; UI.pauseSaved += (w.s - cur.e) - (pre+post); }
         cur = {s:w.s, e:w.e, lines:[L.id]}; segs.push(cur);
       }
       prevKept = w;
     }
   }
-  let es = 0; for (const g of segs){ g.s = Math.max(0, g.s-0.05); g.e = g.e+0.1; g.es = es; es += g.e-g.s; }
+  for (const g of segs){
+    let a = Math.max(0, g.s-pre), b = g.e+post;
+    for (const w of removed){ if (w.e <= g.s+0.001 && w.e > a) a = Math.min(g.s, w.e+0.01); if (w.s >= g.e-0.001 && w.s < b) b = Math.max(g.e, w.s-0.01); }
+    g.s = a; g.e = b;
+  }
   for (let i=1;i<segs.length;i++) if (segs[i].s < segs[i-1].e){ segs[i].s = segs[i-1].e; }
-  es = 0; for (const g of segs){ g.es = es; es += g.e-g.s; }
+  let es = 0; for (const g of segs){ g.es = es; es += g.e-g.s; }
   editDur = es;
 }
 function segAt(t){ return segs.find(g=>t>=g.s-0.04 && t<g.e) }
@@ -1660,7 +1690,9 @@ function renderCut(){
     <div class="meta" style="flex-wrap:wrap;align-items:center"><span>${n? n+' alteraç'+(n>1?'ões':'ão'):'Nenhuma alteração ainda'}</span><span>${fmt(editDur)} de duração</span><span style="margin-left:auto;display:flex;gap:6px"><button class="hlink" data-act="transcribe">${ICO.mic.replace('<svg','<svg width=11 height=11')} Transcrever</button><button class="hlink" data-act="editscript">Editar roteiro</button><button class="btn sm" data-act="claudeedit">✦ Editar com o Claude</button></span></div>
     <div class="meta" style="flex-wrap:wrap;align-items:center;gap:10px;margin-top:-6px">
       <span style="display:flex;align-items:center;gap:6px"><button class="tgl ${S.pause.on?'on':''}" data-act="pausetoggle" title="Cortar pausas"></button> Cortar pausas maiores que
-        <select id="pauseMax" style="border:1px solid var(--line2);border-radius:6px;padding:2px 4px;background:var(--panel);font-size:11.5px">${[0.15,0.25,0.35,0.5,0.75,1].map(v=>`<option value="${v}" ${S.pause.max===v?'selected':''}>${v}s</option>`).join('')}</select></span>
+        <select id="pauseMax" style="border:1px solid var(--line2);border-radius:6px;padding:2px 4px;background:var(--panel);font-size:11.5px">${[0.25,0.35,0.5,0.75,1,1.5].map(v=>`<option value="${v}" ${S.pause.max===v?'selected':''}>${v}s</option>`).join('')}</select></span>
+      <span style="display:flex;align-items:center;gap:6px">Respiro antes e depois da fala
+        <select id="pausePad" style="border:1px solid var(--line2);border-radius:6px;padding:2px 4px;background:var(--panel);font-size:11.5px">${[[0.1,'curto'],[0.2,'normal'],[0.35,'folgado'],[0.5,'bem folgado']].map(([v,n])=>`<option value="${v}" ${S.pause.pad===v?'selected':''}>${n}</option>`).join('')}</select></span>
       ${S.pause.on && UI.pauses? `<span style="color:var(--muted)">${UI.pauses} pausas · ${UI.pauseSaved.toFixed(1)}s economizados</span>`:''}
       <button class="hlink" data-act="cleanup">✂ Limpar erros</button></div></div>${headerLinks()}</div>
     <div class="card rows">${groupedRows('cut')}</div></div>`;
@@ -1675,7 +1707,7 @@ function lookCards(L){
       <div><b>${esc(lookName(k))}</b><small>${k.note? esc(k.note).slice(0,28): (k.type==='broll'||k.type==='media')? (()=>{ const m=mediaTime(k); return m? 'em “'+esc(L.words[m.i].w.replace(/[,.?!]$/,''))+'” · '+(+m.dur).toFixed(1)+'s' : ''; })(): (k.data&&k.data.text)? '“'+esc(k.data.text).slice(0,26)+'”' : k.type==='vfx'&&k.text? '“'+esc(k.text).slice(0,26)+'”' : 'Esta linha'}</small></div>
       ${EDITABLE.includes(k.type)? `<button class="sb" data-act="editlook" data-k="${k.id}">✎ Editar</button>` : `<button class="sb" data-act="swaplook" data-k="${k.id}">${ICO.swap} Trocar</button>`}<button class="sb" data-act="lookmenu" data-k="${k.id}">${ICO.dots}</button></div>`;
   }).join('');
-  return `<div class="lookcol">${cards}<button class="addlook" data-act="addlook" data-l="${L.id}">${ICO.plus.replace('<svg','<svg width=11 height=11')} Adicionar um look</button></div>`;
+  return `<div class="lookcol">${cards}<button class="addlook" data-act="addlook" data-l="${L.id}">${ICO.plus.replace('<svg','<svg width=11 height=11')} Adicionar texto, efeito ou mídia</button></div>`;
 }
 function renderVisuals(){
   const nLooks = S.looks.length + S.lines.filter(l=>!l.cut).length;
@@ -1902,11 +1934,11 @@ const A = {
   lookbook: ()=>openLookbook(null), 'pbar-lookbook': ()=>openLookbook(null),
   addlook: el=>{ wtb.classList.add('hidden'); UI.addWord = el.dataset.i!=null ? +el.dataset.i : null; openLookbook(el.dataset.l); },
   swaplook: el=>{ const k=S.looks.find(x=>x.id===el.dataset.k); if(k.type==='media'||k.type==='broll') openMedia(k.line, k.id); else openLookbook(k.line, k.id); },
-  lookmenu: el=>{ const k=el.dataset.k; showPop(el, `<button data-act="looknote" data-k="${k}">${ICO.note} Adicionar nota</button><button data-act="lookjump" data-k="${k}">${ICO.play} Ver este look</button><button data-act="looksave" data-k="${k}">${ICO.star} Salvar no lookbook</button><button data-act="lookdel" data-k="${k}" style="color:var(--red)">${ICO.trash} Remover</button>`); },
+  lookmenu: el=>{ const k=el.dataset.k; showPop(el, `<button data-act="looknote" data-k="${k}"><i class="em">📝</i> Adicionar nota</button><button data-act="lookjump" data-k="${k}"><i class="em">▶️</i> Ver este look</button><button data-act="looksave" data-k="${k}"><i class="em">⭐</i> Salvar nos meus looks</button><button data-act="lookdel" data-k="${k}" style="color:#ff3b30"><i class="em">🗑️</i> Remover</button>`); },
   lookdel: el=>{ hidePop(); commit(()=>S.looks=S.looks.filter(k=>k.id!==el.dataset.k)); toast('Look removido'); },
   lookjump: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); const L=lineById(k.line); seekSrc((keptRange(L)||[lineStart(L)])[0]); play(); },
-  looknote: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); const v=prompt('Nota para o Claude sobre este look:', k.note||''); if(v!==null){ commit(()=>k.note=v); } },
-  looksave: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); UI.saved = UI.saved||[]; UI.saved.push(JSON.parse(JSON.stringify(k))); toast('“'+lookName(k)+'” salvo no seu lookbook'); },
+  looknote: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); const v=prompt(T('Nota para o Claude sobre este look:'), k.note||''); if(v!==null){ commit(()=>k.note=v); } },
+  looksave: el=>{ hidePop(); const k=S.looks.find(x=>x.id===el.dataset.k); UI.saved = UI.saved||[]; UI.saved.push(JSON.parse(JSON.stringify(k))); toast('“'+lookName(k)+'” salvo nos seus looks'); },
   pickLook: el=>{ applyLook(el.dataset.t, el.dataset.saved, el.dataset.tpl); },
   'pbar-media': ()=>{ UI.addWord=null; openMedia(currentLineForAdd()); },
   media: ()=>{ UI.addWord=null; openMedia(currentLineForAdd()); },
@@ -1957,8 +1989,15 @@ $('#nextBtn').addEventListener('click', e=>{}); // handled via data-act
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 function setTab(t){ S.tab=t; wtb.classList.add('hidden'); hidePop(); render(); $('#main').scrollTop=0; }
 $('#undo').onclick=undo; $('#redo').onclick=redo; $('#warnBtn').onclick=showShortcuts;
+// Language of the editor (Português · English · Español)
+function langUI(){ const c = document.getElementById('langCode'); if (c) c.textContent = (window.I18N_LANG||'pt').toUpperCase(); document.querySelectorAll('.wlang button').forEach(b=>b.classList.toggle('on', b.dataset.l===window.I18N_LANG)); }
+A.langmenu = el=>{ const cur = window.I18N_LANG||'pt'; showPop(el.closest('button')||el, `<div data-noi18n>${Object.entries(window.I18N_LANGS||{pt:'Português'}).map(([k,v])=>`<button data-act="setlang" data-l="${k}" class="${k===cur?'on':''}"><i class="em">${{pt:'🇧🇷',en:'🇺🇸',es:'🇪🇸'}[k]}</i> ${v}</button>`).join('')}</div>`); };
+A.setlang = el=>{ hidePop(); if (window.setLang) window.setLang(el.dataset.l); };
+window.onLangChange = ()=>{ langUI(); UI.tplThumbs = null; render(); };
+langUI();
 $('#themeBtn').onclick = ()=>{ const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); const nx = cur==='dark'?'light':'dark'; document.documentElement.dataset.theme = nx; try{localStorage.setItem('vb-theme',nx)}catch(e){} };
 document.addEventListener('change', e=>{ if (e.target.id==='pauseMax'){ const v=+e.target.value; commit(()=>{ S.pause.max=v; S.pause.on=true; }); } });
+document.addEventListener('change', e=>{ if (e.target.id==='pausePad'){ const v=+e.target.value; commit(()=>{ S.pause.pad=v; }); } });
 document.addEventListener('input', e=>{
   if (e.target.id==='zoomR'){ S.zoom=+e.target.value; renderTimeline(); updateLive(); }
   if (e.target.id==='faceSize'){ S.face.size=+e.target.value; persist(); }
@@ -2038,17 +2077,24 @@ function openLookbook(lineId, swapId){
   const L = lineById(lineId || currentLineForAdd()); const txt = L? keptText(L): 'Suas palavras aqui';
   const card = (t)=>`<div class="lb" data-act="pickLook" data-t="${t}">${lbThumb(t, txt)}<b>${LOOK_TYPES[t].n}</b><small>${LOOK_TYPES[t].d}</small></div>`;
   const saved = (UI.saved||[]).map((k,i)=>`<div class="lb" data-act="pickLook" data-t="${k.type}" data-saved="${i}">${lbThumb(k.type, txt)}<b>${esc(lookName(k))}</b><small>Salvo por você</small></div>`).join('');
-  openModal(`<div class="mhead"><div class="kick"><i></i> Lookbook · ${8+(UI.saved||[]).length} looks</div><h2 class="mt">Seu lookbook</h2>
-    <p class="msub">Nas suas palavras: “${esc(txt)}”</p><p class="mtxt">${swapId? 'Escolha um look para trocar.':'Toque num look para colocar na linha '+(L?lineNum(L):'')+'. Depois você edita fonte, cores e tudo.'}</p></div>
-    <div class="mbody"><div class="sect" style="margin-top:2px">Textos editáveis <span style="text-transform:none;letter-spacing:0;font-family:Inter;font-weight:400">— escreva o que quiser, mude a fonte e as cores, arraste para qualquer lugar</span></div>
-    <div class="grid4">${Object.keys(TPL).map(tp=>`<div class="lb" data-act="pickLook" data-t="text" data-tpl="${tp}">${tplThumb(tp, txt)}<b>${TPL[tp]}</b></div>`).join('')}</div>
-    <div class="sect">Nas suas palavras</div><div class="grid3">${['hook','eyebrow','headline'].map(card).join('')}</div>
+  const at = L? src2edit((keptRange(L)||[lineStart(L)])[0]) : 0;
+  openModal(`<div class="mhead"><div class="kick"><i></i> ${swapId? 'Trocar' : 'Adicionar na linha '+(L?lineNum(L):'')}</div><h2 class="mt">${swapId? 'Trocar este look' : 'O que você quer nesta linha?'}</h2>
+    <p class="msub">Nas suas palavras: “${esc(txt)}”</p><p class="mtxt">Começa em ${fmt(at)}. Toque numa opção — depois você edita fonte, cores, tempo e tudo.</p></div>
+    <div class="mbody"><div class="sect" style="margin-top:2px">Texto · modelos de hook <span style="text-transform:none;letter-spacing:0;font-family:Inter;font-weight:400">— aparece nesta linha; você edita na aba Hook</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px">${hookTplThumbs().map((u,i)=>`<div class="lb" data-act="lbhook" data-i="${i}"><div class="th" style="padding:0;background:#222 url(${u}) center/cover"></div><b style="font-size:11px">${HOOK_TPLS[i].n}</b></div>`).join('')}</div>
+    <div style="margin-top:10px"><button class="btn ghost sm" data-act="lbtext">${ICO.plus} Texto livre nesta linha</button></div>
     <div class="sect">Tela cheia</div><div class="grid3">${['takeover','breakaway','countup'].map(card).join('')}</div>
     <div class="sect">Efeitos</div><div class="grid3">${['spotlight','zoom','flash'].map(card).join('')}</div>
     <div class="sect">Legendas · para o reel todo</div><div class="grid3">${Object.keys(CAP_STYLES).map(c=>`<div class="lb ${S.capStyle===c?'on':''}" data-act="setcapLB" data-c="${c}">${lbThumb(c,txt)}<b>${CAP_STYLES[c]}</b><small>Legendas</small></div>`).join('')}</div>
     ${saved? `<div class="sect">Salvos por você</div><div class="grid3">${saved}</div>`:''}
-    <div class="sect">Outra coisa?</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" data-act="lbmedia">${ICO.img} Imagem, GIF ou b-roll</button><button class="btn ghost sm" data-act="lbsandbox">${ICO.sand} Não gostei de nenhum — crie um para mim</button></div></div>`);
+    <div class="sect">Outra coisa?</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost sm" data-act="lbmedia">${ICO.img} Imagem, GIF ou b-roll</button><button class="btn ghost sm" data-act="effects">${ICO.fx} Biblioteca de efeitos</button><button class="btn ghost sm" data-act="lbsandbox">${ICO.sand} Não gostei de nenhum — crie um para mim</button></div></div>`);
 }
+// Hook models and free text from a line: they become hooks (Hook tab) timed to that line.
+function lbLineStart(){ const L = lineById(UI.lbTarget || currentLineForAdd()); return L? +src2edit((keptRange(L)||[lineStart(L)])[0]).toFixed(2) : 0; }
+function lbDropSwap(){ const sw = UI.lbSwap; if (sw) S.looks = S.looks.filter(k=>k.id!==sw); }
+A.lbhook = el=>{ const t = HOOK_TPLS[+el.dataset.i]; const at = lbLineStart(); const hs = t.layers.map(hookFromTpl); hs.forEach(h=>h.start = at);
+  commit(()=>{ lbDropSwap(); S.hooks = S.hooks||[]; S.hooks.push(...hs); }); closeModal(); UI.hookSel = hs[hs.length-1].id; setTab('hook'); seekEdit(at+0.05); preloadSfx(); if (hs.some(h=>h.behind)) getSegmenter(); toast('Modelo “'+t.n+'” adicionado — edite o texto abaixo'); };
+A.lbtext = ()=>{ const at = lbLineStart(); const h = newHook('text'); h.start = at; commit(()=>{ lbDropSwap(); S.hooks = S.hooks||[]; S.hooks.push(h); }); closeModal(); UI.hookSel = h.id; setTab('hook'); seekEdit(at+0.05); };
 A.setcapLB = el=>{ commit(()=>setCapStyle(el.dataset.c)); closeModal(); toast('Legendas: '+CAP_STYLES[el.dataset.c]); };
 A.lbmedia = ()=>{ const l = UI.lbTarget || currentLineForAdd(); closeModal(); openMedia(l); };
 A.lbsandbox = ()=>{ const l = UI.lbTarget; closeModal(); openSandbox(1, l); };
@@ -2431,12 +2477,12 @@ function openTextEditor(id){
         <div class="frow"><label><input type="checkbox" data-tx="shadow.on" ${on(d.shadow.on)}> Sombra</label><input type="color" data-tx="shadow.color" value="${d.shadow.color}"></div></div>
       <div class="sect">Posição</div><div class="seg">${P.map(([n,v])=>`<button data-pos="${v}">${n}</button>`).join('')}</div>
     </div>
-    <div class="mfoot"><button class="btn ghost" id="txDel" style="color:var(--red)">${ICO.trash} Remover</button><div style="display:flex;gap:6px"><button class="btn ghost" id="txSave">${ICO.star} Salvar no lookbook</button><button class="btn" id="txOk">${ICO.check} Pronto</button></div></div>`, true); $('#modal').classList.add('left');
+    <div class="mfoot"><button class="btn ghost" id="txDel" style="color:var(--red)">${ICO.trash} Remover</button><div style="display:flex;gap:6px"><button class="btn ghost" id="txSave">${ICO.star} Salvar nos meus looks</button><button class="btn" id="txOk">${ICO.check} Pronto</button></div></div>`, true); $('#modal').classList.add('left');
   $('#txTpl').onclick = e=>{ const c = e.target.closest('[data-tp]'); if (!c) return; d.tpl = c.dataset.tp; delete d.pos; if (d.tpl==='outline') d.outline.on = true; document.querySelectorAll('#txTpl .lb').forEach(x=>x.classList.toggle('on', x===c)); persist(); };
   document.querySelectorAll('[data-pos]').forEach(b=>b.onclick = ()=>{ const [x,y] = b.dataset.pos.split(',').map(Number); d.pos = {x,y}; persist(); });
   const finish = ()=>{ UI.txLook = null; if (snapshot()!==before){ undoStack.push(before); redoStack.length=0; } closeModal(); afterChange(); };
   $('#txOk').onclick = finish;
-  $('#txSave').onclick = ()=>{ UI.saved = UI.saved||[]; UI.saved.push(JSON.parse(JSON.stringify({type:'text', data:{...d, text:''}, custom:'Meu '+TPL[d.tpl||'box']}))); toast('Salvo no seu lookbook'); };
+  $('#txSave').onclick = ()=>{ UI.saved = UI.saved||[]; UI.saved.push(JSON.parse(JSON.stringify({type:'text', data:{...d, text:''}, custom:'Meu '+TPL[d.tpl||'box']}))); toast('Salvo nos seus looks'); };
   $('#txDel').onclick = ()=>{ S.looks = S.looks.filter(x=>x!==k); UI.txLook = null; undoStack.push(before); redoStack.length=0; closeModal(); afterChange(); };
 }
 const mdLook = ()=> S.looks.find(x=>x.id===UI.mdLook);
@@ -2604,9 +2650,9 @@ function openSandbox(step, lineId){
     $('#sbSend').onclick = ()=>{ sb.prompt = ta.value.trim(); sb.sketches=null; openSandbox(2); };
   } else if (step===2){
     openModal(`<div class="mhead">${steps(2)}<div class="kick"><i></i> Fale pra o Claude · passo 2 de 4</div><h2 class="mt">O Claude está rascunhando…</h2><p class="msub">“${esc(sb.prompt.slice(0,120))}”</p></div>
-      <div class="mbody"><div class="prog"><i id="sbBar"></i></div><p class="mtxt" id="sbTxt">Lendo a sua linha e o seu lookbook…</p><p class="mtxt">Pode fechar — o Chef Claude avisa quando os três rascunhos ficarem prontos.</p></div>
+      <div class="mbody"><div class="prog"><i id="sbBar"></i></div><p class="mtxt" id="sbTxt">Lendo a sua linha e os seus looks…</p><p class="mtxt">Pode fechar — o Chef Claude avisa quando os três rascunhos ficarem prontos.</p></div>
       <div class="mfoot"><button class="btn ghost" data-act="close">Continuar editando</button><span></span></div>`);
-    let p=0, done=false; const msgs=['Lendo a sua linha e o seu lookbook…','Pensando em três ideias…','Sincronizando com as suas palavras…','Finalizando…'];
+    let p=0, done=false; const msgs=['Lendo a sua linha e os seus looks…','Pensando em três ideias…','Sincronizando com as suas palavras…','Finalizando…'];
     const finish = sk=>{ done=true; sb.sketches=sk; if (!$('#modal').classList.contains('hidden') && $('#sbBar')) openSandbox(3); else { UI.chef={msg:'Seus 3 rascunhos estão prontos em “Fale pra o Claude”. Toque num para testar no seu vídeo.',btn:'Ver os rascunhos',open:()=>openSandbox(3)}; renderChef(); toast('Chef Claude: seus rascunhos estão prontos'); } };
     const tick=()=>{ if(done) return; p += p<85? 3+Math.random()*5 : 0.25; const b=$('#sbBar'); if(b) b.style.width=Math.min(97,p)+'%'; const t=$('#sbTxt'); if(t) t.textContent=msgs[Math.min(3,Math.floor(p/26))]; setTimeout(tick,160); };
     tick();
@@ -2625,9 +2671,9 @@ function openSandbox(step, lineId){
   } else if (step===4){
     const s = sb.sketches[sb.pick];
     openModal(`<div class="mhead">${steps(4)}<div class="kick"><i></i> Fale pra o Claude · passo 4 de 4</div><h2 class="mt">Pronto ✓</h2><p class="msub">“${esc(s.name)}” está na linha ${lineNum(L)}.</p></div>
-      <div class="mbody"><p class="mtxt">Quer usar de novo? Salve no seu lookbook e ele aparece em todos os reels.</p></div>
-      <div class="mfoot"><button class="btn ghost" id="sbSave">${ICO.star} Salvar no meu lookbook</button><button class="btn" id="sbPlay">${ICO.play} Assistir</button></div>`);
-    $('#sbSave').onclick=()=>{ UI.saved=UI.saved||[]; UI.saved.push({type:s.type,data:s.data,custom:s.name}); toast('Salvo no seu lookbook'); closeModal(); UI.sb=null; };
+      <div class="mbody"><p class="mtxt">Quer usar de novo? Salve nos seus looks e ele aparece em todos os reels.</p></div>
+      <div class="mfoot"><button class="btn ghost" id="sbSave">${ICO.star} Salvar nos meus looks</button><button class="btn" id="sbPlay">${ICO.play} Assistir</button></div>`);
+    $('#sbSave').onclick=()=>{ UI.saved=UI.saved||[]; UI.saved.push({type:s.type,data:s.data,custom:s.name}); toast('Salvo nos seus looks'); closeModal(); UI.sb=null; };
     $('#sbPlay').onclick=()=>{ closeModal(); seekSrc((keptRange(L)||[lineStart(L)])[0]); play(); UI.sb=null; };
   }
 }
@@ -3117,7 +3163,7 @@ function energyEnvelope(audio, sr=16000){
   const hop = sr*0.02|0, n = Math.floor(audio.length/hop), env = new Float32Array(n);
   for (let i=0;i<n;i++){ let s=0; for (let j=i*hop;j<(i+1)*hop;j++) s+=audio[j]*audio[j]; env[i]=Math.sqrt(s/hop); }
   const sorted = Float32Array.from(env).sort(); const floor = sorted[Math.floor(n*0.1)]||0, speech = sorted[Math.floor(n*0.9)]||0.1;
-  return {env, thr: floor + (speech-floor)*0.12};
+  return {env, thr: floor + (speech-floor)*0.05};
 }
 function snapWordsToVoice(lines, E){
   if (!E) return; const loud = t => { const i = Math.floor(t/0.02); return i>=0 && i<E.env.length && E.env[i] > E.thr; };
@@ -3125,7 +3171,7 @@ function snapWordsToVoice(lines, E){
     let s = w.bs, e = w.be;
     while (e - s > 0.12 && !loud(e-0.01)) e -= 0.02;   // trailing silence inside the word
     while (e - s > 0.12 && !loud(s+0.01)) s += 0.02;   // leading silence inside the word
-    w.bs = Math.max(0, s - 0.03); w.be = e + 0.05;
+    w.bs = Math.max(0, s - 0.06); w.be = e + 0.1;
   }
 }
 // Always fillers. Words that are also real words in some language ("um" = "a" in Portuguese, "é", "né", "ah", "eh", "tipo", "like")
@@ -3303,16 +3349,16 @@ function closeWelcome(){ const w = document.getElementById('welcome'); if (w){ w
   const kept = o ? o.lines.filter(l=>!l.cut) : []; const words = kept.reduce((a,l)=>a+l.words.filter(w=>!w.cut).length, 0);
   const first = kept[0] ? kept[0].words.filter(w=>!w.cut).map(w=>w.w).join(' ') : '';
   const el = document.createElement('div'); el.id = 'welcome';
-  el.innerHTML = `<div class="wcard">
-    <div class="logo wlogo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 9l5 3-5 3z" fill="#fff"/></svg></div>
-    <h1>Bem-vindo ao seu Edit Labs</h1><p class="wsub">Laboratório de Edição</p>
+  el.innerHTML = `<div class="wlang" data-noi18n>${Object.keys(window.I18N_LANGS||{pt:1}).map(k=>`<button data-l="${k}" class="${k===(window.I18N_LANG||'pt')?'on':''}">${k.toUpperCase()}</button>`).join('')}</div><div class="wcard">
+    <div class="wbrand"><svg class="mark" viewBox="0 0 100 80" aria-hidden="true"><rect x="1" y="1" width="98" height="78" rx="13" fill="#1d1d22" stroke="var(--markLine)" stroke-width="1.5"/><rect x="8.3" y="7.7" width="83.4" height="39.6" rx="6" fill="#f7f7f8"/><path d="M41 15.5v23.6c0 1.3 1.4 2.1 2.5 1.4l19.5-11.8c1-.6 1-2.2 0-2.8L43.5 14.1c-1.1-.7-2.5.1-2.5 1.4z" fill="#0a5cff"/><path d="M6.3 57.8h87.4M15 53.6v4.2M34.5 53.6v4.2M69 53.6v4.2M87.5 53.6v4.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><rect x="6.3" y="63.4" width="19" height="9" rx="1.6" fill="#0a5cff"/><rect x="28.3" y="63.4" width="44.6" height="9" rx="1.6" fill="#0a5cff"/><rect x="75.8" y="63.4" width="17.6" height="9" rx="1.6" fill="#0a5cff"/><path d="M50.5 57v17" stroke="#ff7a00" stroke-width="2.2" stroke-linecap="round"/><circle cx="50.5" cy="56.4" r="4.4" fill="#ff7a00"/></svg><div class="bname"><b>EDIT</b> <b class="labs">LABS</b></div></div>
+    <h1>Bem-vindo ao seu Edit Labs</h1><p class="wsub">Seu laboratório de edição com IA.</p>
     <div class="wopts">
       ${sp? `<button class="wopt" data-w="continue"><b>Continuar de onde parei</b><small>${kept.length} linhas · ${words} palavras${first? ' · “'+esc(first.slice(0,48))+(first.length>48?'…':'')+'”' : ''}</small></button>` : ''}
       <button class="wopt ${sp?'':'main'}" data-w="new"><b>${sp? 'Começar do zero' : 'Começar um novo vídeo'}</b><small>Importe um vídeo novo e comece um projeto limpo</small></button>
       ${sp? '' : `<button class="wopt" data-w="demo"><b>Ver o exemplo</b><small>Explore o editor com o vídeo de demonstração</small></button>`}
     </div></div>`;
   document.body.appendChild(el);
-  el.addEventListener('click', e=>{ const b = e.target.closest('[data-w]'); if (!b) return; const w = b.dataset.w;
+  el.addEventListener('click', e=>{ const lb = e.target.closest('.wlang button'); if (lb){ if (window.setLang) window.setLang(lb.dataset.l); return; } const b = e.target.closest('[data-w]'); if (!b) return; const w = b.dataset.w;
     if (w==='continue') continueProject(); else if (w==='new') freshProject(true); else closeWelcome(); });
 })();
 </script>
