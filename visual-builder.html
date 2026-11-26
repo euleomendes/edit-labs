@@ -2946,7 +2946,8 @@ function saveCfg(){ try{ localStorage.setItem('vb-claude', JSON.stringify({model
 function claudeOn(){ return CFG.ready && !CFG.off; }
 function setDot(){ const d=$('#cdot'); if(!d) return; d.className = 'cdot' + (claudeBusy? ' busy' : claudeOn()? ' on':''); $('#claudeBtn').title = claudeBusy? 'O Claude está trabalhando…' : claudeOn()? 'Conectado · '+MODELS[CFG.model] : 'Conectar o Claude'; }
 async function claudeCheck(){
-  try{ const r = await fetch('/api/claude/status'); const s = await r.json(); CFG.installed = !!s.installed; CFG.ready = !!(s.installed && s.loggedIn); }
+  CFG.outdated = false;
+  try{ const r = await fetch('/api/claude/status'); if (r.status === 404){ CFG.outdated = true; throw 0; } const s = await r.json(); CFG.installed = !!s.installed; CFG.ready = !!(s.installed && s.loggedIn); }
   catch(e){ CFG.installed = false; CFG.ready = false; }
   CFG.checked = true; setDot(); return CFG.ready;
 }
@@ -2967,10 +2968,10 @@ async function askClaude({system, prompt, schema, effort='medium'}){
 }
 A.claudesettings = async ()=>{
   const draw = ()=>{
-    const st = !CFG.checked? ['…','Verificando…'] : CFG.ready? ['✅','Conectado com a sua conta Claude'] : CFG.installed? ['🔑','Falta entrar na sua conta Claude'] : ['⬇️','O Claude Code ainda não está instalado'];
+    const st = !CFG.checked? ['…','Verificando…'] : CFG.outdated? ['🔄','Reabra o Edit Labs para ativar o Claude'] : CFG.ready? ['✅','Conectado com a sua conta Claude'] : CFG.installed? ['🔑','Falta entrar na sua conta Claude'] : ['⬇️','O Claude Code ainda não está instalado'];
     openModal(`<div class="mhead"><div class="kick"><i></i> Claude</div><h2 class="mt">Conectar o Claude</h2><p class="mtxt">O Claude edita com você: corta repetições e vícios de fala, escolhe destaques, looks e sons, segue as suas notas e propõe rascunhos no “Fale pra o Claude”. Ele usa a <b>sua conta Claude</b> (Pro ou Max) pelo Claude Code instalado neste computador. Não precisa de chave de API nem paga nada à parte.</p></div>
     <div class="mbody"><div style="display:flex;gap:10px;align-items:center;justify-content:flex-start;text-align:left;font-size:14px;padding:12px 14px;border-radius:12px;background:var(--bg2,rgba(127,127,127,.08));margin-bottom:12px"><span style="font-size:20px">${st[0]}</span><b>${st[1]}</b></div>
-    ${CFG.ready? '' : `<p class="mtxt" style="margin:0 0 12px;font-size:12.5px">Clique em <b>Instalar e entrar</b>: abre uma janela do Terminal que instala o Claude Code (se faltar) e abre o navegador para você entrar na sua conta. Depois volte aqui e clique em <b>Verificar de novo</b>.</p>`}
+    ${CFG.outdated? `<p class="mtxt" style="margin:0 0 12px;font-size:12.5px">O editor está rodando uma versão antiga do servidor. Feche a janela do Terminal do Edit Labs e abra de novo pelo <b>Abrir Editor.command</b>.</p>` : CFG.ready? '' : `<p class="mtxt" style="margin:0 0 12px;font-size:12.5px">Clique em <b>Instalar e entrar</b>: abre uma janela do Terminal que instala o Claude Code (se faltar) e abre o navegador para você entrar na sua conta. Depois volte aqui e clique em <b>Verificar de novo</b>.</p>`}
     <label class="field">Modelo do Claude<select id="cmodel">${Object.entries(MODELS).map(([k,v])=>`<option value="${k}" ${CFG.model===k?'selected':''}>${v}</option>`).join('')}</select></label>
     ${CFG.ready? `<label style="display:flex;gap:6px;align-items:center;font-size:12px"><input type="checkbox" id="con" ${CFG.off?'':'checked'}> Usar o Claude neste editor</label><div class="hint">Os pedidos contam no limite de uso da sua assinatura Claude.</div>` : ''}
     <div class="err" id="cerr"></div></div>
