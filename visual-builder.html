@@ -607,7 +607,7 @@ const LOOK_TYPES = {
 };
 const TPL = {box:'Caixa branca', black:'Caixa preta', tag:'Etiqueta + linha grande', outline:'Contorno forte', serif:'Manchete serifada', sticker:'Adesivo amarelo', bubble:'Balão de conversa', underline:'Sublinhado de marcador'};
 const TPL_POS = {box:{x:.5,y:.12}, black:{x:.5,y:.12}, tag:{x:.5,y:.12}, outline:{x:.5,y:.16}, serif:{x:.5,y:.12}, sticker:{x:.5,y:.14}, bubble:{x:.5,y:.14}, underline:{x:.5,y:.16}};
-// The 51 effects of github.com/Vibha-Ramprakash/claude-video-effects (MIT). [name, what it does, what "text" means for it]
+// The 51 effects of github.com/Vibha-Ramprakash/claude-video-effects (MIT), plus our own below. [name, what it does, what "text" means for it]
 const VFX = [
  ['noise','Reels se empilham atrás da sua cabeça, um a cada quarto de segundo',''],['lineup','Cartões numerados se abrem em arco acima da sua cabeça','nomes separados por |'],
  ['locked-on','Cantoneiras travam no seu rosto e a câmera segue você','etiqueta'],['orbit','Seus reels giram em volta da sua cabeça',''],
@@ -636,6 +636,78 @@ const VFX = [
  ['wave-trim','Um painel mostra a sua voz e o silêncio some',''],['huge-strike','Uma palavra serifada enorme, depois uma linha vermelha a risca','a palavra'],
  ['crayon-write','Um giz vermelho escreve a sua palavra atrás da sua cabeça','a palavra'],['fan-build','As capas dos seus reels se abrem em leque atrás da sua cabeça',''],
 ];
+// Our own 67 Edit Labs effects (effects/labs_fx.py), shown first in the library.
+const VFX_LABS = [
+ ["kinetic-hook", "As palavras do seu gancho batem uma a uma atrás da sua cabeça", "a frase do gancho"],
+ ["icon-strike", "Ícones de apps aparecem, uma linha vermelha risca cada um e eles caem", "apps separados por |"],
+ ["prompt-bar", "Uma barra de pedido digita a sua instrução e envia", "o pedido"],
+ ["grade-slider", "Um controle deslizante passa pela tela e aplica a cor", ""],
+ ["magazine", "Você vira capa de revista: o título cai letra por letra atrás de você", "título da revista"],
+ ["odometer", "Seu número sobe dígito por dígito, como um contador de quilometragem", "o número, ex.: 2.370.000"],
+ ["mood-curtain", "Uma cor escura e dramática desce como uma cortina, com grão", ""],
+ ["word-stamp", "Sua palavra é carimbada atrás da sua cabeça, letra por letra", "a palavra"],
+ ["giant-captions", "Cada palavra aparece gigante na tela enquanto você fala", "as palavras"],
+ ["dolly-zoom", "Você fica parado e o fundo se estica para trás (efeito vertigem)", ""],
+ ["rack-focus", "O foco sai de você e vai para um título, como numa lente de verdade", "o título"],
+ ["double-exposure", "Sua silhueta vira uma janela para outra imagem", ""],
+ ["shockwave", "Uma onda de impacto sai de você e faz a imagem ondular", ""],
+ ["paper-tear", "O fundo rasga e vira papel, com a sua palavra em letras recortadas", "a palavra"],
+ ["editing-timeline", "Uma timeline de edição se monta na sua frente, com o cursor correndo", ""],
+ ["file-drop", "Seu arquivo bruto cai numa caixa de envio e carrega", "nome do arquivo"],
+ ["grid-collapse", "A imagem se divide em quadrados que se afastam e voltam", ""],
+ ["page-scroll", "Seu vídeo vira um post num feed que rola", "@usuario"],
+ ["comment-thread", "Comentários aparecem um a um e se empilham", "nome: comentário | …"],
+ ["video-card", "O vídeo encolhe num cartão flutuante e depois volta a encher a tela", ""],
+ ["comment-cta", "Uma caixa de comentário digita a sua palavra, envia e o botão Seguir é apertado", "a palavra-chave"],
+ ["camera-moves", "Câmera na mão, um zoom na sua palavra e um chicote no final", ""],
+ ["contact-sheet", "A imagem vira uma folha de contato de filme com você circulado", ""],
+ ["receipt-printer", "Um cupom é impresso acima da sua cabeça, linha por linha", "linhas separadas por |"],
+ ["jiggle-delete", "Ícones de apps tremem como no modo de edição e um é apagado", "apps separados por |"],
+ ["keycaps", "Teclas de teclado grandes são apertadas, uma por vez", "teclas separadas por |"],
+ ["projected-film", "Parece projetado: tremulação, poeira e luz quente", ""],
+ ["film-look", "Faixas de cinema entram, com cor de filme, brilho e grão", ""],
+ ["eyedropper-grade", "Um conta-gotas pega uma cor e a imagem toda muda para ela", ""],
+ ["reel-cascade", "Seus reels caem atrás de você como uma cachoeira", ""],
+ ["playing-grid", "Você vira um quadrado numa parede de vídeos seus, todos tocando", ""],
+ ["reel-feed", "A tela de um reel: curtidas e comentários sobem na lateral", "@usuario"],
+ ["intertitle", "Um letreiro de cinema mudo entra com a sua frase", "a frase"],
+ ["screenplay-page", "Uma página de roteiro digita a sua fala em formato de cinema", "cena | ação | personagem | fala"],
+ ["knockout-captions", "Suas palavras são vazadas num bloco branco, com o vídeo aparecendo dentro", "as palavras"],
+ ["lens-ring", "Visor de câmera: o anel de foco gira, a imagem fica nítida e o REC pisca", ""],
+ ["grease-pencil", "A imagem congela e um lápis circula você, com seta e um bilhete", "o bilhete"],
+ ["title-card-dive", "Um título enche a tela e a câmera mergulha nele até você", "o título"],
+ ["picture-dive", "Uma foto aparece atrás de você e a câmera mergulha nela", ""],
+ ["live-markup", "Marcações aparecem na tela: marca-texto, sublinhado, seta e uma palavra", "a palavra"],
+ ["storyboard-deck", "Quadros de storyboard são distribuídos na sua frente, com anotações", "notas separadas por |"],
+ ["gravity-drop", "As coisas que você cita caem como blocos e se empilham", "itens separados por |"],
+ ["video-backdrop", "Tela verde: o fundo atrás de você vira outra imagem", ""],
+ ["comment-drop", "Um comentário grande cai acima da sua cabeça e quica", "nome: comentário"],
+ ["shape-transitions", "Uma forma fecha em você como uma íris e abre de novo", ""],
+ ["front-page", "Você vai parar na capa de um jornal, com a sua manchete", "a manchete"],
+ ["blade-slice", "Uma lâmina corta a tela e as duas metades se separam", ""],
+ ["day-dial", "Um relógio gira do amanhecer à noite e a luz muda em você", ""],
+ ["predictive-keyboard", "Um teclado de celular digita a sua frase, sugerindo a próxima palavra", "a frase"],
+ ["impact-frame", "Um quadro de impacto de quadrinho: flash invertido e linhas de velocidade", ""],
+ ["orbit-ring", "Um anel brilhante gira em volta da sua cabeça, com pontos", ""],
+ ["banknote", "Uma cédula sobe com o seu rosto gravado e o seu número", "o valor, ex.: 10 MIL"],
+ ["voice-note", "Um áudio de mensagem toca e a onda vai enchendo", ""],
+ ["letter-dive", "Uma letra gigante enche a tela e a câmera mergulha nela", "a letra"],
+ ["live-cursor", "Um cursor de colaborador chega, seleciona você e coloca uma etiqueta", "nome do cursor"],
+ ["head-stack", "Cópias da sua cabeça se empilham em cima de você", ""],
+ ["code-body", "Sua silhueta se enche de código rolando, o fundo continua real", ""],
+ ["post-wall", "A parede atrás de você se enche dos seus posts", ""],
+ ["clone-row", "Mais cópias de você aparecem ao seu lado", ""],
+ ["layer-explode", "A imagem se separa em camadas em 3D e depois volta", ""],
+ ["sketch-words", "Palavras escritas à mão se desenham em volta de você", "palavras separadas por |"],
+ ["blow-away", "O fundo vira partículas e é levado pelo vento", ""],
+ ["incoming-call", "Uma tela de chamada toca por cima de você e é atendida", "quem está ligando"],
+ ["search-suggest", "Uma barra de busca digita a sua pergunta e as sugestões aparecem", "busca | sugestões…"],
+ ["room-doors", "Duas portas fecham em você e abrem de novo", ""],
+ ["finger-draw", "Um traço brilhante desenha um coração e a sua palavra", "a palavra"],
+ ["follow-chip", "Um botão Seguir pequeno acompanha você e vira Seguindo", "@usuario"]
+];
+VFX.unshift(...VFX_LABS);
+const LABS_FX = new Set(VFX_LABS.map(v=>v[0]));
 const CAP_STYLES = {single:'Palavra a palavra',line:'Linha completa',karaoke:'Karaokê',bold:'Caixa alta',minimal:'Minimalista',none:'Sem legenda'};
 // How many words are on screen at once — works with every caption style.
 const CAP_LAYOUT_LIST = [['word','1 palavra'],['1','1 linha'],['2','2 linhas'],['3','3 linhas']];
@@ -2117,7 +2189,7 @@ function applyLook(type, savedIdx, tpl){
   });
   closeModal(); if (['hook','eyebrow','headline'].includes(type)){ openTextEditor(newId); return; } toast((swap?'Trocado por ':'Adicionado: ')+LOOK_TYPES[type].n);
 }
-/* ---------- Effects library: quick effects (live) + the 51 claude-video-effects (rendered on export) ---------- */
+/* ---------- Effects library: quick effects (live) + the Edit Labs effects and the 51 claude-video-effects (rendered on export) ---------- */
 let FXSTATUS = null;
 async function fxStatus(force){ if (FXSTATUS && !force) return FXSTATUS; try{ const r = await fetch('/api/status', {cache:'no-store'}); FXSTATUS = r.ok ? await r.json() : {effects:false, server:false}; FXSTATUS.server = r.ok; } catch(e){ FXSTATUS = {effects:false, server:false}; } return FXSTATUS; }
 /* ---------- effect previews made from your own footage (or a photo of you) ---------- */
@@ -2153,9 +2225,9 @@ function fxCard(n, d){
   const has = fxPrevHas(n);
   const th = has ? `<video class="fxv" muted loop playsinline preload="none" poster="${fxPrevURL(n,'jpg')}" src="${fxPrevURL(n,'mp4')}" style="width:100%;height:100%;object-fit:cover"></video>`
     : `<div style="position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.55)),url(${UI.frameURL||''}) center/cover"></div><b style="position:relative;margin:0;font:600 11px var(--mono)">✦ ${n}</b>${UI.fxPrev&&UI.fxPrev.running? '<small style="position:relative;color:#fff;opacity:.85;margin-top:4px">gerando prévia…</small>' : ''}`;
-  return `<div class="lb" data-act="addvfx" data-fx="${n}"><div class="th" style="padding:0;background:#2a2420">${th}</div><b>${n}</b><small>${esc(d)}</small></div>`;
+  return `<div class="lb" data-act="addvfx" data-fx="${n}"><div class="th" style="padding:0;background:#2a2420;position:relative">${th}${LABS_FX.has(n)? '<i style="position:absolute;top:6px;left:6px;font:700 9.5px var(--mono);font-style:normal;background:#0a5cff;color:#fff;padding:2px 6px;border-radius:999px">EDIT LABS</i>' : ''}</div><b>${n}</b><small>${esc(d)}</small></div>`;
 }
-function fxRefreshGrid(){ const g = $('#fxGrid'); if (!g) return; const q = (UI.fxQ||'').toLowerCase(); g.innerHTML = VFX.filter(v=>!q || (v[0]+' '+v[1]).toLowerCase().includes(q)).map(([n,d])=>fxCard(n,d)).join(''); }
+function fxRefreshGrid(){ const g = $('#fxGrid'); if (!g) return; const q = (UI.fxQ||'').toLowerCase(); g.innerHTML = VFX.filter(v=>!q || (v[0]+' '+v[1]+(LABS_FX.has(v[0])?' edit labs':'')).toLowerCase().includes(q)).map(([n,d])=>fxCard(n,d)).join(''); }
 function openEffects(tab){
   UI.fxTab = tab || UI.fxTab || 'video';
   UI.frameURL = grabFrameURL(); UI.lbTarget = currentLineForAdd(); UI.fxKeep = true; UI.lbSwap=null; const L=lineById(UI.lbTarget);
@@ -2164,11 +2236,11 @@ function openEffects(tab){
   const video = `<p class="hint" style="margin:0 0 8px">${st==null? 'Verificando os efeitos…' : st.effects? '✓ Efeitos prontos. Eles seguem o seu rosto e ficam atrás da sua cabeça.' : st.server? 'Os efeitos de vídeo não estão instalados.' : 'Abra o editor pelo <b>Abrir Editor</b> para usar estes efeitos (eles precisam do servidor local).'}</p>
     <div class="card panel" style="padding:10px 12px;margin-bottom:10px"><div class="frow" style="margin:0"><span id="fxPrevTxt" class="fsub" style="flex:1;min-width:220px">${fxPrevStatus()}</span>
       <button class="btn ghost sm" data-act="fxprevvid" ${UI.fxPrev&&UI.fxPrev.running?'disabled':''}>${ICO.cam} Gerar com o meu vídeo</button><button class="btn ghost sm" data-act="fxprevphoto" ${UI.fxPrev&&UI.fxPrev.running?'disabled':''}>${ICO.img} Usar uma foto minha</button></div></div>
-    <input class="in" id="fxQ" placeholder="Busque entre os 51 efeitos: zoom, vidro, manchete, checklist…" value="${esc(UI.fxQ||'')}" style="padding:7px 10px;margin-bottom:10px">
+    <input class="in" id="fxQ" placeholder="Busque entre os ${VFX.length} efeitos: zoom, vidro, manchete, edit labs…" value="${esc(UI.fxQ||'')}" style="padding:7px 10px;margin-bottom:10px">
     <p class="hint" style="margin:-4px 0 10px">Passe o mouse num cartão para ver o efeito. Escolha um e ele já roda no seu vídeo.</p>
     <div class="grid4" id="fxGrid"></div>`;
   openModal(`<div class="mhead"><div class="kick"><i></i> Biblioteca de efeitos</div><h2 class="mt">Adicionar um efeito</h2><p class="mtxt">Vai na linha ${lineNum(L)}: “${esc(keptText(L))}”. Mova o playhead para escolher outra linha.</p>
-    <div class="utabs"><button class="${UI.fxTab==='video'?'on':''}" data-act="fxtab" data-t="video">Efeitos de vídeo · 51</button><button class="${UI.fxTab==='quick'?'on':''}" data-act="fxtab" data-t="quick">Efeitos rápidos</button></div></div>
+    <div class="utabs"><button class="${UI.fxTab==='video'?'on':''}" data-act="fxtab" data-t="video">Efeitos de vídeo · ${VFX.length}</button><button class="${UI.fxTab==='quick'?'on':''}" data-act="fxtab" data-t="quick">Efeitos rápidos</button></div></div>
     <div class="mbody">${UI.fxTab==='quick'? quick : video}</div>`, true);
   fxRefreshGrid();
   const f = $('#fxQ'); if (f) f.oninput = ()=>{ UI.fxQ = f.value; clearTimeout(UI.fxT); UI.fxT = setTimeout(fxRefreshGrid, 150); };

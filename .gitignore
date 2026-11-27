@@ -12,3 +12,5 @@ __pycache__/
 .venv/
 # Python + ffmpeg installed by setup.sh on Macs that lack them
 .runtime/
+# Cutout model downloaded by setup.sh
+effects/models/

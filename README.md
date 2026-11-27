@@ -30,6 +30,11 @@ Precisa de: macOS e Google Chrome. A transcrição baixa o modelo de fala (80–
 - **Idioma** (🌐 no topo direito): Português, English ou Español. O botão ◐ ao lado troca entre claro e escuro.
 - **Claude** (topo direito): usa a **sua conta Claude** (Pro ou Max) pelo Claude Code instalado no computador — sem chave de API. Na primeira vez, clique em **Instalar e entrar** (ou dê dois cliques em `Conectar Claude.command`), entre na conta no navegador e clique em **Verificar de novo**. Vale para o **✦ Edit with Claude**, notas e Sandbox.
 
+## Efeitos e recorte do apresentador
+
+- **119 efeitos de vídeo**: os 67 do Edit Labs (`effects/labs_fx.py`, etiqueta azul **EDIT LABS** na biblioteca) e os 52 do [claude-video-effects](https://github.com/Vibha-Ramprakash/claude-video-effects) (MIT). Todos rodam pelo mesmo motor.
+- **Recorte do apresentador**: os efeitos que ficam atrás de você usam o [Robust Video Matting](https://github.com/PeterL1n/RobustVideoMatting) (licença GPL-3.0), que recorta cabelo, mãos e microfone com precisão e não treme entre os quadros. A instalação baixa o modelo (15 MB) para `effects/models/` e instala o `onnxruntime`. Se ele faltar, os efeitos usam o recorte básico do MediaPipe. Para forçar o básico: `EDIT_LABS_CUTOUT=basic`.
+
 ## Arquivos
 
 | Arquivo | O que é |
@@ -46,6 +51,7 @@ Precisa de: macOS e Google Chrome. A transcrição baixa o modelo de fala (80–
 | `tools/i18n.tsv` | as traduções: português, inglês e espanhol, uma por linha. Depois de editar, rode `python3 tools/build_i18n.py` |
 | `assets/logo-edit-labs.png` | o logo |
 | `tools/make_fx_previews.py` | regenera as prévias dos efeitos |
+| `effects/labs_fx.py` | os 67 efeitos do Edit Labs e o recorte avançado do apresentador |
 
 ## Créditos
 

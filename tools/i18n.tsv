@@ -103,7 +103,7 @@ Buscando…	Searching…	Buscando…
 Buscar	Search	Buscar
 Buscar efeitos sonoros (em inglês): whoosh, pop, camera, applause…	Search sound effects: whoosh, pop, camera, applause…	Buscar efectos de sonido (en inglés): whoosh, pop, camera, applause…
 Buscar na GIPHY: uau, dinheiro, festa…	Search GIPHY: wow, money, party…	Buscar en GIPHY: guau, dinero, fiesta…
-Busque entre os 51 efeitos: zoom, vidro, manchete, checklist…	Search the 51 effects: zoom, glass, headline, checklist…	Busca entre los 51 efectos: zoom, vidrio, titular, checklist…
+Busque entre os 119 efeitos: zoom, vidro, manchete, edit labs…	Search the 119 effects: zoom, glass, headline, edit labs…	Busca entre los 119 efectos: zoom, vidrio, titular, edit labs…
 Cada look e as suas legendas, linha por linha, rodando no seu corte. Toque numa palavra para destacá-la. Troque qualquer look ou adicione um numa linha.	Every look and your captions, line by line, playing on your cut. Tap a word to highlight it. Swap any look or add one on a line.	Cada look y tus subtítulos, línea por línea, en tu corte. Toca una palabra para destacarla. Cambia cualquier look o agrega uno en una línea.
 Cada look em qualidade máxima, no tempo do seu corte. Grava em tempo real —	Every look at full quality, timed to your cut. Records in real time —	Cada look en máxima calidad, al ritmo de tu corte. Graba en tiempo real —
 Cada momento do reel como uma foto numerada, para conferir antes de exportar.	Every moment of the reel as a numbered photo, to check before exporting.	Cada momento del reel como una foto numerada, para revisar antes de exportar.
@@ -237,7 +237,7 @@ Edite o seu texto	Edit your text	Edita tu texto
 Efeito de vídeo	Video effect	Efecto de video
 Efeito:	Effect:	Efecto:
 Efeitos	Effects	Efectos
-Efeitos de vídeo · 51	Video effects · 51	Efectos de video · 51
+Efeitos de vídeo · 119	Video effects · 119	Efectos de video · 119
 Efeitos rápidos	Quick effects	Efectos rápidos
 Efeitos sonoros	Sound effects	Efectos de sonido
 Ela toca embaixo da sua voz, do começo ao fim.	It plays under your voice, from start to finish.	Suena debajo de tu voz, de principio a fin.
@@ -881,3 +881,93 @@ O Claude Code não está instalado. Clique em Claude, no topo, e em “Instalar 
 Entre na sua conta Claude: clique em Claude, no topo, e em “Instalar e entrar”.	Sign in to your Claude account: click Claude at the top, then “Install and sign in”.	Inicia sesión en tu cuenta de Claude: haz clic en Claude, arriba, y en “Instalar e iniciar sesión”.
 Reabra o Edit Labs para ativar o Claude	Reopen Edit Labs to turn on Claude	Vuelve a abrir Edit Labs para activar Claude
 O editor está rodando uma versão antiga do servidor. Feche a janela do Terminal do Edit Labs e abra de novo pelo	The editor is running an old version of the server. Close the Edit Labs Terminal window and open it again with	El editor está usando una versión antigua del servidor. Cierra la ventana de Terminal de Edit Labs y ábrelo de nuevo con
+As palavras do seu gancho batem uma a uma atrás da sua cabeça	Your hook words slam in one by one behind your head	Las palabras de tu gancho aparecen una a una detrás de tu cabeza
+a frase do gancho	the hook line	la frase del gancho
+Ícones de apps aparecem, uma linha vermelha risca cada um e eles caem	App icons pop in, a red line strikes each one and they fall	Íconos de apps aparecen, una línea roja tacha cada uno y se caen
+apps separados por |	apps separated by |	apps separados por |
+Uma barra de pedido digita a sua instrução e envia	A prompt bar types your instruction and sends it	Una barra de pedido escribe tu instrucción y la envía
+o pedido	the prompt	el pedido
+Um controle deslizante passa pela tela e aplica a cor	A slider sweeps across and paints the colour grade on	Un deslizador recorre la pantalla y aplica el color
+Você vira capa de revista: o título cai letra por letra atrás de você	You become a magazine cover: the title drops in letter by letter	Te conviertes en portada de revista: el título cae letra a letra
+título da revista	magazine title	título de la revista
+Seu número sobe dígito por dígito, como um contador de quilometragem	Your number rolls up digit by digit, like a mileage counter	Tu número sube dígito a dígito, como un cuentakilómetros
+o número, ex.: 2.370.000	the number, e.g. 2,370,000	el número, ej.: 2.370.000
+Uma cor escura e dramática desce como uma cortina, com grão	A dark, moody grade falls like a curtain, with grain	Un color oscuro y dramático cae como una cortina, con grano
+Sua palavra é carimbada atrás da sua cabeça, letra por letra	Your word stamps in behind your head, letter by letter	Tu palabra se estampa detrás de tu cabeza, letra a letra
+Cada palavra aparece gigante na tela enquanto você fala	Each word lands huge across the frame as you say it	Cada palabra aparece gigante en la pantalla mientras hablas
+as palavras	the words	las palabras
+Você fica parado e o fundo se estica para trás (efeito vertigem)	You stay still while the room stretches away behind you (vertigo)	Tú te quedas quieto y el fondo se estira hacia atrás (vértigo)
+O foco sai de você e vai para um título, como numa lente de verdade	Focus pulls from you to a title, like a real lens	El foco pasa de ti a un título, como en un lente real
+o título	the title	el título
+Sua silhueta vira uma janela para outra imagem	Your silhouette becomes a window onto another shot	Tu silueta se vuelve una ventana a otra imagen
+Uma onda de impacto sai de você e faz a imagem ondular	A shockwave bursts out from you and ripples the frame	Una onda de choque sale de ti y hace ondular la imagen
+O fundo rasga e vira papel, com a sua palavra em letras recortadas	The room tears away into paper, your word in cut-out letters	El fondo se rasga y se vuelve papel, con tu palabra en letras recortadas
+Uma timeline de edição se monta na sua frente, com o cursor correndo	An editing timeline builds in front of you, the playhead racing	Una línea de tiempo de edición se arma frente a ti, con el cursor corriendo
+Seu arquivo bruto cai numa caixa de envio e carrega	Your raw file drops into an upload box and loads	Tu archivo en bruto cae en una caja de subida y carga
+nome do arquivo	file name	nombre del archivo
+A imagem se divide em quadrados que se afastam e voltam	The frame splits into tiles that pull apart and snap back	La imagen se divide en cuadros que se separan y vuelven
+Seu vídeo vira um post num feed que rola	Your video becomes a post in a scrolling feed	Tu video se vuelve un post en un feed que se desplaza
+@usuario	@username	@usuario
+Comentários aparecem um a um e se empilham	Comments pop in one by one and stack up	Los comentarios aparecen uno a uno y se apilan
+nome: comentário | …	name: comment | …	nombre: comentario | …
+O vídeo encolhe num cartão flutuante e depois volta a encher a tela	The video shrinks into a floating card, then fills the screen again	El video se encoge en una tarjeta flotante y luego vuelve a llenar la pantalla
+Uma caixa de comentário digita a sua palavra, envia e o botão Seguir é apertado	A comment box types your keyword, sends it, then Follow gets pressed	Una caja de comentario escribe tu palabra, la envía y se pulsa Seguir
+a palavra-chave	the keyword	la palabra clave
+Câmera na mão, um zoom na sua palavra e um chicote no final	Handheld drift, a punch-in on your word, then a whip pan	Cámara en mano, un zoom en tu palabra y un barrido al final
+A imagem vira uma folha de contato de filme com você circulado	The frame becomes a film contact sheet with your shot circled	La imagen se vuelve una hoja de contactos con tu toma marcada
+Um cupom é impresso acima da sua cabeça, linha por linha	A receipt prints out above your head, line by line	Un ticket se imprime sobre tu cabeza, línea a línea
+Ícones de apps tremem como no modo de edição e um é apagado	App icons jiggle like edit mode and one gets deleted	Los íconos tiemblan como en modo edición y uno se borra
+Teclas de teclado grandes são apertadas, uma por vez	Chunky keyboard keys press down, one at a time	Teclas grandes de teclado se presionan, una a la vez
+Parece projetado: tremulação, poeira e luz quente	Looks projected: flicker, gate weave, dust and warm light	Parece proyectado: parpadeo, polvo y luz cálida
+Faixas de cinema entram, com cor de filme, brilho e grão	Cinema bars slide in, with a film grade, glow and grain	Entran barras de cine, con color de película, brillo y grano
+Um conta-gotas pega uma cor e a imagem toda muda para ela	An eyedropper picks a colour and the whole grade shifts to it	Un cuentagotas toma un color y toda la imagen cambia a él
+Seus reels caem atrás de você como uma cachoeira	Your reels pour down behind you like a waterfall	Tus reels caen detrás de ti como una cascada
+Você vira um quadrado numa parede de vídeos seus, todos tocando	You become one tile in a wall of your own videos, all playing	Te vuelves un cuadro en una pared de tus videos, todos reproduciéndose
+A tela de um reel: curtidas e comentários sobem na lateral	A full reel screen: likes and comments tick up on the side	La pantalla de un reel: likes y comentarios suben al costado
+Um letreiro de cinema mudo entra com a sua frase	A silent-film title card cuts in with your line	Un cartel de cine mudo entra con tu frase
+a frase	the line	la frase
+Uma página de roteiro digita a sua fala em formato de cinema	A screenplay page types your line in script format	Una página de guion escribe tu frase en formato de cine
+cena | ação | personagem | fala	scene | action | character | line	escena | acción | personaje | diálogo
+Suas palavras são vazadas num bloco branco, com o vídeo aparecendo dentro	Your words are cut out of a solid block, video showing through	Tus palabras se recortan en un bloque blanco, con el video dentro
+Visor de câmera: o anel de foco gira, a imagem fica nítida e o REC pisca	A camera viewfinder: the focus ring turns, it snaps sharp, REC blinks	Visor de cámara: el anillo de foco gira, la imagen se enfoca y REC parpadea
+A imagem congela e um lápis circula você, com seta e um bilhete	The frame freezes and a grease pencil circles you, with an arrow and a note	La imagen se congela y un lápiz te encierra, con flecha y una nota
+o bilhete	the note	la nota
+Um título enche a tela e a câmera mergulha nele até você	A title card fills the screen and the camera dives through it to you	Un título llena la pantalla y la cámara se sumerge en él hasta ti
+Uma foto aparece atrás de você e a câmera mergulha nela	A photo appears behind you and the camera dives into it	Una foto aparece detrás de ti y la cámara se sumerge en ella
+Marcações aparecem na tela: marca-texto, sublinhado, seta e uma palavra	Marker notes appear: highlight, underline, arrow and a word	Aparecen marcas en pantalla: resaltador, subrayado, flecha y una palabra
+Quadros de storyboard são distribuídos na sua frente, com anotações	Storyboard panels deal out in front of you, with notes	Cuadros de storyboard se reparten frente a ti, con notas
+notas separadas por |	notes separated by |	notas separadas por |
+As coisas que você cita caem como blocos e se empilham	The things you name drop in as blocks and pile up	Las cosas que nombras caen como bloques y se apilan
+Tela verde: o fundo atrás de você vira outra imagem	Green screen: the room behind you becomes another picture	Pantalla verde: el fondo detrás de ti se vuelve otra imagen
+Um comentário grande cai acima da sua cabeça e quica	A big comment card drops above your head and bounces	Un comentario grande cae sobre tu cabeza y rebota
+nome: comentário	name: comment	nombre: comentario
+Uma forma fecha em você como uma íris e abre de novo	A shape closes in on you like an iris and opens again	Una forma se cierra sobre ti como un iris y se abre de nuevo
+Você vai parar na capa de um jornal, com a sua manchete	You land on the front page of a newspaper, under your headline	Apareces en la portada de un periódico, con tu titular
+a manchete	the headline	el titular
+Uma lâmina corta a tela e as duas metades se separam	A blade slashes the frame and the two halves slide apart	Una cuchilla corta la pantalla y las dos mitades se separan
+Um relógio gira do amanhecer à noite e a luz muda em você	A dial spins from sunrise to night as the light changes on you	Un reloj gira del amanecer a la noche y la luz cambia sobre ti
+Um teclado de celular digita a sua frase, sugerindo a próxima palavra	A phone keyboard types your line, predicting each next word	Un teclado de celular escribe tu frase, sugiriendo la siguiente palabra
+Um quadro de impacto de quadrinho: flash invertido e linhas de velocidade	A comic impact frame: inverted flash and speed lines	Un cuadro de impacto de cómic: flash invertido y líneas de velocidad
+Um anel brilhante gira em volta da sua cabeça, com pontos	A glowing ring circles your head with dots riding it	Un anillo brillante gira alrededor de tu cabeza, con puntos
+Uma cédula sobe com o seu rosto gravado e o seu número	A banknote slides up with your face engraved and your number	Un billete sube con tu cara grabada y tu número
+o valor, ex.: 10 MIL	the value, e.g. 10K	el valor, ej.: 10 MIL
+Um áudio de mensagem toca e a onda vai enchendo	A voice-message bubble plays, its waveform filling	Un audio de mensaje suena y la onda se va llenando
+Uma letra gigante enche a tela e a câmera mergulha nela	A giant letter fills the screen and the camera dives through it	Una letra gigante llena la pantalla y la cámara se sumerge en ella
+a letra	the letter	la letra
+Um cursor de colaborador chega, seleciona você e coloca uma etiqueta	A collaborator cursor flies in, selects you and drops a label	Un cursor colaborador llega, te selecciona y pone una etiqueta
+nome do cursor	cursor name	nombre del cursor
+Cópias da sua cabeça se empilham em cima de você	Copies of your head stack up on top of you	Copias de tu cabeza se apilan encima de ti
+Sua silhueta se enche de código rolando, o fundo continua real	Your silhouette fills with scrolling code, the room stays real	Tu silueta se llena de código, el fondo sigue real
+A parede atrás de você se enche dos seus posts	The wall behind you fills with your posts	La pared detrás de ti se llena de tus posts
+Mais cópias de você aparecem ao seu lado	More of you pop up beside you	Más copias de ti aparecen a tu lado
+A imagem se separa em camadas em 3D e depois volta	The frame splits into its layers in 3D, then snaps back	La imagen se separa en capas en 3D y luego vuelve
+Palavras escritas à mão se desenham em volta de você	Hand-sketched words draw themselves around you	Palabras escritas a mano se dibujan a tu alrededor
+palavras separadas por |	words separated by |	palabras separadas por |
+O fundo vira partículas e é levado pelo vento	The room behind you breaks into particles and blows away	El fondo se vuelve partículas y se lo lleva el viento
+Uma tela de chamada toca por cima de você e é atendida	An incoming-call screen rings over you, then gets answered	Una pantalla de llamada suena sobre ti y se contesta
+quem está ligando	who is calling	quién llama
+Uma barra de busca digita a sua pergunta e as sugestões aparecem	A search bar types your question and suggestions drop down	Una barra de búsqueda escribe tu pregunta y aparecen sugerencias
+busca | sugestões…	search | suggestions…	búsqueda | sugerencias…
+Duas portas fecham em você e abrem de novo	Two doors slide shut on you and open again	Dos puertas se cierran sobre ti y se abren de nuevo
+Um traço brilhante desenha um coração e a sua palavra	A glowing finger-drawn line sketches a heart and your word	Un trazo brillante dibuja un corazón y tu palabra
+Um botão Seguir pequeno acompanha você e vira Seguindo	A small follow chip rides next to you and flips to Following	Un botón Seguir pequeño te acompaña y cambia a Siguiendo

@@ -40,5 +40,16 @@ fi
 echo "Preparando os efeitos (na primeira vez leva 1–3 minutos)..."
 bash libraries/claude-video-effects/scripts/setup.sh
 
+# Sharper presenter cutout for the effects that sit behind you (Robust Video Matting, GPL-3.0).
+# Optional: if it fails, the effects keep their built-in cutout.
+echo "Instalando o recorte avançado do apresentador..."
+mkdir -p effects/models
+libraries/claude-video-effects/.venv/bin/python -m pip install -q onnxruntime || echo "Aviso: não instalei o onnxruntime; o recorte básico continua funcionando."
+if [ ! -f effects/models/rvm_mobilenetv3_fp32.onnx ]; then
+  curl -fsSL -o effects/models/rvm_mobilenetv3_fp32.onnx \
+    https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_mobilenetv3_fp32.onnx \
+    || { rm -f effects/models/rvm_mobilenetv3_fp32.onnx; echo "Aviso: não baixei o modelo de recorte; o recorte básico continua funcionando."; }
+fi
+
 echo
 echo "Instalação concluída."

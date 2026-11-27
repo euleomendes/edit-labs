@@ -22,6 +22,10 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 FX_DIR = os.path.join(ROOT, 'libraries', 'claude-video-effects')
 FX_PY = os.path.join(FX_DIR, '.venv', 'bin', 'python')
 FX_SCRIPT = os.path.join(FX_DIR, 'scripts', 'fx.py')
+# Our own effects run through effects/labs_fx.py, which adds them to the same renderer.
+LABS_SCRIPT = os.path.join(ROOT, 'effects', 'labs_fx.py')
+if os.path.exists(LABS_SCRIPT):
+    FX_SCRIPT = LABS_SCRIPT
 WORK = os.path.join(ROOT, 'work')
 PORT = int(os.environ.get('PORT', '8777'))
 NAME = re.compile(r'^[a-z0-9][a-z0-9\-]{0,40}$')
@@ -374,7 +378,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 src = str(body.get('id', ''))
                 if not (UPLOAD.match(src) or IMAGE.match(src)) or not os.path.exists(os.path.join(WORK, src)):
                     return self.send_json(400, {'error': 'Envie o vídeo ou a foto primeiro.'})
-                names = [n for n in (body.get('names') or []) if isinstance(n, str) and NAME.match(n)][:80]
+                names = [n for n in (body.get('names') or []) if isinstance(n, str) and NAME.match(n)][:200]
                 t = max(0.0, float(body.get('t', 0)))
                 key = uuid.uuid4().hex[:12]
                 start_previews(key, src, t, names)
