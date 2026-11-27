@@ -28,6 +28,7 @@ main() {
   bash "$DIR/setup.sh" </dev/null
 
   make_app
+  make_skill
   echo
   echo "Pronto! Abra o \"Edit Labs\" na pasta Aplicativos (ou pelo Launchpad/Spotlight)."
   echo "Abrindo o editor agora..."
@@ -47,6 +48,14 @@ make_app() {
     touch "$APP"
   fi
   echo "App criado: $APP"
+}
+
+# Teaches Claude Code on this Mac to open the editor: just say "abrir Edit Labs".
+make_skill() {
+  SK="$HOME/.claude/skills/edit-labs"
+  mkdir -p "$SK"
+  sed "s|@DIR@|$DIR|g" "$DIR/tools/claude-skill.md" > "$SK/SKILL.md"
+  echo "Claude configurado: diga \"abrir Edit Labs\" no Claude para abrir o editor."
 }
 
 main "$@"
