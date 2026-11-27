@@ -33,7 +33,7 @@ MAX_UPLOAD = 2 * 1024 ** 3
 
 os.makedirs(WORK, exist_ok=True)
 # ffmpeg may live outside the PATH a double-clicked launcher gets.
-for extra in (os.path.expanduser('~/.edite-reels/bin'), '/opt/homebrew/bin', '/usr/local/bin'):
+for extra in (os.path.join(ROOT, '.runtime', 'env', 'bin'), os.path.expanduser('~/.edite-reels/bin'), '/opt/homebrew/bin', '/usr/local/bin'):
     if os.path.isdir(extra) and extra not in os.environ.get('PATH', ''):
         os.environ['PATH'] = os.environ.get('PATH', '') + os.pathsep + extra
 

@@ -6,12 +6,19 @@ Editor de Reels no navegador: corte pelo texto, looks, legendas, sons, efeitos e
 
 ## Instalar num computador novo (Mac)
 
-1. Copie o **`visual-builder.zip`** para o computador (pendrive, AirDrop, Google Drive…) e dê dois cliques para descompactar. Mova a pasta **visual-builder** para onde quiser (ex.: Documentos).
-2. Dê dois cliques em **`Instalar.command`** (só na primeira vez). Ele instala o ffmpeg (se faltar) e os 51 efeitos de vídeo.
-   - Se o Mac bloquear: clique com o botão direito → **Abrir**.
-3. Dê dois cliques em **`Abrir Editor.command`** sempre que quiser usar. Deixe a janela do Terminal aberta enquanto edita.
+Abra o **Terminal** (Spotlight → "Terminal"), cole a linha abaixo e aperte Enter:
 
-Precisa de: macOS, Python 3, Google Chrome. A transcrição baixa o modelo de fala (80–250 MB) na primeira vez.
+```bash
+curl -fsSL https://raw.githubusercontent.com/euleomendes/edit-labs/main/install.sh | bash
+```
+
+Pronto. Ele baixa o editor para a pasta **Edit Labs** (na sua pasta de usuário), instala o que falta (Python, ffmpeg e os 51 efeitos de vídeo — sem Homebrew e sem senha), coloca o app **Edit Labs** em Aplicativos e abre o editor. Leva de 3 a 8 minutos na primeira vez. Depois, é só abrir o **Edit Labs** pelo Launchpad ou Spotlight (deixe a janela do Terminal aberta enquanto edita).
+
+Para atualizar, rode a mesma linha de novo: o código é atualizado e os seus projetos ficam.
+
+> **Pedindo ao Claude Code para instalar?** Basta passar o link do repositório e pedir para instalar: a instalação é exatamente o comando acima.
+
+Precisa de: macOS e Google Chrome. A transcrição baixa o modelo de fala (80–250 MB) na primeira vez.
 
 ## Como usar
 
@@ -31,7 +38,8 @@ Precisa de: macOS, Python 3, Google Chrome. A transcrição baixa o modelo de fa
 | `server.py` | servidor local (só no seu computador) que serve o editor e roda os efeitos |
 | `Abrir Editor.command` | abre o editor |
 | `Conectar Claude.command` | instala o Claude Code e entra na sua conta Claude (uma vez) |
-| `Instalar.command` / `setup.sh` | instalação num computador novo |
+| `install.sh` | instalação de uma linha (baixa do GitHub, instala tudo e cria o app) |
+| `Instalar.command` / `setup.sh` | instala as dependências numa pasta já baixada |
 | `sounds/` | Real SFX (CC0) e earshot (MIT), com as licenças |
 | `effects-previews/` | prévias animadas dos 51 efeitos |
 | `i18n.js` | a interface em inglês e espanhol (gerado — não edite à mão) |

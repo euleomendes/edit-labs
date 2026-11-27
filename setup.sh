@@ -1,32 +1,44 @@
 #!/bin/bash
-# One-time setup on a new computer: installs what the video effects need.
-# Safe to run again. The editor itself, the sounds and the effect previews are already in this folder.
+# One-time setup on a new computer: installs what the editor and the video effects need.
+# Safe to run again. On a Mac without Python 3.10+ or ffmpeg it installs both inside this folder
+# (.runtime/), so no Homebrew, Xcode or admin password is needed.
 set -e
 cd "$(dirname "$0")"
-export PATH="$HOME/.edite-reels/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+RT="$PWD/.runtime"
+export PATH="$RT/env/bin:$HOME/.edite-reels/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 echo "== Instalação do Edit Labs =="
 
-if ! command -v python3 >/dev/null 2>&1; then
-  echo "Python 3 is missing. Install it from https://www.python.org/downloads/ and run this again."; exit 1
-fi
+# A usable Python is 3.10+ and not Apple's /usr/bin stub (which asks to install Xcode tools).
+good_python() {
+  for v in python3.13 python3.12 python3.11 python3.10 python3; do
+    p="$(command -v "$v" 2>/dev/null)" || continue
+    [ "$p" = /usr/bin/python3 ] && continue
+    "$p" -c 'import sys; sys.exit(0 if sys.version_info[:2] >= (3, 10) else 1)' 2>/dev/null && return 0
+  done
+  return 1
+}
 
-if ! command -v ffmpeg >/dev/null 2>&1; then
-  if command -v brew >/dev/null 2>&1; then
-    echo "Installing ffmpeg with Homebrew..."; brew install ffmpeg
-  else
-    echo "ffmpeg is missing. Install Homebrew (https://brew.sh), then run: brew install ffmpeg"; exit 1
+if ! good_python || ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+  echo "Instalando Python e ffmpeg (só na primeira vez, 2–5 minutos)..."
+  if [ "$(uname -m)" = arm64 ]; then plat=osx-arm64; else plat=osx-64; fi
+  mkdir -p "$RT"
+  if [ ! -x "$RT/bin/micromamba" ]; then
+    curl -fsSL "https://micro.mamba.pm/api/micromamba/$plat/latest" | tar -xj -C "$RT" bin/micromamba
   fi
+  MAMBA_ROOT_PREFIX="$RT/mamba" "$RT/bin/micromamba" create -y -q -p "$RT/env" -c conda-forge python=3.12 ffmpeg >/dev/null
+  rm -rf "$RT/mamba/pkgs"
 fi
 
 mkdir -p libraries work
 if [ ! -d libraries/claude-video-effects ]; then
-  echo "Downloading the 51 video effects (github.com/Vibha-Ramprakash/claude-video-effects)..."
-  git clone --depth 1 https://github.com/Vibha-Ramprakash/claude-video-effects libraries/claude-video-effects
+  echo "Baixando os 51 efeitos de vídeo (github.com/Vibha-Ramprakash/claude-video-effects)..."
+  curl -fsSL https://github.com/Vibha-Ramprakash/claude-video-effects/archive/refs/heads/main.tar.gz | tar -xz -C libraries
+  mv libraries/claude-video-effects-main libraries/claude-video-effects
 fi
 
-echo "Installing the effects renderer (first time takes 1-3 minutes)..."
+echo "Preparando os efeitos (na primeira vez leva 1–3 minutos)..."
 bash libraries/claude-video-effects/scripts/setup.sh
 
 echo
-echo "Done. Double-click 'Abrir Editor.command' to start."
+echo "Instalação concluída."

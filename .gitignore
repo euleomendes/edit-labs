@@ -10,3 +10,5 @@ effects-previews/_sample.mp4
 __pycache__/
 *.pyc
 .venv/
+# Python + ffmpeg installed by setup.sh on Macs that lack them
+.runtime/

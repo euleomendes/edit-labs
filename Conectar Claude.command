@@ -2,7 +2,7 @@
 # Double-click once to connect the editor to Claude with your Claude account (Pro or Max) — no API key.
 # Installs Claude Code if it is missing, then signs you in through the browser.
 cd "$(dirname "$0")"
-export PATH="$HOME/.local/bin:$HOME/.claude/local:$HOME/.edite-reels/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+export PATH="$PWD/.runtime/env/bin:$HOME/.local/bin:$HOME/.claude/local:$HOME/.edite-reels/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 unset ANTHROPIC_API_KEY ANTHROPIC_AUTH_TOKEN
 
 echo "== Conectar o Claude ao Edit Labs =="
